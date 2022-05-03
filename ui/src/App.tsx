@@ -11,6 +11,8 @@ import Settings from './pages/Settings';
 
 import Menu from './components/Menu';
 import './App.css';
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -54,6 +56,8 @@ function App() {
           <Route path="/requests" element={<Requests />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </Box>
     </Router>
