@@ -11,12 +11,12 @@ import BallotIcon from '@mui/icons-material/Ballot';
 import MuiDrawer from '@mui/material/Drawer';
 
 const menuItems = [
-  {title: 'Home', path: '/', icon: <HomeIcon />},
-  {title: 'Students', path: '/students', icon: <SchoolIcon />},
-  {title: 'Teachers', path: '/teachers', icon: <PeopleIcon />},
-  {title: 'Requests', path: '/requests', icon: <BallotIcon />},
-  {title: 'Profile', path: '/profile', icon: <PersonIcon />},
-  {title: 'Settings', path: '/settings', icon: <SettingsIcon />},
+  {title: 'Acasa', path: '/home', icon: <HomeIcon />},
+  {title: 'Studenti', path: '/students', icon: <SchoolIcon />},
+  {title: 'Profesori', path: '/teachers', icon: <PeopleIcon />},
+  {title: 'Cereri', path: '/requests', icon: <BallotIcon />},
+  {title: 'Profil', path: '/profile', icon: <PersonIcon />},
+  {title: 'Setari', path: '/settings', icon: <SettingsIcon />},
 ]
 
 const drawerWidth = 240; 
@@ -43,6 +43,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const Menu = () => {
   const navigate = useNavigate();
 
+  const logout = () => {
+    localStorage.removeItem('user');
+    navigate('/login');
+  }
+
   const list = () => (
     <Box
       sx={{ width: 250 }}
@@ -57,6 +62,9 @@ const Menu = () => {
             <ListItemText primary={title} />
           </ListItem>
         ))}
+        <ListItem button key='logout' onClick={() => logout()}>
+          <ListItemText primary='log out' />
+        </ListItem>
       </List>
     </Box>
   );
