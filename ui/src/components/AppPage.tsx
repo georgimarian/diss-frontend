@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { Box, Typography } from "@mui/material";
 
-const AppPage = (props: {title: string, children: ReactElement}) : JSX.Element => {
+const AppPage = (props: {title: string, children: ReactElement | Array<ReactElement>}) : JSX.Element => {
   return (
     <Box
       sx={{

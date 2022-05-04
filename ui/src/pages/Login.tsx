@@ -1,7 +1,10 @@
-import CustomForm from "../components/CustomForm";
-import {Box, IconButton, InputAdornment, TextField} from "@mui/material";
 import {useState} from "react";
+import { useNavigate } from "react-router-dom";
+
+import {Box, IconButton, InputAdornment, TextField} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+
+import CustomForm from "../components/CustomForm";
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false)
@@ -9,16 +12,22 @@ const Login = () => {
         username: '',
         password: '',
     });
+    const navigate = useNavigate();
 
     const handleChange = (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
         setValues({...values, [prop]: event.target.value});
     };
 
+    const login = () => {
+        localStorage.setItem('user', JSON.stringify(values.username));     
+        navigate('/home'); 
+    }
+
     return <CustomForm
         accentColor={'pink'}
         title={"LOGIN"}
         buttonLabel={"LOGIN"}
-        buttonAction={() => console.log(values)}
+        buttonAction={() => login()}
         path={'/register'}
         pathLabel={'register'}
         info={'Nu aveti cont?'}
