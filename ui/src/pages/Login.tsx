@@ -5,13 +5,14 @@ import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import CustomForm from '../components/CustomForm';
+import { ROLES } from '../utils/roles';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [values, setValues] = useState({
     username: '',
     password: '',
-    role: 'Admin',
+    role: ROLES.Admin,
   });
   const navigate = useNavigate();
 

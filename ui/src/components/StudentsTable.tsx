@@ -1,4 +1,4 @@
-import {Student} from "../../models/common";
+import {Student} from "../models/common";
 import {
     Box,
     Button,
@@ -12,14 +12,14 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import ProfileIcon from "../ProfileIcon";
+import ProfileIcon from "./ProfileIcon";
 import {useState} from "react";
 
-type TableItemProps = {
+type StudentsTableProps = {
     students: Student[]
 }
 
-const TableItem = ({students}: TableItemProps) => {
+const StudentsTable = ({students}: StudentsTableProps) => {
     const [searchValue, setSearchValue] = useState('')
 
     return <TableContainer component={Paper} sx={{borderRadius: 10}}>
@@ -66,6 +66,8 @@ const TableItem = ({students}: TableItemProps) => {
                             <ProfileIcon
                                 firstName={user.firstName}
                                 lastName={user.lastName}
+                                iconSize={'4rem'}
+                                variant={'h6'}
                             />
                             <Typography sx={{pl: 2}} variant={"h6"}
                                         color={'blue'}>{user.firstName + ' ' + user.lastName}</Typography>
@@ -79,4 +81,4 @@ const TableItem = ({students}: TableItemProps) => {
     </TableContainer>
 }
 
-export default TableItem;
+export default StudentsTable;
