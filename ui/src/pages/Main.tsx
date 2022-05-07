@@ -2,6 +2,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import {Box, styled, Typography} from "@mui/material";
 import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
 
+
 import Home from './Home';
 import Teachers from './Teachers';
 import Students from './Students';
@@ -13,6 +14,7 @@ import PrivateRoute from '../utils/PrivateRoute';
 import { ROLES } from '../utils/roles';
 import {RequestStatus, Student, Teacher, ThesisRequest} from "../components/Models";
 import {useState} from "react";
+import {studentList, teacherList } from "../mock_data/users";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -39,9 +41,28 @@ function getEmptyStudent() : Student{
 const Main = () => {
     const [teachers, setTeachers] = useState(teacherList)
     const [students, setStudents] = useState(studentList)
-    const userTeacher: Teacher | undefined = teachers.find(x=> x.email == JSON.parse(localStorage.getItem('user')??"").email)
-    const userStudent: Student | undefined = students.find(x=> x.email == JSON.parse(localStorage.getItem('user')??"").email)
+    const userTeacher: Teacher | undefined = teachers.find(x=> x.name == JSON.parse(localStorage.getItem('user')??"").username)
+    const userStudent: Student | undefined = students.find(x=> x.name == JSON.parse(localStorage.getItem('user')??"").username)
 
+    function createRequest(s:Student,t:Teacher){
+        let req:ThesisRequest = {
+            id : 1,
+            teacherId : t.id,
+            studentId : s.id,
+            description : s.thesisDescription,
+            status : RequestStatus.IN_PROGRESS
+        }
+        let newS = { ...s }
+        let newT ={...t}
+        newS.requests.push(req)
+        newT.requests.push(req)
+        let newStudents = students
+        let newTeachers = teachers
+        newStudents = newStudents.map(student => student.email == newS.email ? newS : student);
+        newTeachers = newTeachers.map(teacher => teacher.email == newT.email ? newT : teacher)
+        setTeachers(newTeachers)
+        setStudents(newStudents)
+    }
     
   return localStorage.getItem('user')
   ? (
@@ -74,25 +95,7 @@ const Main = () => {
           path='/teachers'
           element={
             <PrivateRoute roles={[ROLES.Student, ROLES.Admin]}>
-                <Teachers teachers={teachers} s={userStudent??getEmptyStudent()} createRequest={(s:Student,t:Teacher)=>{
-                    let req:ThesisRequest = {
-                        id : 1,
-                        teacherId : t.id,
-                        studentId : s.id,
-                        description : s.thesisDescription,
-                        status : RequestStatus.IN_PROGRESS
-                    }
-                    let newS = { ...s }
-                    let newT ={...t}
-                    newS.requests.push(req)
-                    newT.requests.push(req)
-                    let newStudents = students
-                    let newTeachers = teachers
-                    newStudents = newStudents.map(student => student.email == newS.email ? newS : student);
-                    newTeachers = newTeachers.map(teacher => teacher.email == newT.email ? newT : teacher)
-                    setTeachers(newTeachers)
-                    setStudents(newStudents)
-                }} />
+                <Teachers teachers={teachers} s={userStudent??getEmptyStudent()} createRequest={createRequest} />
             </PrivateRoute>
           }
         />
@@ -122,157 +125,3 @@ const Main = () => {
 };
 
 export default Main;
-
-var teacherList =
-    [{
-        id: 2,
-        name: "Pop Popescu",
-        type: "teacher",
-        interest: "Behavioral therapy",
-        email: "popescu@yahoo.com",
-        enrolledStudents: [
-            {
-                id: 2,
-                password: "lorena",
-                type: "student",
-                name: "denis2",
-                email: "criste.denis15@yahoo.com2",
-                thesisDescription: "muhaha",
-                requests: [
-                    {
-                        id: 3,
-                        status: RequestStatus.DENIED,
-                        description: "muhaha",
-                        studentId: 2,
-                        teacherId: 3
-                    },
-                    {
-                        id: 4,
-                        status: RequestStatus.APPROVED,
-                        description: "muhaha",
-                        studentId: 2,
-                        teacherId: 2
-                    }
-                ],
-                description: "i am a mothefucker",
-                requestsLeft: 1
-            }
-        ],
-        totalPlaces: 15,
-        password: "pass",
-        requests: [
-            {
-                id: 1,
-                status: RequestStatus.DENIED,
-                description: "muhaha",
-                studentId: 1,
-                teacherId: 2
-            },
-        ]
-    },
-        {
-            id: 12,
-            name: "Pop Popescu2",
-            type: "teacher",
-            interest: "Behavioral therapy",
-            email: "popescu@yahoo.com",
-            enrolledStudents: [],
-            totalPlaces: 15,
-            password: "pass",
-            requests: []
-        },
-        {
-            id: 112,
-            name: "Pop Popescu3",
-            type: "teacher",
-            interest: "Behavioral therapy",
-            email: "popescu@yahoo.com",
-            enrolledStudents: [],
-            totalPlaces: 15,
-            password: "pass",
-            requests: []
-        },
-        {
-            id: 1112,
-            name: "Pop Popescu3",
-            type: "teacher",
-            interest: "Behavioral therapy",
-            email: "popescu@yahoo.com",
-            enrolledStudents: [],
-            totalPlaces: 15,
-            password: "pass",
-            requests: []
-        },
-        {
-            id: 3,
-            name: "Pop Popescu3",
-            type: "teacher",
-            interest: "Behavioral therapy",
-            email: "popescu@yahoo.com",
-            enrolledStudents: [],
-            totalPlaces: 15,
-            password: "pass",
-            requests: [
-                {
-                    id: 2,
-                    status: RequestStatus.DENIED,
-                    description: "muhaha",
-                    studentId: 1,
-                    teacherId: 3
-                },
-            ]
-        },
-
-]
-var studentList = [{
-    id: 1,
-    password: "lorena",
-    type: "student",
-    name: "denis",
-    email: "criste.denis15@yahoo.com",
-    thesisDescription: "muhaha",
-    requests: [
-        {
-            id: 1,
-            status: RequestStatus.DENIED,
-            description: "muhaha",
-            studentId: 1,
-            teacherId: 3
-        },
-        {
-            id: 2,
-            status: RequestStatus.DENIED,
-            description: "muhaha",
-            studentId: 1,
-            teacherId: 2
-        }
-    ],
-    description: "i am a mothefucker",
-    requestsLeft: 1
-},
-    {
-        id: 2,
-        password: "lorena",
-        type: "student",
-        name: "denis2",
-        email: "criste.denis15@yahoo.com2",
-        thesisDescription: "muhaha",
-        requests: [
-            {
-                id: 3,
-                status: RequestStatus.DENIED,
-                description: "muhaha",
-                studentId: 2,
-                teacherId: 3
-            },
-            {
-                id: 4,
-                status: RequestStatus.APPROVED,
-                description: "muhaha",
-                studentId: 2,
-                teacherId: 2
-            }
-        ],
-        description: "i am a mothefucker",
-        requestsLeft: 1
-    }]
