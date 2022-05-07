@@ -1,29 +1,18 @@
 const data01 = [
   {
-    name: 'Group A',
+    name: 'Accepted',
     value: 400,
   },
   {
-    name: 'Group B',
+    name: 'Rejected',
     value: 300,
   },
   {
-    name: 'Group C',
+    name: 'Pending',
     value: 300,
-  },
-  {
-    name: 'Group D',
-    value: 200,
-  },
-  {
-    name: 'Group E',
-    value: 278,
-  },
-  {
-    name: 'Group F',
-    value: 189,
   },
 ];
+
 const data02 = [
   {
     name: 'Group A',
