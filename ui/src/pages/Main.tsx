@@ -1,6 +1,7 @@
-import { Route, Routes, Navigate } from 'react-router-dom';
-import { Box, Typography, styled } from '@mui/material';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import {Navigate, Route, Routes} from "react-router-dom";
+import {Box, styled, Typography} from "@mui/material";
+import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
+
 
 import Home from './Home';
 import Teachers from './Teachers';
@@ -11,6 +12,9 @@ import Settings from './Settings';
 import Menu from '../components/Menu';
 import PrivateRoute from '../utils/PrivateRoute';
 import { ROLES } from '../utils/roles';
+import {RequestStatus, Student, Teacher, ThesisRequest} from "../components/Models";
+import {useState} from "react";
+import {studentList, teacherList } from "../mock_data/users";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -20,8 +24,48 @@ const AppBar = styled(MuiAppBar, {
   width: `calc(100% - ${240}px)`,
 }));
 
+function getEmptyStudent() : Student{
+    return {
+        name:"",
+        id:-1,
+        description:"",
+        thesisDescription:"",
+        email:"",
+        password:"",
+        requestsLeft:0,
+        type:"student",
+        requests:[]
+    };
+}
+
 const Main = () => {
-  return localStorage.getItem('user') ? (
+    const [teachers, setTeachers] = useState(teacherList)
+    const [students, setStudents] = useState(studentList)
+    const userTeacher: Teacher | undefined = teachers.find(x=> x.name == JSON.parse(localStorage.getItem('user')??"").username)
+    const userStudent: Student | undefined = students.find(x=> x.name == JSON.parse(localStorage.getItem('user')??"").username)
+
+    function createRequest(s:Student,t:Teacher){
+        let req:ThesisRequest = {
+            id : 1,
+            teacherId : t.id,
+            studentId : s.id,
+            description : s.thesisDescription,
+            status : RequestStatus.IN_PROGRESS
+        }
+        let newS = { ...s }
+        let newT ={...t}
+        newS.requests.push(req)
+        newT.requests.push(req)
+        let newStudents = students
+        let newTeachers = teachers
+        newStudents = newStudents.map(student => student.email == newS.email ? newS : student);
+        newTeachers = newTeachers.map(teacher => teacher.email == newT.email ? newT : teacher)
+        setTeachers(newTeachers)
+        setStudents(newStudents)
+    }
+    
+  return localStorage.getItem('user')
+  ? (
     <Box
       sx={{
         width: '100%',
@@ -51,7 +95,7 @@ const Main = () => {
           path='/teachers'
           element={
             <PrivateRoute roles={[ROLES.Student, ROLES.Admin]}>
-              <Teachers />
+                <Teachers teachers={teachers} s={userStudent??getEmptyStudent()} createRequest={createRequest} />
             </PrivateRoute>
           }
         />
