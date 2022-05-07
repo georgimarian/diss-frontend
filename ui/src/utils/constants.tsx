@@ -17,7 +17,7 @@ interface MenuItem {
 
 export const MENU_ITEMS: Array<MenuItem> = [
   {
-    title: 'Acasa',
+    title: 'Acasă',
     path: '/home',
     icon: <HomeIcon />,
     roles: [ROLES.Student, ROLES.Admin, ROLES.Teacher],
@@ -47,7 +47,7 @@ export const MENU_ITEMS: Array<MenuItem> = [
     roles: [ROLES.Student, ROLES.Admin, ROLES.Teacher],
   },
   {
-    title: 'Setari',
+    title: 'Setări',
     path: '/settings',
     icon: <SettingsIcon />,
     roles: [ROLES.Admin, ROLES.Teacher],
