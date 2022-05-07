@@ -12,11 +12,12 @@ const AppPage = (props: {
         width: '90%',
         height: '90%',
         overflowX: 'clip',
+        overflowY: 'scroll',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'start',
         alignItems: 'center',
-        bgcolor: 'white',
+        bgcolor: '#ebf1fa',
       }}
     >
       <Typography variant={'h2'}>{props.title}</Typography>
