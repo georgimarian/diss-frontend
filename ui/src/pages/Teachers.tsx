@@ -5,112 +5,19 @@ import {Button, Typography} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 
-const Teachers = () => {
+const Teachers = (props: {s: Student, teachers:Teacher[], createRequest:(student:Student,teacher:Teacher)=>void}) => {
 
-    var s: Student = {
-        id: 1,
-        password: "lorena",
-        name: "denis",
-        email: "criste.denis15@yahoo.com",
-        thesisDescription: "muhaha",
-        requests: [
-            {
-                id: 1,
-                status: RequestStatus.DENIED,
-                description: "muhaha",
-                studentId: 1,
-                teacherId: 3
-            },
-            {
-                id: 1,
-                status: RequestStatus.DENIED,
-                description: "muhaha",
-                studentId: 1,
-                teacherId: 2
-            }
-        ],
-        description: "i am a mothefucker",
-        requestsLeft: 1
-    }
-    var teachers: Teacher[] =
-        [{
-            id: 2,
-            name: "Pop Popescu",
-            interest: "Behavioral therapy",
-            email: "popescu@yahoo.com",
-            enrolledStudents: [],
-            totalPlaces: 15,
-            password: "pass",
-            requests: [
-                {
-                    id: 1,
-                    status: RequestStatus.DENIED,
-                    description: "muhaha",
-                    studentId: 1,
-                    teacherId: 2
-                },
-            ]
-        },
-            {
-                id: 12,
-                name: "Pop Popescu2",
-                interest: "Behavioral therapy",
-                email: "popescu@yahoo.com",
-                enrolledStudents: [],
-                totalPlaces: 15,
-                password: "pass",
-                requests: []
-            },
-            {
-                id: 112,
-                name: "Pop Popescu3",
-                interest: "Behavioral therapy",
-                email: "popescu@yahoo.com",
-                enrolledStudents: [],
-                totalPlaces: 15,
-                password: "pass",
-                requests: []
-            },
-            {
-                id: 1112,
-                name: "Pop Popescu3",
-                interest: "Behavioral therapy",
-                email: "popescu@yahoo.com",
-                enrolledStudents: [],
-                totalPlaces: 15,
-                password: "pass",
-                requests: []
-            },
-            {
-                id: 3,
-                name: "Pop Popescu3",
-                interest: "Behavioral therapy",
-                email: "popescu@yahoo.com",
-                enrolledStudents: [],
-                totalPlaces: 15,
-                password: "pass",
-                requests: [
-                    {
-                        id: 2,
-                        status: RequestStatus.DENIED,
-                        description: "muhaha",
-                        studentId: 1,
-                        teacherId: 3
-                    },
-                ]
-            },
-        ]
-    if (s.requestsLeft > 0)
+    if (props.s.requestsLeft > 0 || !props.s.requests.map(r => r.status).find(x => x!= RequestStatus.DENIED))
         return (
             <AppPage title='Teachers'>
 
-                <TeachersTable rows={teachers} student={s}/>
+                <TeachersTable rows={props.teachers} student={props.s} createRequest={(s:Student,t:Teacher)=>props.createRequest(s,t)}/>
                 <Typography variant="h6" sx={{padding: "2px"}} align="left">
                     Mai ai <Typography sx={
                     {
-                        color: s.requestsLeft == 1 ? "red" : "green"
+                        color: props.s.requestsLeft == 1 ? "red" : "green"
                         , display: "inline"
-                    }}>{s.requestsLeft}</Typography> cereri rămase
+                    }}>{props.s.requestsLeft}</Typography> cereri rămase
                 </Typography>
             </AppPage>
         );
