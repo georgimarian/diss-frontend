@@ -13,6 +13,7 @@ export let teacherList =
                 password: "lorena",
                 type: "student",
                 name: "denis2",
+                grades: [ {criteria: "criteria 1", value:10}],
                 email: "criste.denis15@yahoo.com2",
                 thesisDescription: "muhaha",
                 requests: [
@@ -108,6 +109,7 @@ export let studentList = [{
     name: "denis",
     email: "criste.denis15@yahoo.com",
     thesisDescription: "muhaha",
+    grades:[],
     requests: [
         {
             id: 1,
@@ -132,6 +134,7 @@ export let studentList = [{
         password: "lorena",
         type: "student",
         name: "denis2",
+        grades:[ {criteria: "criteria 1", value:10}],
         email: "criste.denis15@yahoo.com2",
         thesisDescription: "muhaha",
         requests: [
