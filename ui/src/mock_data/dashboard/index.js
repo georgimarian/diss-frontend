@@ -1,29 +1,18 @@
-const data01 = [
+const STATUS_DATA = [
   {
-    name: 'Group A',
+    name: 'Accepted',
     value: 400,
   },
   {
-    name: 'Group B',
+    name: 'Rejected',
     value: 300,
   },
   {
-    name: 'Group C',
+    name: 'Pending',
     value: 300,
-  },
-  {
-    name: 'Group D',
-    value: 200,
-  },
-  {
-    name: 'Group E',
-    value: 278,
-  },
-  {
-    name: 'Group F',
-    value: 189,
   },
 ];
+
 const data02 = [
   {
     name: 'Group A',
@@ -51,4 +40,54 @@ const data02 = [
   },
 ];
 
-export { data01, data02 };
+const GRADE_DATA = [
+  {
+    name: 'Criteriu 1',
+    grade: 60,
+  },
+  {
+    name: 'Criteriu 2',
+    grade: 85,
+  },
+  {
+    name: 'Criteriu 3',
+    grade: 77,
+  },
+  {
+    name: 'Criteriu 4',
+    grade: 92,
+  },
+  {
+    name: 'Criteriu 5',
+    grade: 99,
+  },
+];
+
+const TEACHER_DISTRIBUTION_DATA = [
+  {
+    subject: 'Psihologie Comportamentala',
+    A: 120,
+    B: 110,
+    fullMark: 150,
+  },
+  {
+    subject: 'Psihologie Organizationala',
+    A: 98,
+    B: 130,
+    fullMark: 150,
+  },
+  {
+    subject: 'Terapie',
+    A: 86,
+    B: 130,
+    fullMark: 150,
+  },
+  {
+    subject: 'Psihologie Scolara',
+    A: 99,
+    B: 100,
+    fullMark: 150,
+  },
+];
+
+export { STATUS_DATA, GRADE_DATA, TEACHER_DISTRIBUTION_DATA };

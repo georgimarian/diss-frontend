@@ -1,33 +1,31 @@
 import { FC, ReactNode, useState } from 'react';
-import { styled } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 
-type CardDivProps = {
-  props: {
-    background: string;
-  };
-};
-const CardDiv = styled('div')<CardDivProps>(({ props, theme }) => ({
-  padding: '8px',
-  margin: '8px',
-  width: '100%',
-  border: '1px',
-  background: props.background,
-  borderRadius: '5px',
-}));
-
-type CardProps = {
+type AppCardProps = {
   title: string;
   background?: string;
   children: ReactNode;
 };
 
-const Card: FC<CardProps> = ({ title, background = '#b3d7f5', children }) => {
+const AppCard: FC<AppCardProps> = ({
+  title,
+  background = '#ffffff',
+  children,
+}) => {
   return (
-    <CardDiv props={{ background: background }}>
-      <h5>{title}</h5>
-      {children}
-    </CardDiv>
+    <Card
+      sx={{
+        background: background,
+        marginBottom: '10px',
+      }}
+      raised
+    >
+      <CardContent>
+        <Typography variant='h5'>{title}</Typography>
+        {children}
+      </CardContent>
+    </Card>
   );
 };
 
-export default Card;
+export default AppCard;
