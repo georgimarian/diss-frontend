@@ -54,8 +54,9 @@ const Menu = () => {
       >
         <div>
           {MENU_ITEMS.map(({ title, path, icon, roles }, index) => {
-            const user = JSON.parse(localStorage.getItem('user') || '');
-            if (roles.includes(user.role))
+            const user = localStorage.getItem('user');
+            const localUser = user && JSON.parse(user || '');
+            if (roles.includes(localUser.role))
               return (
                 <ListItem button key={title} onClick={() => navigate(path)}>
                   <ListItemIcon>{icon}</ListItemIcon>
