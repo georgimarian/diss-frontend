@@ -1,60 +1,20 @@
-export enum RequestStatus{
-    NO_REQUEST="NO REQUEST",
-    IN_PROGRESS = "IN PROGRESS",
-    DENIED = " DENIED",
-    APPROVED = "APPROVED"
+export enum RequestStatus {
+    NO_REQUEST = "FARĂ CERERE",
+    IN_PROGRESS = "ÎN AȘTEPTARE",
+    DENIED = "RESPINS",
+    APPROVED = "ACCEPTAT"
 }
 
-export class Teacher{
-    get id(): number {
-        return this._id;
-    }
+export type Teacher =
+    User
+    & { name: string, interest: string, enrolledStudents: Student[], totalPlaces: number, requests: ThesisRequest[] }
 
-    set id(value: number) {
-        this._id = value;
-    }
+export type Student =
+    User
+    & { name: string, description: string, requestsLeft: number, requests: ThesisRequest[], thesisDescription: string }
 
-    get interest(): String {
-        return this._interest;
-    }
+export type Admin = User
 
-    set interest(value: String) {
-        this._interest = value;
-    }
+export type User = { id: number, email: string, password: string }
 
-    get enrolledStudents(): number {
-        return this._enrolledStudents;
-    }
-
-    set enrolledStudents(value: number) {
-        this._enrolledStudents = value;
-    }
-
-    get availablePlaces(): number {
-        return this._availablePlaces;
-    }
-
-    set availablePlaces(value: number) {
-        this._availablePlaces = value;
-    }
-    get name(): String {
-        return this._name;
-    }
-
-    set name(value: String) {
-        this._name = value;
-    }
-    private _id: number
-    private _name: String
-    private _interest: String
-    private _enrolledStudents: number
-    private _availablePlaces: number
-
-    constructor(name: String, interest: String, enrolledStudents: number, availablePlaces: number) {
-        this._id = -1;
-        this._name = name;
-        this._interest = interest;
-        this._enrolledStudents = enrolledStudents;
-        this._availablePlaces = availablePlaces;
-    }
-}
+export type ThesisRequest = { id: number, status: RequestStatus, description: string, teacherId: number, studentId: number }
