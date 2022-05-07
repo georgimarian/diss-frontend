@@ -15,6 +15,6 @@ export type Student =
 
 export type Admin = User
 
-export type User = { id: number, email: string, password: string }
+export type User = { id: number, email: string, password: string, type: string }
 
 export type ThesisRequest = { id: number, status: RequestStatus, description: string, teacherId: number, studentId: number }
