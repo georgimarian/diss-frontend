@@ -1,6 +1,7 @@
-import {RequestStatus} from "../components/Models"
-import {Student} from "../models/common";
-import {AreaOfInterest} from "../models/common.enums";
+import {AreaOfInterest, RequestStatus} from "../models/common.enums"
+import {Student, Teacher} from "../models/common";
+import { Roles } from "utils/roles";
+
 
 export const aboutMe = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
     "Pellentesque pulvinar a turpis sit amet hendrerit. Vestibulum nec justo tempor," +
@@ -10,19 +11,24 @@ export const aboutMe = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     "vulputate turpis non, tincidunt neque. Fusce nec odio sed ante elementum ultrices." +
     "Nullam eget ultricies mauris, id tempor erat."
 
-export let teacherList =
+export let teacherList : Teacher[] =
     [{
         id: 1,
-        name: "Pop Popescu",
-        type: "teacher",
-        interest: "Behavioral therapy",
+        username: "Pop Popescu",
+        firstName: "Pop Popescu",
+        lastName: "Pop Popescu",
+        type: Roles.Teacher,
+        areaOfInterest: AreaOfInterest.PSYCHOLOGY,
         email: "popescu@yahoo.com",
         enrolledStudents: [
             {
                 id: 2,
                 password: "lorena",
-                type: "student",
-                name: "denis2",
+                type: Roles.Student,
+                username: "denis2",
+                firstName: "denis2",
+                areaOfInterest: AreaOfInterest.PSYCHOLOGY,
+                lastName: "denis2",
                 grades: [{criteria: "criteria 1", value: 10}],
                 email: "criste.denis15@yahoo.com2",
                 thesisDescription: "muhaha",
@@ -60,9 +66,11 @@ export let teacherList =
     },
     {
         id: 2,
-        name: "Ion Ionescu",
-        type: "teacher",
-        interest: "Behavioral therapy",
+        username: "Ion Ionescu",
+        firstName: "Ion",
+        lastName: "Ionescu",
+        type: Roles.Teacher,
+        areaOfInterest: AreaOfInterest.PSYCHOLOGY,
         email: "ionescu@yahoo.com",
         enrolledStudents: [],
         totalPlaces: 15,
@@ -71,9 +79,11 @@ export let teacherList =
     },
     {
         id: 3,
-        name: "George Georgescu",
-        type: "teacher",
-        interest: "Behavioral therapy",
+        username: "George Georgescu",
+        firstName: "George",
+        lastName: "Georgescu",
+        type: Roles.Teacher,
+        areaOfInterest: AreaOfInterest.APPLIED_PSYCHOLOGY,
         email: "popescu@yahoo.com",
         enrolledStudents: [],
         totalPlaces: 15,
@@ -82,9 +92,11 @@ export let teacherList =
     },
     {
         id: 4,
-        name: "Alin Alinescu",
-        type: "teacher",
-        interest: "Behavioral therapy",
+        username: "Alin Alinescu",
+        firstName: "Alin",
+        lastName: "Alinescu",
+        type: Roles.Teacher,
+        areaOfInterest: AreaOfInterest.APPLIED_PSYCHOLOGY,
         email: "alinescu@yahoo.com",
         enrolledStudents: [],
         totalPlaces: 15,
@@ -93,9 +105,11 @@ export let teacherList =
     },
     {
         id: 5,
-        name: "Florin Florinescu",
-        type: "teacher",
-        interest: "Behavioral therapy",
+        username: "Florin Florinescu",
+        firstName: "Florin",
+        lastName: "Florinescu",
+        type: Roles.Teacher,
+        areaOfInterest: AreaOfInterest.PSYCHOLOGY,
         email: "florinescu@yahoo.com",
         enrolledStudents: [],
         totalPlaces: 15,
@@ -110,12 +124,15 @@ export let teacherList =
             },
         ]
     },
-    ]
-export let studentList = [{
+    ];
+export let studentList : Student[] = [{
     id: 1,
     password: "lorena",
-    type: "student",
-    name: "denis",
+    type: Roles.Student,
+    username: "denis",
+    lastName: "denis",
+    firstName: "denis",
+    areaOfInterest: AreaOfInterest.PSYCHOLOGY,
     email: "criste.denis15@yahoo.com",
     thesisDescription: "muhaha",
     grades: [],
@@ -141,8 +158,11 @@ export let studentList = [{
     {
         id: 2,
         password: "lorena",
-        type: "student",
-        name: "denis2",
+        type: Roles.Student,
+        username: "denis2",
+        firstName: "denis2",
+        lastName: "denis2",
+        areaOfInterest: AreaOfInterest.PSYCHOLOGY,
         grades: [{criteria: "criteria 1", value: 10}],
         email: "criste.denis15@yahoo.com2",
         thesisDescription: "muhaha",
@@ -164,7 +184,55 @@ export let studentList = [{
         ],
         description: "i am a mothefucker",
         requestsLeft: 1
-    }]
+    },
+
+    {
+        email: "email1",
+        username: "username1",
+        password: "password1",
+        firstName: "john",
+        lastName: "doe",
+        areaOfInterest: AreaOfInterest.PSYCHOLOGY,
+        id: 10,
+        grades:[],
+        description:"",
+        requests:[],
+        requestsLeft:3,
+        type:Roles.Student,
+        thesisDescription:""
+
+    },
+    {
+        email: "email2",
+        username: "username2",
+        password: "password2",
+        firstName: "marco",
+        lastName: "pollo",
+        areaOfInterest: AreaOfInterest.PSYCHOLOGY,
+        id: 11,
+        grades:[],
+        description:"",
+        requests:[],
+        requestsLeft:3,
+        type:Roles.Student,
+        thesisDescription:""
+    },
+    {
+        email: "email3",
+        username: "username3",
+        password: "password3",
+        firstName: "phoebe",
+        lastName: "buffay",
+        areaOfInterest: AreaOfInterest.APPLIED_PSYCHOLOGY,
+        id: 12,
+        grades:[],
+        description:"",
+        requests:[],
+        requestsLeft:3,
+        type:Roles.Student,
+        thesisDescription:""
+    }
+];
 
 export const publishedPapers = [
     {
@@ -196,7 +264,14 @@ export const initializedStudent: Student = {
     password: '',
     firstName: '',
     lastName: '',
-    areaOfInterest: AreaOfInterest.PSYCHOLOGY
+    areaOfInterest: AreaOfInterest.PSYCHOLOGY,
+    id:-1,
+    grades:[],
+    requests:[],
+    description:"",
+    thesisDescription:'',
+    requestsLeft:0,
+    type:Roles.Student
 }
 
 export enum Actions {
