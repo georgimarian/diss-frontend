@@ -1,9 +1,11 @@
 import CustomForm from "../components/CustomForm";
-import {Box, IconButton, InputAdornment, TextField} from "@mui/material";
+import {Box, IconButton, InputAdornment, TextField, useTheme} from "@mui/material";
 import {useState} from "react";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 const Register = () => {
+    const theme = useTheme();
+
     const [showPassword, setShowPassword] = useState(false)
     const [values, setValues] = useState({
         username: '',
@@ -15,7 +17,7 @@ const Register = () => {
     };
 
     return <CustomForm
-        accentColor={'rgb(0,212,255)'}
+        accentColor={theme.palette.primary.main}
         title={"REGISTER"}
         buttonLabel={"REGISTER"}
         buttonAction={() => console.log(values)}

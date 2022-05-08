@@ -33,7 +33,6 @@ const mockStudents: Student[] = [
 const Students = () => {
     return (
         <AppPage title='Students'>
-            {/*<p>Students</p>*/}
             <StudentsTable students={mockStudents}/>
         </AppPage>
     );
