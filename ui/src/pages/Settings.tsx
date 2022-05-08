@@ -6,6 +6,7 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 
 import AppPage from '../components/AppPage';
+import { AddCircleOutline } from '@mui/icons-material';
 
 type Criterion = {
   name: string;
@@ -82,7 +83,7 @@ const Settings = () => {
           <span
             style={{
               display: 'flex',
-              alignItems: 'baseline',
+              alignItems: 'center',
               minHeight: '50px',
             }}
           >
@@ -90,10 +91,26 @@ const Settings = () => {
             Nu <RemoveCircleOutlineIcon onClick={() => setIsEditing(false)} />
           </span>
         ) : (
-          <span>
+          <span
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              minHeight: '50px',
+            }}
+          >
             Modifica? <EditIcon onClick={() => setIsEditing(true)} />
           </span>
         )}
+        <span
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            minHeight: '50px',
+          }}
+        >
+          Adaugă un criteriu nou
+          <AddCircleOutline />
+        </span>
       </Box>
     );
   };
