@@ -2,7 +2,7 @@ import {RequestStatus} from "../components/Models"
 
 export let teacherList =
     [{
-        id: 2,
+        id: 1,
         name: "Pop Popescu",
         type: "teacher",
         interest: "Behavioral therapy",
@@ -13,7 +13,7 @@ export let teacherList =
                 password: "lorena",
                 type: "student",
                 name: "denis2",
-                grades: [ {criteria: "criteria 1", value:10}],
+                grades: [{criteria: "criteria 1", value: 10}],
                 email: "criste.denis15@yahoo.com2",
                 thesisDescription: "muhaha",
                 requests: [
@@ -29,7 +29,7 @@ export let teacherList =
                         status: RequestStatus.APPROVED,
                         description: "muhaha",
                         studentId: 2,
-                        teacherId: 2
+                        teacherId: 1
                     }
                 ],
                 description: "i am a mothefucker",
@@ -44,63 +44,62 @@ export let teacherList =
                 status: RequestStatus.DENIED,
                 description: "muhaha",
                 studentId: 1,
-                teacherId: 2
+                teacherId: 1
             },
         ]
     },
-        {
-            id: 12,
-            name: "Pop Popescu2",
-            type: "teacher",
-            interest: "Behavioral therapy",
-            email: "popescu@yahoo.com",
-            enrolledStudents: [],
-            totalPlaces: 15,
-            password: "pass",
-            requests: []
-        },
-        {
-            id: 112,
-            name: "Pop Popescu3",
-            type: "teacher",
-            interest: "Behavioral therapy",
-            email: "popescu@yahoo.com",
-            enrolledStudents: [],
-            totalPlaces: 15,
-            password: "pass",
-            requests: []
-        },
-        {
-            id: 1112,
-            name: "Pop Popescu3",
-            type: "teacher",
-            interest: "Behavioral therapy",
-            email: "popescu@yahoo.com",
-            enrolledStudents: [],
-            totalPlaces: 15,
-            password: "pass",
-            requests: []
-        },
-        {
-            id: 3,
-            name: "Pop Popescu3",
-            type: "teacher",
-            interest: "Behavioral therapy",
-            email: "popescu@yahoo.com",
-            enrolledStudents: [],
-            totalPlaces: 15,
-            password: "pass",
-            requests: [
-                {
-                    id: 2,
-                    status: RequestStatus.DENIED,
-                    description: "muhaha",
-                    studentId: 1,
-                    teacherId: 3
-                },
-            ]
-        },
-
+    {
+        id: 2,
+        name: "Ion Ionescu",
+        type: "teacher",
+        interest: "Behavioral therapy",
+        email: "ionescu@yahoo.com",
+        enrolledStudents: [],
+        totalPlaces: 15,
+        password: "pass",
+        requests: []
+    },
+    {
+        id: 3,
+        name: "George Georgescu",
+        type: "teacher",
+        interest: "Behavioral therapy",
+        email: "popescu@yahoo.com",
+        enrolledStudents: [],
+        totalPlaces: 15,
+        password: "pass",
+        requests: []
+    },
+    {
+        id: 4,
+        name: "Alin Alinescu",
+        type: "teacher",
+        interest: "Behavioral therapy",
+        email: "alinescu@yahoo.com",
+        enrolledStudents: [],
+        totalPlaces: 15,
+        password: "pass",
+        requests: []
+    },
+    {
+        id: 5,
+        name: "Florin Florinescu",
+        type: "teacher",
+        interest: "Behavioral therapy",
+        email: "florinescu@yahoo.com",
+        enrolledStudents: [],
+        totalPlaces: 15,
+        password: "pass",
+        requests: [
+            {
+                id: 2,
+                status: RequestStatus.DENIED,
+                description: "muhaha",
+                studentId: 1,
+                teacherId: 5
+            },
+        ]
+    },
     ]
 export let studentList = [{
     id: 1,
@@ -109,21 +108,21 @@ export let studentList = [{
     name: "denis",
     email: "criste.denis15@yahoo.com",
     thesisDescription: "muhaha",
-    grades:[],
+    grades: [],
     requests: [
         {
             id: 1,
             status: RequestStatus.DENIED,
             description: "muhaha",
             studentId: 1,
-            teacherId: 3
+            teacherId: 5
         },
         {
             id: 2,
             status: RequestStatus.DENIED,
             description: "muhaha",
             studentId: 1,
-            teacherId: 2
+            teacherId: 1
         }
     ],
     description: "i am a mothefucker",
@@ -134,7 +133,7 @@ export let studentList = [{
         password: "lorena",
         type: "student",
         name: "denis2",
-        grades:[ {criteria: "criteria 1", value:10}],
+        grades: [{criteria: "criteria 1", value: 10}],
         email: "criste.denis15@yahoo.com2",
         thesisDescription: "muhaha",
         requests: [
@@ -143,14 +142,14 @@ export let studentList = [{
                 status: RequestStatus.DENIED,
                 description: "muhaha",
                 studentId: 2,
-                teacherId: 3
+                teacherId: 1
             },
             {
                 id: 4,
                 status: RequestStatus.APPROVED,
                 description: "muhaha",
                 studentId: 2,
-                teacherId: 2
+                teacherId: 5
             }
         ],
         description: "i am a mothefucker",

@@ -23,6 +23,38 @@ const AppBar = styled(MuiAppBar, {
     width: `calc(100% - ${240}px)`,
 }));
 
+function parseStudents (): Student[]{
+    try {
+        return JSON.parse(localStorage.getItem("students") || "")
+    } catch (err) {
+        return studentList
+    }
+}
+
+function parseTeachers (): Teacher[]{
+    try {
+        return JSON.parse(localStorage.getItem("teachers") || "")
+    } catch (err) {
+        return teacherList
+    }
+}
+
+function storeStudents (students: Student[]){
+    return localStorage.setItem("students",JSON.stringify(students))
+}
+
+function storeTeachers (teachers: Teacher[]){
+    return localStorage.setItem("teachers",JSON.stringify(teachers))
+}
+
+function parseUser(){
+    try {
+        return JSON.parse(localStorage.getItem("user") || "")
+    } catch (err) {
+        return getEmptyStudent()
+    }
+}
+
 export function getEmptyStudent(): Student {
     return {
         name: "",
@@ -53,10 +85,10 @@ export function getEmptyTeacher(): Teacher {
 }
 
 const Main = () => {
-    const [teachers, setTeachers] = useState(teacherList)
-    const [students, setStudents] = useState(studentList)
-    const userTeacher: Teacher | undefined = teachers.find(x => x.name === JSON.parse(localStorage.getItem('user') ?? "").username)
-    const userStudent: Student | undefined = students.find(x => x.name === JSON.parse(localStorage.getItem('user') ?? "").username)
+    const [teachers, setTeachers] = useState(parseTeachers())
+    const [students, setStudents] = useState(parseStudents())
+    const userTeacher: Teacher | undefined = teachers.find(x => x.name === parseUser().username)
+    const userStudent: Student | undefined = students.find(x => x.name === parseUser().username)
 
     function createRequest(s: Student, t: Teacher) {
         let req: ThesisRequest = {
@@ -77,6 +109,8 @@ const Main = () => {
         newTeachers = newTeachers.map(teacher => teacher.email === newT.email ? newT : teacher)
         setTeachers(newTeachers)
         setStudents(newStudents)
+        storeStudents(newStudents)
+        storeTeachers(newTeachers)
     }
 
     function answerRequest(s: Student, t: Teacher, r: ThesisRequest, a: boolean) {
@@ -92,6 +126,8 @@ const Main = () => {
         newTeachers = newTeachers.map(teacher => teacher.email === newT.email ? newT : teacher)
         setTeachers(newTeachers)
         setStudents(newStudents)
+        storeStudents(newStudents)
+        storeTeachers(newTeachers)
     }
 
     return localStorage.getItem('user')
