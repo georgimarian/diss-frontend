@@ -1,5 +1,5 @@
 import AppPage from '../components/AppPage';
-import GenericProfile from "../components/GenericProfile";
+import GenericProfile from "../components/profile-components/GenericProfile";
 import {teacherList} from "../mock_data/users";
 
 const Profile = () => {

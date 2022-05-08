@@ -13,7 +13,7 @@ type LabelProps = {
   index: number;
 };
 
-const renderCustomizedLabel = ({
+export const renderCustomizedLabel = ({
   cx,
   cy,
   midAngle,

@@ -1,9 +1,11 @@
 import {Box, Link, Typography, useTheme} from "@mui/material";
 import ProfileIcon from "./ProfileIcon";
-import {ROLES} from "../utils/roles";
+import {ROLES} from "../../utils/roles";
 import {useEffect, useState} from "react";
-import {aboutMe, publishedPapers} from "../mock_data/users";
-import {Colors} from "../mock_data/theme";
+import {aboutMe} from "../../mock_data/users";
+import {Colors} from "../../mock_data/theme";
+import PublishedPapersList from "./PublishedPapersList";
+import ProfileCompletion from "./ProfileCompletion";
 
 type GenericProfileProps = {
     user: any; //TODO
@@ -120,42 +122,11 @@ const GenericProfile = ({user}: GenericProfileProps) => {
             </Box>
         </Box>
 
-        {/*TODO research interests for teachers?*/}
-
         {
-            _user.role === ROLES.Teacher &&
-            <Box
-                sx={{
-                    mt: 4,
-                    bgcolor: theme.palette.secondary.dark,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    px: 5,
-                    py: 2,
-                    borderRadius: 10,
-                }}
-            >
-                <Typography variant={"body1"} fontWeight={"700"}>Lucrări Publicate</Typography>
-                {
-                    publishedPapers
-                        .sort((item1, item2) => item1.year < item2.year ? 1 : -1)
-                        .map(item => <Box
-                                sx={{
-                                    py: 1,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'start',
-                                }}
-                            >
-                                <Typography variant={"body1"} fontWeight={"700"}>{item.year}</Typography>
-                                {
-                                    item.titles.map(paper => <Typography variant={"body2"}
-                                                                         sx={{pt: 0.5}}>{paper}</Typography>)
-                                }
-                            </Box>
-                        )
-                }
-            </Box>
+            _user.role === ROLES.Teacher ?
+            <PublishedPapersList/> :
+                _user.role === ROLES.Student ?
+                    <ProfileCompletion /> : <div/>
         }
     </Box>
 }
