@@ -64,7 +64,7 @@ export function getEmptyStudent(): Student {
     return {
         name: "",
         id: -1,
-        description: "",
+        description: "",    
         thesisDescription: "",
         email: "",
         password: "",
