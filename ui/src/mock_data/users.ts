@@ -1,4 +1,6 @@
 import {RequestStatus} from "../components/Models"
+import {Student} from "../models/common";
+import {AreaOfInterest} from "../models/common.enums";
 
 export const aboutMe = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
     "Pellentesque pulvinar a turpis sit amet hendrerit. Vestibulum nec justo tempor," +
@@ -187,3 +189,17 @@ export const publishedPapers = [
             "A study into Behavioral Psychology for children” - John Doe, Jane Doe, Janette Doette, Meriam Webster Press 3"]
     },
 ]
+
+export const initializedStudent: Student = {
+    email: '',
+    username: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    areaOfInterest: AreaOfInterest.PSYCHOLOGY
+}
+
+export enum Actions {
+    ADD,
+    EDIT
+}

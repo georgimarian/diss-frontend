@@ -4,7 +4,7 @@ import Main from './pages/Main';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivateRoute from './utils/PrivateRoute';
-import { ROLES } from './utils/roles';
+import { Roles } from './utils/roles';
 import './App.css';
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
           <Route
             path='*'
             element={
-              <PrivateRoute roles={[ROLES.Teacher, ROLES.Admin, ROLES.Student]}>
+              <PrivateRoute roles={[Roles.Teacher, Roles.Admin, Roles.Student]}>
                 <Main />
               </PrivateRoute>
             }
