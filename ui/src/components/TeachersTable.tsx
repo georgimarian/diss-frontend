@@ -7,9 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import CheckIcon from '@mui/icons-material/Check';
 import Paper from '@mui/material/Paper';
+import {RequestStatus, Student, Teacher} from "./Models";
 import Button from '@mui/material/Button';
-import {Student, Teacher} from "../models/common";
-import {RequestStatus} from "../models/common.enums";
 
 function CanRequest(s: Student) {
     return s.requestsLeft > 0 && s.requests.every(r => r.status === RequestStatus.DENIED)
@@ -35,8 +34,8 @@ const TeachersTable = (props: { rows: Teacher[], student: Student, createRequest
                             key={row.id}
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
-                            <TableCell align="center">{row.username}</TableCell>
-                            <TableCell align="center">{row.areaOfInterest}</TableCell>
+                            <TableCell align="center">{row.name}</TableCell>
+                            <TableCell align="center">{row.interest}</TableCell>
                             <TableCell align="center">{row.enrolledStudents.length}</TableCell>
                             <TableCell align="center">{row.totalPlaces - row.enrolledStudents.length}</TableCell>
                             <TableCell

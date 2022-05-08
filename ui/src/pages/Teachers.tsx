@@ -1,9 +1,8 @@
 import AppPage from '../components/AppPage';
-import {Student, Teacher} from "../models/common";
+import {RequestStatus, Student, Teacher} from "../components/Models";
 import TeachersTable from "../components/TeachersTable";
 import {Button, Typography} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import {RequestStatus} from "../models/common.enums";
 
 
 const Teachers = (props: {s: Student, teachers:Teacher[], createRequest:(student:Student,teacher:Teacher)=>void}) => {

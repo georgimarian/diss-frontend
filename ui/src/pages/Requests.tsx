@@ -1,4 +1,5 @@
 import AppPage from '../components/AppPage';
+import {RequestStatus, Student, Teacher, ThesisRequest} from "../components/Models";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
@@ -11,8 +12,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import TableContainer from "@mui/material/TableContainer";
 import * as React from "react";
 import {getEmptyStudent} from "./Main";
-import {Student, Teacher, ThesisRequest} from "../models/common";
-import {RequestStatus} from "../models/common.enums";
 
 const Requests = (props: { students: Student[], teacher: Teacher, answerRequest: (s: Student, t: Teacher, r: ThesisRequest, a: boolean) => void }) => {
     return (
@@ -34,7 +33,7 @@ const Requests = (props: { students: Student[], teacher: Teacher, answerRequest:
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                             >
                                 <TableCell
-                                    align="center">{props.students.find(student => student.id === row.studentId)?.username ?? ""}</TableCell>
+                                    align="center">{props.students.find(student => student.id === row.studentId)?.name ?? ""}</TableCell>
                                 <TableCell
                                     align="center">{props.students.find(student => student.id === row.studentId)?.thesisDescription ?? ""}</TableCell>
                                 <TableCell align="center">{row.status}</TableCell>
