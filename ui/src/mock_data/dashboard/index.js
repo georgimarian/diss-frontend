@@ -90,4 +90,15 @@ const TEACHER_DISTRIBUTION_DATA = [
   },
 ];
 
-export { STATUS_DATA, GRADE_DATA, TEACHER_DISTRIBUTION_DATA };
+const PROFILE_COMPLETION_DATA = [
+  {
+    name: 'Completed',
+    value: 80,
+  },
+  {
+    name: 'Remaining',
+    value: 20,
+  }
+];
+
+export { STATUS_DATA, GRADE_DATA, TEACHER_DISTRIBUTION_DATA, PROFILE_COMPLETION_DATA };

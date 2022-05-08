@@ -13,7 +13,7 @@ import {
     Typography,
     useTheme
 } from "@mui/material";
-import ProfileIcon from "./ProfileIcon";
+import ProfileIcon from "./profile-components/ProfileIcon";
 import {useState} from "react";
 
 type StudentsTableProps = {

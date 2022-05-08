@@ -8,5 +8,7 @@ const userColors: { [key: string]: string } = {
 
 export enum Colors {
     WARNING = '#EE6B61',
-    ERROR = '#C73B63'
+    ERROR = '#C73B63',
+    YELLOW = '#FCCB87',
+    LIGHT_YELLOW = '#FFECE4'
 }
