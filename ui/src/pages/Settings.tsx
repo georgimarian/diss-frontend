@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import { Box, Divider, TextField, Typography } from '@mui/material';
+import { Box, Divider, TextField, Typography, useTheme } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
-
-import AppPage from '../components/AppPage';
 import { AddCircleOutline } from '@mui/icons-material';
+
+import AppPage from 'components/AppPage';
 
 type Criterion = {
   name: string;
@@ -37,6 +37,8 @@ const MOCK_CRITERIA: Array<Criterion> = [
 ];
 
 const Settings = () => {
+  const theme = useTheme();
+
   const [isEditing, setIsEditing] = useState(false);
   const [criteria, setCriteria] = useState<Array<Criterion> | undefined>(
     undefined
@@ -54,6 +56,9 @@ const Settings = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
+          borderRadius: 10,
+          bgcolor: theme.palette.secondary.dark,
+          padding: '20px',
         }}
       >
         <Typography variant='h5'>Criterii de notare</Typography>
