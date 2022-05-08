@@ -1,5 +1,13 @@
 import {RequestStatus} from "../components/Models"
 
+export const aboutMe = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+    "Pellentesque pulvinar a turpis sit amet hendrerit. Vestibulum nec justo tempor," +
+    "vulputate turpis non, tincidunt neque. Fusce nec odio sed ante elementum ultrices." +
+    "Nullam eget ultricies mauris, id tempor erat. Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+    "Pellentesque pulvinar a turpis sit amet hendrerit. Vestibulum nec justo tempor," +
+    "vulputate turpis non, tincidunt neque. Fusce nec odio sed ante elementum ultrices." +
+    "Nullam eget ultricies mauris, id tempor erat."
+
 export let teacherList =
     [{
         id: 1,
@@ -155,3 +163,27 @@ export let studentList = [{
         description: "i am a mothefucker",
         requestsLeft: 1
     }]
+
+export const publishedPapers = [
+    {
+        year: 2021,
+        titles: [
+            "A study into Behavioral Psychology for children” - John Doe, Jane Doe, Janette Doette, Meriam Webster Press 1",
+            "A study into Behavioral Psychology for children” - John Doe, Jane Doe, Janette Doette, Meriam Webster Press 2",
+            "A study into Behavioral Psychology for children” - John Doe, Jane Doe, Janette Doette, Meriam Webster Press 3"]
+    },
+    {
+        year: 2019,
+        titles: [
+            "A study into Behavioral Psychology for children” - John Doe, Jane Doe, Janette Doette, Meriam Webster Press 1",
+            "A study into Behavioral Psychology for children” - John Doe, Jane Doe, Janette Doette, Meriam Webster Press 2",
+            "A study into Behavioral Psychology for children” - John Doe, Jane Doe, Janette Doette, Meriam Webster Press 3"]
+    },
+    {
+        year: 2020,
+        titles: [
+            "A study into Behavioral Psychology for children” - John Doe, Jane Doe, Janette Doette, Meriam Webster Press 1",
+            "A study into Behavioral Psychology for children” - John Doe, Jane Doe, Janette Doette, Meriam Webster Press 2",
+            "A study into Behavioral Psychology for children” - John Doe, Jane Doe, Janette Doette, Meriam Webster Press 3"]
+    },
+]

@@ -1,21 +1,26 @@
 import {Box, Typography} from "@mui/material";
+import {OverridableStringUnion} from "@mui/types";
+import {Variant} from "@mui/material/styles/createTypography";
+import {TypographyPropsVariantOverrides} from "@mui/material/Typography/Typography";
 
 type ProfileIconProps = {
     firstName: string,
-    lastName: string
+    lastName: string,
+    iconSize: string,
+    variant: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>
 }
 
-const ProfileIcon = ({firstName, lastName}: ProfileIconProps) => {
+const ProfileIcon = ({firstName, lastName, iconSize, variant}: ProfileIconProps) => {
     return <Box sx={{
-        borderRadius: 10,
+        borderRadius: 50,
         bgcolor: 'pink',
-        height: '4rem',
-        width: '4rem',
+        height: iconSize,
+        width: iconSize,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
     }}>
-        <Typography variant={"h6"} color={'white'}>{firstName[0].toUpperCase() + lastName[0].toUpperCase()}</Typography>
+        <Typography variant={variant} color={'white'}>{firstName[0].toUpperCase() + lastName[0].toUpperCase()}</Typography>
     </Box>
 }
 

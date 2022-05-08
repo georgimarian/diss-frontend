@@ -1,7 +1,7 @@
 import AppPage from '../components/AppPage';
+import StudentsTable from '../components/StudentsTable';
 import {Student} from "../models/common";
 import {AreaOfInterest} from "../models/common.enums";
-import TableItem from "../components/table-components/TableItem";
 
 const mockStudents: Student[] = [
     {
@@ -33,8 +33,7 @@ const mockStudents: Student[] = [
 const Students = () => {
     return (
         <AppPage title='Students'>
-            {/*<p>Students</p>*/}
-            <TableItem students={mockStudents}/>
+            <StudentsTable students={mockStudents}/>
         </AppPage>
     );
 }

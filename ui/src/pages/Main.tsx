@@ -1,6 +1,6 @@
-import {Navigate, Route, Routes} from "react-router-dom";
-import {Box, styled, Typography} from "@mui/material";
-import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Box, styled, Typography, useTheme } from '@mui/material';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 
 import Home from './Home';
 import Teachers from './Teachers';
@@ -10,17 +10,22 @@ import Profile from './Profile';
 import Settings from './Settings';
 import Menu from '../components/Menu';
 import PrivateRoute from '../utils/PrivateRoute';
-import {ROLES} from '../utils/roles';
-import {RequestStatus, Student, Teacher, ThesisRequest} from "../components/Models";
-import {useState} from "react";
-import {studentList, teacherList} from "../mock_data/users";
+import { ROLES } from '../utils/roles';
+import {
+  RequestStatus,
+  Student,
+  Teacher,
+  ThesisRequest,
+} from '../components/Models';
+import { useState } from 'react';
+import { studentList, teacherList } from '../mock_data/users';
 
 const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})<MuiAppBarProps>(({theme}) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    marginLeft: 240,
-    width: `calc(100% - ${240}px)`,
+  shouldForwardProp: (prop) => prop !== 'open',
+})<MuiAppBarProps>(({ theme }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  marginLeft: 240,
+  width: `calc(100% - ${240}px)`,
 }));
 
 function parseStudents (): Student[]{
@@ -85,6 +90,7 @@ export function getEmptyTeacher(): Teacher {
 }
 
 const Main = () => {
+    const theme = useTheme();
     const [teachers, setTeachers] = useState(parseTeachers())
     const [students, setStudents] = useState(parseStudents())
     const userTeacher: Teacher | undefined = teachers.find(x => x.name === parseUser().username)

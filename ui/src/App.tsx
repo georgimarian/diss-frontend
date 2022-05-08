@@ -1,30 +1,37 @@
-import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import { Box } from "@mui/material";
-
-import Main from "./pages/Main";
-
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Box, useTheme } from '@mui/material';
+import Main from './pages/Main';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import PrivateRoute from './utils/PrivateRoute';
+import { ROLES } from './utils/roles';
 import './App.css';
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 
 function App() {
+  const theme = useTheme();
   return (
     <Router>
       <Box
         sx={{
-          width: "100%",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          background:
-            "linear-gradient(90deg, rgba(81,62,183,1) 0%, rgba(0,212,255,1) 100%)",
+          width: '100%',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
         }}
-      >  
+      >
         <Routes>
-          <Route path="*" element={<Main />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route
+            path='*'
+            element={
+              <PrivateRoute roles={[ROLES.Teacher, ROLES.Admin, ROLES.Student]}>
+                <Main />
+              </PrivateRoute>
+            }
+          />
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
         </Routes>
       </Box>
     </Router>

@@ -8,8 +8,8 @@ import {
   ListItemText,
   styled,
 } from '@mui/material';
-
 import MuiDrawer from '@mui/material/Drawer';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { MENU_ITEMS } from '../utils/constants';
 
 const drawerWidth = 240;
@@ -30,6 +30,7 @@ const Drawer = styled(MuiDrawer, {
     overflowX: 'hidden',
     display: 'flex',
     alignItems: 'center',
+    background: theme.palette.primary.main
   },
 }));
 
@@ -42,20 +43,34 @@ const Menu = () => {
   };
 
   const list = () => (
-    <Box sx={{ width: 250 }} role='presentation'>
-      <List>
-        {MENU_ITEMS.map(({ title, path, icon, roles }, index) => {
-          const user = JSON.parse(localStorage.getItem('user') || '');
-          if (roles.includes(user.role))
-            return (
-              <ListItem button key={title} onClick={() => navigate(path)}>
-                <ListItemIcon>{icon}</ListItemIcon>
-                <ListItemText primary={title} />
-              </ListItem>
-            );
-        })}
+    <Box sx={{ width: 250, height: '90%' }} role='presentation'>
+      <List
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-around',
+          height: '100%',
+        }}
+      >
+        <div>
+          {MENU_ITEMS.map(({ title, path, icon, roles }, index) => {
+            const user = localStorage.getItem('user');
+            const localUser = user && JSON.parse(user || '');
+            if (roles.includes(localUser.role))
+              return (
+                <ListItem button key={title} onClick={() => navigate(path)}>
+                  <ListItemIcon>{icon}</ListItemIcon>
+                  <ListItemText primary={title} />
+                </ListItem>
+              );
+            return null;
+          })}
+        </div>
         <ListItem button key='logout' onClick={() => logout()}>
-          <ListItemText primary='log out' />
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText primary='Log out' />
         </ListItem>
       </List>
     </Box>
