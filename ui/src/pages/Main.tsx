@@ -13,10 +13,7 @@ import PrivateRoute from '../utils/PrivateRoute';
 import { Roles } from '../utils/roles';
 import { useState } from 'react';
 import { studentList, teacherList } from '../mock_data/users';
-import {ROLES} from '../utils/roles';
 import {Student, Teacher, ThesisRequest,} from '../models/common';
-import {useState} from 'react';
-import {studentList, teacherList} from '../mock_data/users';
 import {AreaOfInterest, RequestStatus} from "../models/common.enums";
 
 const AppBar = styled(MuiAppBar, {
@@ -71,7 +68,7 @@ export function getEmptyStudent(): Student {
         email: "",
         password: "",
         requestsLeft: 0,
-        type: ROLES.Student,
+        type: Roles.Student,
         requests: [],
         grades: []
     };
@@ -87,7 +84,7 @@ export function getEmptyTeacher(): Teacher {
         email: "",
         password: "",
         totalPlaces: 0,
-        type: ROLES.Teacher,
+        type: Roles.Teacher,
         requests: [],
         enrolledStudents: []
     };
@@ -171,7 +168,7 @@ const Main = () => {
                     <Route
                         path='/teachers'
                         element={
-                            <PrivateRoute roles={[ROLES.Student, ROLES.Admin]}>
+                            <PrivateRoute roles={[Roles.Student, Roles.Admin]}>
                                 <Teachers teachers={teachers} s={userStudent ?? getEmptyStudent()}
                                           createRequest={createRequest}/>
                             </PrivateRoute>
@@ -180,7 +177,7 @@ const Main = () => {
                     <Route
                         path='/students'
                         element={
-                            <PrivateRoute roles={[ROLES.Teacher, ROLES.Admin]}>
+                            <PrivateRoute roles={[Roles.Teacher, Roles.Admin]}>
                                 <Students teacher={userTeacher ?? getEmptyTeacher()}/>
                             </PrivateRoute>
                         }
