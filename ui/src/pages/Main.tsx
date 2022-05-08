@@ -11,14 +11,13 @@ import Settings from './Settings';
 import Menu from '../components/Menu';
 import PrivateRoute from '../utils/PrivateRoute';
 import { Roles } from '../utils/roles';
-import {
-  RequestStatus,
-  Student,
-  Teacher,
-  ThesisRequest,
-} from '../components/Models';
 import { useState } from 'react';
 import { studentList, teacherList } from '../mock_data/users';
+import {ROLES} from '../utils/roles';
+import {Student, Teacher, ThesisRequest,} from '../models/common';
+import {useState} from 'react';
+import {studentList, teacherList} from '../mock_data/users';
+import {AreaOfInterest, RequestStatus} from "../models/common.enums";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -62,14 +61,17 @@ function parseUser(){
 
 export function getEmptyStudent(): Student {
     return {
-        name: "",
+        username: "",
+        firstName: "",
+        lastName: "",
+        areaOfInterest: AreaOfInterest.PSYCHOLOGY,
         id: -1,
-        description: "",    
+        description: "",
         thesisDescription: "",
         email: "",
         password: "",
         requestsLeft: 0,
-        type: "student",
+        type: ROLES.Student,
         requests: [],
         grades: []
     };
@@ -77,15 +79,17 @@ export function getEmptyStudent(): Student {
 
 export function getEmptyTeacher(): Teacher {
     return {
-        name: "",
+        username: "",
+        firstName: "",
+        lastName: "",
+        areaOfInterest: AreaOfInterest.PSYCHOLOGY,
         id: -1,
         email: "",
         password: "",
         totalPlaces: 0,
-        type: "teacher",
+        type: ROLES.Teacher,
         requests: [],
-        enrolledStudents: [],
-        interest: ""
+        enrolledStudents: []
     };
 }
 
@@ -93,8 +97,8 @@ const Main = () => {
     const theme = useTheme();
     const [teachers, setTeachers] = useState(parseTeachers())
     const [students, setStudents] = useState(parseStudents())
-    const userTeacher: Teacher | undefined = teachers.find(x => x.name === parseUser().username)
-    const userStudent: Student | undefined = students.find(x => x.name === parseUser().username)
+    const userTeacher: Teacher | undefined = teachers.find(x => x.username === parseUser().username)
+    const userStudent: Student | undefined = students.find(x => x.username === parseUser().username)
 
     function createRequest(s: Student, t: Teacher) {
         let req: ThesisRequest = {
@@ -126,6 +130,7 @@ const Main = () => {
         let newT = {...t}
         newS.requests = newS.requests.map(req => req.studentId === newR.studentId && req.teacherId === newR.teacherId ? newR : req)
         newT.requests = newT.requests.map(req => req.studentId === newR.studentId && req.teacherId === newR.teacherId ? newR : req)
+        if(a) newT.enrolledStudents.push(newS)
         let newStudents = [...students]
         let newTeachers = [...teachers]
         newStudents = newStudents.map(student => student.email === newS.email ? newS : student);
@@ -166,7 +171,7 @@ const Main = () => {
                     <Route
                         path='/teachers'
                         element={
-                            <PrivateRoute roles={[Roles.Student, Roles.Admin]}>
+                            <PrivateRoute roles={[ROLES.Student, ROLES.Admin]}>
                                 <Teachers teachers={teachers} s={userStudent ?? getEmptyStudent()}
                                           createRequest={createRequest}/>
                             </PrivateRoute>
@@ -175,8 +180,8 @@ const Main = () => {
                     <Route
                         path='/students'
                         element={
-                            <PrivateRoute roles={[Roles.Teacher, Roles.Admin]}>
-                                <Students/>
+                            <PrivateRoute roles={[ROLES.Teacher, ROLES.Admin]}>
+                                <Students teacher={userTeacher ?? getEmptyTeacher()}/>
                             </PrivateRoute>
                         }
                     />
