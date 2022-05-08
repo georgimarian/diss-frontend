@@ -8,18 +8,17 @@ const PrivateRoute = ({
   children: JSX.Element;
   roles: Array<ROLES>;
 }) => {
-  const user = JSON.parse(localStorage.getItem('user') || '');
-  console.log(typeof user);
-  console.log(user.role);
-  console.log(roles.includes(user.role));
+  const user = localStorage.getItem('user');
+  const loggedUser = user && JSON.parse(user || '');
 
-  const userHasRequiredRole = user && roles.includes(user.role) ? true : false;
+  const userHasRequiredRole =
+    user && roles.includes(loggedUser.role) ? true : false;
 
-  if (!user) {
+  if (loggedUser === '') {
     return <Navigate to='/login' />;
   }
 
-  if (user && !userHasRequiredRole) {
+  if (loggedUser && !userHasRequiredRole) {
     return <Navigate to='/home' />; // build your won access denied page (sth like 404)
   }
 
