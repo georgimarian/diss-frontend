@@ -38,7 +38,7 @@ export const MENU_ITEMS: Array<MenuItem> = [
     title: 'Cereri',
     path: '/requests',
     icon: <BallotIcon />,
-    roles: [Roles.Student, Roles.Admin, Roles.Teacher],
+    roles: [Roles.Admin, Roles.Teacher],
   },
   {
     title: 'Profil',
