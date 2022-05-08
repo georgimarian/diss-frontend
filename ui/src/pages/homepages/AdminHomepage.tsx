@@ -1,18 +1,18 @@
 import { Box } from '@mui/material';
 
-import Card from '../../components/Card';
+import AppCard from 'components/Card';
 import {
   DomainDistributionChart,
   GradeChart,
   RequestLine,
-} from '../../components/card-components';
+} from 'components/card-components';
 
-import { MOCK_REQUESTS } from '../../mock_data/requests';
+import { MOCK_REQUESTS } from 'mock_data/requests';
 
 const activeRequests = () => (
   <div>
     {MOCK_REQUESTS.map((request) => (
-      <RequestLine request={request} />
+      <RequestLine key={request.studentName} request={request} />
     ))}
   </div>
 );
@@ -28,13 +28,13 @@ const AdminHomePage = () => {
         justifyContent: 'space-between',
       }}
     >
-      <Card title='Distribuția Profesorilor pe domenii'>
+      <AppCard title='Distribuția Profesorilor pe domenii'>
         <DomainDistributionChart />
-      </Card>
-      <Card title='Media Notelor'>
+      </AppCard>
+      <AppCard title='Media Notelor'>
         <GradeChart />
-      </Card>
-      <Card title='Cereri active'>{activeRequests()}</Card>
+      </AppCard>
+      <AppCard title='Cereri active'>{activeRequests()}</AppCard>
     </Box>
   );
 };
