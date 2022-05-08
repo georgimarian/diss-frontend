@@ -7,7 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 const Teachers = (props: {s: Student, teachers:Teacher[], createRequest:(student:Student,teacher:Teacher)=>void}) => {
 
-    if (props.s.requestsLeft > 0 || !props.s.requests.map(r => r.status).find(x => x!= RequestStatus.DENIED))
+    if (props.s.requestsLeft > 0 || props.s.requests.map(r => r.status).find(x => x!== RequestStatus.DENIED))
         return (
             <AppPage title='Teachers'>
 
@@ -15,7 +15,7 @@ const Teachers = (props: {s: Student, teachers:Teacher[], createRequest:(student
                 <Typography variant="h6" sx={{padding: "2px"}} align="left">
                     Mai ai <Typography sx={
                     {
-                        color: props.s.requestsLeft == 1 ? "red" : "green"
+                        color: props.s.requestsLeft < 1 ? "red" : "green"
                         , display: "inline"
                     }}>{props.s.requestsLeft}</Typography> cereri rămase
                 </Typography>

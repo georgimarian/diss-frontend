@@ -6,6 +6,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import CustomForm from '../components/CustomForm';
 import { ROLES } from '../utils/roles';
+import {studentList, teacherList} from "../mock_data/users";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,10 +23,14 @@ const Login = () => {
       setValues({ ...values, [prop]: event.target.value });
     };
 
-  const login = () => {
-    localStorage.setItem('user', JSON.stringify(values));
-    navigate('/home');
-  };
+    const login = () => {
+        localStorage.setItem('user', JSON.stringify(values));
+        if (localStorage.getItem('students') == null) {
+            localStorage.setItem('students', JSON.stringify(studentList))
+            localStorage.setItem('teachers', JSON.stringify(teacherList))
+        }
+        navigate('/home');
+    };
 
   return (
     <CustomForm

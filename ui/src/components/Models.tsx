@@ -11,10 +11,12 @@ export type Teacher =
 
 export type Student =
     User
-    & { name: string, description: string, requestsLeft: number, requests: ThesisRequest[], thesisDescription: string }
+    & { name: string, description: string, requestsLeft: number, requests: ThesisRequest[], thesisDescription: string, grades: Grade[]}
 
 export type Admin = User
 
 export type User = { id: number, email: string, password: string, type: string }
 
 export type ThesisRequest = { id: number, status: RequestStatus, description: string, teacherId: number, studentId: number }
+
+export type Grade = {criteria: string, value: number}
