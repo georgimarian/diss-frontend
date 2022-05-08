@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode } from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 
 type AppCardProps = {

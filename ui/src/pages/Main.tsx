@@ -1,5 +1,5 @@
 import {Navigate, Route, Routes} from "react-router-dom";
-import {Box, styled, Typography} from "@mui/material";
+import {Box, styled, Typography, useTheme} from "@mui/material";
 import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
 
 
@@ -39,10 +39,12 @@ function getEmptyStudent() : Student{
 }
 
 const Main = () => {
+    const theme = useTheme();
+
     const [teachers, setTeachers] = useState(teacherList)
     const [students, setStudents] = useState(studentList)
-    const userTeacher: Teacher | undefined = teachers.find(x=> x.name == JSON.parse(localStorage.getItem('user')??"").username)
-    const userStudent: Student | undefined = students.find(x=> x.name == JSON.parse(localStorage.getItem('user')??"").username)
+    const userTeacher: Teacher | undefined = teachers.find(x=> x.name === JSON.parse(localStorage.getItem('user')??"").username)
+    const userStudent: Student | undefined = students.find(x=> x.name === JSON.parse(localStorage.getItem('user')??"").username)
 
     function createRequest(s:Student,t:Teacher){
         let req:ThesisRequest = {
@@ -58,8 +60,8 @@ const Main = () => {
         newT.requests.push(req)
         let newStudents = students
         let newTeachers = teachers
-        newStudents = newStudents.map(student => student.email == newS.email ? newS : student);
-        newTeachers = newTeachers.map(teacher => teacher.email == newT.email ? newT : teacher)
+        newStudents = newStudents.map(student => student.email === newS.email ? newS : student);
+        newTeachers = newTeachers.map(teacher => teacher.email === newT.email ? newT : teacher)
         setTeachers(newTeachers)
         setStudents(newStudents)
     }
@@ -74,7 +76,7 @@ const Main = () => {
         justifyContent: 'space-between',
         alignItems: 'center',
         background:
-          'linear-gradient(90deg, rgba(81,62,183,1) 0%, rgba(0,212,255,1) 100%)',
+          `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
       }}
     >
       <AppBar position='absolute'>

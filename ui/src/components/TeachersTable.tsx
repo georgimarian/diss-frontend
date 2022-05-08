@@ -11,7 +11,7 @@ import {RequestStatus, Student, Teacher} from "./Models";
 import Button from '@mui/material/Button';
 
 function CanRequest(s: Student) {
-    return s.requestsLeft > 0 && s.requests.every(r => r.status == RequestStatus.DENIED)
+    return s.requestsLeft > 0 && s.requests.every(r => r.status === RequestStatus.DENIED)
 }
 
 const TeachersTable = (props: { rows: Teacher[], student: Student, createRequest: (student: Student, teacher: Teacher) => void }): JSX.Element => {
@@ -39,9 +39,9 @@ const TeachersTable = (props: { rows: Teacher[], student: Student, createRequest
                             <TableCell align="center">{row.enrolledStudents.length}</TableCell>
                             <TableCell align="center">{row.totalPlaces - row.enrolledStudents.length}</TableCell>
                             <TableCell
-                                align="center">{props.student.requests.find(r => r.teacherId == row.id)?.status ?? RequestStatus.NO_REQUEST}</TableCell>
+                                align="center">{props.student.requests.find(r => r.teacherId === row.id)?.status ?? RequestStatus.NO_REQUEST}</TableCell>
                             <TableCell
-                                align="center">{CanRequest(props.student) && !props.student.requests.map(r => r.teacherId).find(x => x == row.id) ?
+                                align="center">{CanRequest(props.student) && !props.student.requests.map(r => r.teacherId).find(x => x === row.id) ?
                                 <Button variant="outlined" startIcon={<CheckIcon/>}
                                         onClick={() => props.createRequest(props.student, row)}>
                                     Aplică </Button> : ""}</TableCell>

@@ -10,7 +10,8 @@ import {
     TableHead,
     TableRow,
     TextField,
-    Typography
+    Typography,
+    useTheme
 } from "@mui/material";
 import ProfileIcon from "./ProfileIcon";
 import {useState} from "react";
@@ -21,8 +22,14 @@ type StudentsTableProps = {
 
 const StudentsTable = ({students}: StudentsTableProps) => {
     const [searchValue, setSearchValue] = useState('')
+    const theme = useTheme()
 
-    return <TableContainer component={Paper} sx={{borderRadius: 10}}>
+    return <TableContainer
+        component={Paper}
+        elevation={0}
+        sx={{borderRadius: 10,
+            bgcolor: theme.palette.secondary.dark
+        }}>
         <Box sx={{
             display: 'flex',
             justifyContent: "space-between",
@@ -41,8 +48,19 @@ const StudentsTable = ({students}: StudentsTableProps) => {
                     borderRadius: 25
                 }}/>
             <Button
-                onClick={() => {searchValue.length && console.log(searchValue)}}
-                sx={{width: '10%', borderRadius: 10}}
+                onClick={() => {
+                    searchValue.length && console.log(searchValue)
+                }}
+                sx={{
+                    width: '10%',
+                    borderRadius: 10,
+                    color: theme.palette.secondary.main,
+                    bgcolor: theme.palette.primary.main,
+                    '&:hover': {
+                        color: theme.palette.secondary.main,
+                        background: theme.palette.primary.dark
+                    }
+                }}
             >Search</Button>
         </Box>
         <Table sx={{minWidth: 650}}>
@@ -70,7 +88,7 @@ const StudentsTable = ({students}: StudentsTableProps) => {
                                 variant={'h6'}
                             />
                             <Typography sx={{pl: 2}} variant={"h6"}
-                                        color={'blue'}>{user.firstName + ' ' + user.lastName}</Typography>
+                                        color={theme.palette.primary.main}>{user.firstName + ' ' + user.lastName}</Typography>
                         </TableCell>
                         <TableCell align="left">{user.areaOfInterest}</TableCell>
                         <TableCell align="left">{user.email}</TableCell>

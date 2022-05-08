@@ -30,6 +30,7 @@ const Drawer = styled(MuiDrawer, {
     overflowX: 'hidden',
     display: 'flex',
     alignItems: 'center',
+    background: theme.palette.primary.main
   },
 }));
 

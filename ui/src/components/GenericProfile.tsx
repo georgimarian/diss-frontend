@@ -1,15 +1,16 @@
-import {Box, Link, Typography} from "@mui/material";
-import {theme} from "../mock_data/theme";
+import {Box, Link, Typography, useTheme} from "@mui/material";
 import ProfileIcon from "./ProfileIcon";
 import {ROLES} from "../utils/roles";
 import {useEffect, useState} from "react";
 import {aboutMe, publishedPapers} from "../mock_data/users";
+import {Colors} from "../mock_data/theme";
 
 type GenericProfileProps = {
     user: any; //TODO
 }
 
 const GenericProfile = ({user}: GenericProfileProps) => {
+    const theme = useTheme();
     const hasProfessor = false;
     const _user = JSON.parse(localStorage.getItem('user') || '')
 
@@ -28,7 +29,7 @@ const GenericProfile = ({user}: GenericProfileProps) => {
                                 href={'/teachers'}
                                 sx={{
                                     textTransform: 'uppercase',
-                                    color: theme.accentColors.warning
+                                    color: Colors.WARNING
                                 }}>nu ai ales inca un profesor!</Link>
                         </Typography>}
                 </Box>
@@ -41,7 +42,7 @@ const GenericProfile = ({user}: GenericProfileProps) => {
                         href={'/students'}
                         sx={{
                             textTransform: 'uppercase',
-                            color: theme.accentColors.warning
+                            color: Colors.WARNING
                         }}>Lista dvs de studenti</Link>
                 </Typography>
                 setCustomProfileFunctionality(studentsList)
@@ -61,7 +62,7 @@ const GenericProfile = ({user}: GenericProfileProps) => {
     }}>
         <Box
             sx={{
-                bgcolor: theme.userColors[_user.role],
+                bgcolor: theme.palette.secondary.dark,
                 display: 'flex',
                 justifyContent: 'start',
                 alignItems: 'center',
@@ -126,7 +127,7 @@ const GenericProfile = ({user}: GenericProfileProps) => {
             <Box
                 sx={{
                     mt: 4,
-                    bgcolor: theme.userColors[_user.role],
+                    bgcolor: theme.palette.secondary.dark,
                     display: 'flex',
                     flexDirection: 'column',
                     px: 5,

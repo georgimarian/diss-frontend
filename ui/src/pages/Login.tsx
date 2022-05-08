@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
+import {Box, IconButton, InputAdornment, TextField, useTheme} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import CustomForm from '../components/CustomForm';
@@ -15,6 +15,7 @@ const Login = () => {
     role: ROLES.Admin,
   });
   const navigate = useNavigate();
+    const theme = useTheme()
 
   const handleChange =
     (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +29,7 @@ const Login = () => {
 
   return (
     <CustomForm
-      accentColor={'pink'}
+      accentColor={theme.palette.primary.dark}
       title={'LOGIN'}
       buttonLabel={'LOGIN'}
       buttonAction={() => login()}
