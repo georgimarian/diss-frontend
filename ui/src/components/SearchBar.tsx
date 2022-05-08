@@ -2,13 +2,12 @@ import { Box, Button, TextField, useTheme } from '@mui/material';
 
 const SearchBar = ({
   searchValue,
-  search,
+  onSearch,
 }: {
   searchValue: string;
-  search: any;
+  onSearch: any;
 }) => {
   const theme = useTheme();
-
   return (
     <Box
       sx={{
@@ -24,7 +23,7 @@ const SearchBar = ({
         label='Search'
         variant='outlined'
         value={searchValue}
-        onChange={(e) => search(e.target.value)}
+        onChange={(e) => onSearch(e.target.value)}
         sx={{
           width: '70%',
           borderRadius: 25,
@@ -45,7 +44,7 @@ const SearchBar = ({
           },
         }}
       >
-        Caută
+        Search
       </Button>
     </Box>
   );
