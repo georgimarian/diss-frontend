@@ -41,8 +41,8 @@ function getEmptyStudent() : Student{
 const Main = () => {
     const [teachers, setTeachers] = useState(teacherList)
     const [students, setStudents] = useState(studentList)
-    const userTeacher: Teacher | undefined = teachers.find(x=> x.name == JSON.parse(localStorage.getItem('user')??"").username)
-    const userStudent: Student | undefined = students.find(x=> x.name == JSON.parse(localStorage.getItem('user')??"").username)
+    const userTeacher: Teacher | undefined = teachers.find(x=> x.name === JSON.parse(localStorage.getItem('user')??"").username)
+    const userStudent: Student | undefined = students.find(x=> x.name === JSON.parse(localStorage.getItem('user')??"").username)
 
     function createRequest(s:Student,t:Teacher){
         let req:ThesisRequest = {
@@ -58,8 +58,8 @@ const Main = () => {
         newT.requests.push(req)
         let newStudents = students
         let newTeachers = teachers
-        newStudents = newStudents.map(student => student.email == newS.email ? newS : student);
-        newTeachers = newTeachers.map(teacher => teacher.email == newT.email ? newT : teacher)
+        newStudents = newStudents.map(student => student.email === newS.email ? newS : student);
+        newTeachers = newTeachers.map(teacher => teacher.email === newT.email ? newT : teacher)
         setTeachers(newTeachers)
         setStudents(newStudents)
     }
