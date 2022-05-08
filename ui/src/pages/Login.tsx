@@ -5,7 +5,7 @@ import {Box, IconButton, InputAdornment, TextField, useTheme} from '@mui/materia
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import CustomForm from '../components/CustomForm';
-import { ROLES } from '../utils/roles';
+import { Roles } from '../utils/roles';
 import {studentList, teacherList} from "../mock_data/users";
 
 const Login = () => {
@@ -13,7 +13,7 @@ const Login = () => {
   const [values, setValues] = useState({
     username: '',
     password: '',
-    role: ROLES.Admin,
+    role: Roles.Admin,
   });
   const navigate = useNavigate();
     const theme = useTheme()

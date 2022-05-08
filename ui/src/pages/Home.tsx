@@ -1,5 +1,5 @@
 import AppPage from '../components/AppPage';
-import { ROLES } from '../utils/roles';
+import { Roles } from '../utils/roles';
 import { AdminHomePage, StudentHomePage, TeacherHomePage } from './homepages';
 
 const Home = () => {
@@ -7,9 +7,9 @@ const Home = () => {
 
   return (
     <AppPage title='Acasă'>
-      {role === ROLES.Admin && <AdminHomePage />}
-      {role === ROLES.Teacher && <TeacherHomePage />}
-      {role === ROLES.Student && <StudentHomePage />}
+      {role === Roles.Admin && <AdminHomePage />}
+      {role === Roles.Teacher && <TeacherHomePage />}
+      {role === Roles.Student && <StudentHomePage />}
     </AppPage>
   );
 };

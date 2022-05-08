@@ -1,6 +1,6 @@
 import {Box, Link, Typography, useTheme} from "@mui/material";
 import ProfileIcon from "./ProfileIcon";
-import {ROLES} from "../../utils/roles";
+import {Roles} from "../../utils/roles";
 import {useEffect, useState} from "react";
 import {aboutMe} from "../../mock_data/users";
 import {Colors} from "../../mock_data/theme";
@@ -21,7 +21,7 @@ const GenericProfile = ({user}: GenericProfileProps) => {
 
     useEffect(() => {
         switch (_user.role) {
-            case ROLES.Student:
+            case Roles.Student:
                 const teachersList = <Box sx={{display: 'flex', flexDirection: 'column'}}>
                     <Typography variant={"h6"} sx={{textTransform: 'uppercase'}}>Profesorul tau</Typography>
                     {hasProfessor ? <Typography variant={"body1"}>Dr. English Doe (todo)</Typography> :
@@ -37,7 +37,7 @@ const GenericProfile = ({user}: GenericProfileProps) => {
                 </Box>
                 setCustomProfileFunctionality(teachersList)
                 break
-            case ROLES.Teacher:
+            case Roles.Teacher:
                 const studentsList = <Typography variant={"body2"}>
                     <Link
                         variant={"body2"}
@@ -49,7 +49,7 @@ const GenericProfile = ({user}: GenericProfileProps) => {
                 </Typography>
                 setCustomProfileFunctionality(studentsList)
                 break;
-            case ROLES.Admin:
+            case Roles.Admin:
                 setCustomProfileFunctionality(<div/>)
                 break;
             default:
@@ -123,9 +123,9 @@ const GenericProfile = ({user}: GenericProfileProps) => {
         </Box>
 
         {
-            _user.role === ROLES.Teacher ?
+            _user.role === Roles.Teacher ?
             <PublishedPapersList/> :
-                _user.role === ROLES.Student ?
+                _user.role === Roles.Student ?
                     <ProfileCompletion /> : <div/>
         }
     </Box>

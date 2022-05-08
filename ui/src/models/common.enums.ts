@@ -1,4 +1,4 @@
 export enum AreaOfInterest{
-    PSYCHOLOGY= "psihologie",
-    APPLIED_PSYCHOLOGY = "psihologie aplicata"
+    PSYCHOLOGY= "Psihologie",
+    APPLIED_PSYCHOLOGY = "Psihologie Aplicata"
 }

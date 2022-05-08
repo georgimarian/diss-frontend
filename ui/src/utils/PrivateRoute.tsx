@@ -1,4 +1,4 @@
-import { ROLES } from './roles';
+import { Roles } from './roles';
 import { Navigate } from 'react-router-dom';
 
 const PrivateRoute = ({
@@ -6,7 +6,7 @@ const PrivateRoute = ({
   roles,
 }: {
   children: JSX.Element;
-  roles: Array<ROLES>;
+  roles: Array<Roles>;
 }) => {
   const user = localStorage.getItem('user');
   const loggedUser = user && JSON.parse(user || '');

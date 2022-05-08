@@ -10,7 +10,7 @@ import Profile from './Profile';
 import Settings from './Settings';
 import Menu from '../components/Menu';
 import PrivateRoute from '../utils/PrivateRoute';
-import { ROLES } from '../utils/roles';
+import { Roles } from '../utils/roles';
 import {
   RequestStatus,
   Student,
@@ -64,7 +64,7 @@ export function getEmptyStudent(): Student {
     return {
         name: "",
         id: -1,
-        description: "",
+        description: "",    
         thesisDescription: "",
         email: "",
         password: "",
@@ -146,7 +146,7 @@ const Main = () => {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     background:
-                        'linear-gradient(90deg, rgba(81,62,183,1) 0%, rgba(0,212,255,1) 100%)',
+                        `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
                 }}
             >
                 <AppBar position='absolute'>
@@ -166,7 +166,7 @@ const Main = () => {
                     <Route
                         path='/teachers'
                         element={
-                            <PrivateRoute roles={[ROLES.Student, ROLES.Admin]}>
+                            <PrivateRoute roles={[Roles.Student, Roles.Admin]}>
                                 <Teachers teachers={teachers} s={userStudent ?? getEmptyStudent()}
                                           createRequest={createRequest}/>
                             </PrivateRoute>
@@ -175,13 +175,13 @@ const Main = () => {
                     <Route
                         path='/students'
                         element={
-                            <PrivateRoute roles={[ROLES.Teacher, ROLES.Admin]}>
+                            <PrivateRoute roles={[Roles.Teacher, Roles.Admin]}>
                                 <Students/>
                             </PrivateRoute>
                         }
                     />
                     <Route path='/requests' element={
-                        <PrivateRoute roles={[ROLES.Teacher, ROLES.Admin]}>
+                        <PrivateRoute roles={[Roles.Teacher, Roles.Admin]}>
                             <Requests students={students} teacher={userTeacher ?? getEmptyTeacher()}
                                       answerRequest={answerRequest}/>
                         </PrivateRoute>
@@ -190,7 +190,7 @@ const Main = () => {
                     <Route
                         path='/settings'
                         element={
-                            <PrivateRoute roles={[ROLES.Teacher, ROLES.Admin]}>
+                            <PrivateRoute roles={[Roles.Teacher, Roles.Admin]}>
                                 <Settings/>
                             </PrivateRoute>
                         }
