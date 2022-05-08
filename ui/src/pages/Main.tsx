@@ -11,10 +11,14 @@ import Settings from './Settings';
 import Menu from '../components/Menu';
 import PrivateRoute from '../utils/PrivateRoute';
 import { Roles } from '../utils/roles';
+import {
+  RequestStatus,
+  Student,
+  Teacher,
+  ThesisRequest,
+} from '../components/Models';
 import { useState } from 'react';
 import { studentList, teacherList } from '../mock_data/users';
-import {Student, Teacher, ThesisRequest,} from '../models/common';
-import {AreaOfInterest, RequestStatus} from "../models/common.enums";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -58,17 +62,14 @@ function parseUser(){
 
 export function getEmptyStudent(): Student {
     return {
-        username: "",
-        firstName: "",
-        lastName: "",
-        areaOfInterest: AreaOfInterest.PSYCHOLOGY,
+        name: "",
         id: -1,
-        description: "",
+        description: "",    
         thesisDescription: "",
         email: "",
         password: "",
         requestsLeft: 0,
-        type: Roles.Student,
+        type: "student",
         requests: [],
         grades: []
     };
@@ -76,17 +77,15 @@ export function getEmptyStudent(): Student {
 
 export function getEmptyTeacher(): Teacher {
     return {
-        username: "",
-        firstName: "",
-        lastName: "",
-        areaOfInterest: AreaOfInterest.PSYCHOLOGY,
+        name: "",
         id: -1,
         email: "",
         password: "",
         totalPlaces: 0,
-        type: Roles.Teacher,
+        type: "teacher",
         requests: [],
-        enrolledStudents: []
+        enrolledStudents: [],
+        interest: ""
     };
 }
 
@@ -94,8 +93,8 @@ const Main = () => {
     const theme = useTheme();
     const [teachers, setTeachers] = useState(parseTeachers())
     const [students, setStudents] = useState(parseStudents())
-    const userTeacher: Teacher | undefined = teachers.find(x => x.username === parseUser().username)
-    const userStudent: Student | undefined = students.find(x => x.username === parseUser().username)
+    const userTeacher: Teacher | undefined = teachers.find(x => x.name === parseUser().username)
+    const userStudent: Student | undefined = students.find(x => x.name === parseUser().username)
 
     function createRequest(s: Student, t: Teacher) {
         let req: ThesisRequest = {
@@ -127,7 +126,6 @@ const Main = () => {
         let newT = {...t}
         newS.requests = newS.requests.map(req => req.studentId === newR.studentId && req.teacherId === newR.teacherId ? newR : req)
         newT.requests = newT.requests.map(req => req.studentId === newR.studentId && req.teacherId === newR.teacherId ? newR : req)
-        if(a) newT.enrolledStudents.push(newS)
         let newStudents = [...students]
         let newTeachers = [...teachers]
         newStudents = newStudents.map(student => student.email === newS.email ? newS : student);
@@ -178,7 +176,7 @@ const Main = () => {
                         path='/students'
                         element={
                             <PrivateRoute roles={[Roles.Teacher, Roles.Admin]}>
-                                <Students teacher={userTeacher ?? getEmptyTeacher()}/>
+                                <Students/>
                             </PrivateRoute>
                         }
                     />
