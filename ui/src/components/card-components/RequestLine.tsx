@@ -14,13 +14,13 @@ type RequestProps = {
 const RequestLine: FC<RequestProps> = ({ request }) => {
   return (
     <div>
-      <b>{request.studentName}</b> has been denied <b>{request.attempt}</b>{' '}
-      times! Approve?
+      <b>{request.studentName}</b> a fost refuzat de <b>{request.attempt}</b>{' '}
+      ori! Aprobi?
       <span>
-        Yes <CheckIcon onClick={() => alert('Yay!')} />
+        Da <CheckIcon onClick={() => alert('Yay!')} />
       </span>
       <span>
-        No <RemoveCircleOutlineIcon onClick={() => alert('Nay!')} />
+        Nu <RemoveCircleOutlineIcon onClick={() => alert('Nay!')} />
       </span>
     </div>
   );
