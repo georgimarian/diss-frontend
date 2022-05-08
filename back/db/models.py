@@ -45,7 +45,7 @@ class Teacher(DB.Model):
     password_hash = DB.Column(DB.String(PASS_LENGTH))
     email = DB.Column(DB.String(EMAIL_LENGTH), unique=True)
     description = DB.Column(DB.String(DESCRIPTION_LENGTH))
-    total_places = DB.Column(DB.Integer, default=30)
+    available_places = DB.Column(DB.Integer, default=30)
 
 
 class Admin(DB.Model):

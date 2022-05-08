@@ -18,14 +18,17 @@ class TeacherController:
                                 password_hash=password_hash, email=teacher['email'], description=teacher['description']))
             session.commit()
 
-    def check_credentials(self, credentials: dict):
-        password = hashlib.sha512(credentials['password'].encode('utf-8')).hexdigest()
-        email = credentials['email']
+    def update_student_request(self, body: dict):
         with db_session() as session:
-            stud = session.query(Teacher).filter(Teacher.email == email, Teacher.password_hash == password).first()
-            if stud:
-                return True
-        return False
+            request_thesis = session.query(ThesisRequest).filter(ThesisRequest.student_id == body['student_id'],
+                    ThesisRequest.teacher_id == body['teacher_id']).first()
+            if body['status'] == 'ACCEPTED':
+                request_thesis.request_status = RequestStatus.APPROVED.value
+                teacher = session.query(Teacher).get(body['teacher_id'])
+                teacher.available_places -= 1
+            else:
+                request_thesis.request_status = RequestStatus.DENIED.value
+            session.commit()
 
     def get_teachers(self):
         with db_session() as session:
