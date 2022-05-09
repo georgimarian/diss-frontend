@@ -54,62 +54,6 @@ const Main = () => {
     (x) => x.username === parseUser().username
   );
 
-  function createRequest(s: Student, t: Teacher) {
-    let req: ThesisRequest = {
-      id: 1,
-      teacherId: t.id,
-      studentId: s.id,
-      description: s.thesisDescription,
-      status: RequestStatus.IN_PROGRESS,
-    };
-    let newS = { ...s };
-    let newT = { ...t };
-    newS.requests.push(req);
-    newS.requestsLeft -= 1;
-    newT.requests.push(req);
-    let newStudents = [...students];
-    let newTeachers = [...teachers];
-    newStudents = newStudents.map((student) =>
-      student.email === newS.email ? newS : student
-    );
-    newTeachers = newTeachers.map((teacher) =>
-      teacher.email === newT.email ? newT : teacher
-    );
-    setTeachers(newTeachers);
-    setStudents(newStudents);
-    storeStudents(newStudents);
-    storeTeachers(newTeachers);
-  }
-
-  function answerRequest(s: Student, t: Teacher, r: ThesisRequest, a: boolean) {
-    let newR = { ...r };
-    newR.status = a ? RequestStatus.APPROVED : RequestStatus.DENIED;
-    let newS = { ...s };
-    let newT = { ...t };
-    newS.requests = newS.requests.map((req) =>
-      req.studentId === newR.studentId && req.teacherId === newR.teacherId
-        ? newR
-        : req
-    );
-    newT.requests = newT.requests.map((req) =>
-      req.studentId === newR.studentId && req.teacherId === newR.teacherId
-        ? newR
-        : req
-    );
-    let newStudents = [...students];
-    let newTeachers = [...teachers];
-    newStudents = newStudents.map((student) =>
-      student.email === newS.email ? newS : student
-    );
-    newTeachers = newTeachers.map((teacher) =>
-      teacher.email === newT.email ? newT : teacher
-    );
-    setTeachers(newTeachers);
-    setStudents(newStudents);
-    storeStudents(newStudents);
-    storeTeachers(newTeachers);
-  }
-
   return localStorage.getItem('user') ? (
     <Box
       sx={{
@@ -142,7 +86,6 @@ const Main = () => {
               <Teachers
                 teachers={teachers}
                 s={userStudent ?? getEmptyStudent()}
-                createRequest={createRequest}
               />
             </PrivateRoute>
           }
@@ -162,7 +105,6 @@ const Main = () => {
               <Requests
                 students={students}
                 teacher={userTeacher ?? getEmptyTeacher()}
-                answerRequest={answerRequest}
               />
             </PrivateRoute>
           }

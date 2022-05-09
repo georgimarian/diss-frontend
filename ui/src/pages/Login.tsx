@@ -1,36 +1,54 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {Box, IconButton, InputAdornment, TextField, useTheme} from '@mui/material';
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  TextField,
+  useTheme,
+} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 import CustomForm from '../components/CustomForm';
 import { Roles } from '../utils/roles';
-import {studentList, teacherList} from "../mock_data/users";
+import { studentList, teacherList } from '../mock_data/users';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [values, setValues] = useState({
-    username: '',
-    password: '',
-    role: Roles.Admin,
-  });
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
-    const theme = useTheme()
+  const theme = useTheme();
+  let role = Roles.Admin;
+  if (username === 'denis') {
+    console.log('caca');
+    role = Roles.Student;
+  } else if (username === 'Ion Ionescu') {
+    role = Roles.Teacher;
+  }
 
-  const handleChange =
+  const handleUsernameChange =
     (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
+      setUsername(event.target.value);
     };
 
-    const login = () => {
-        localStorage.setItem('user', JSON.stringify(values));
-        if (localStorage.getItem('students') == null) {
-            localStorage.setItem('students', JSON.stringify(studentList))
-            localStorage.setItem('teachers', JSON.stringify(teacherList))
-        }
-        navigate('/home');
+  const handlePasswordChange =
+    (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(event.target.value);
     };
+
+  useEffect(() => {
+    localStorage.setItem('user', JSON.stringify({ username, role }));
+  }, [role]);
+
+  const login = () => {
+    if (localStorage.getItem('students') == null) {
+      localStorage.setItem('students', JSON.stringify(studentList));
+      localStorage.setItem('teachers', JSON.stringify(teacherList));
+    }
+    navigate('/home');
+  };
 
   return (
     <CustomForm
@@ -48,8 +66,8 @@ const Login = () => {
             required
             id='outlined-required'
             label='Username'
-            value={values.username}
-            onChange={handleChange('username')}
+            value={username}
+            onChange={handleUsernameChange('username')}
           />
 
           <TextField
@@ -58,8 +76,8 @@ const Login = () => {
             id='outlined-required'
             label='Parola'
             type={showPassword ? 'text' : 'password'}
-            value={values.password}
-            onChange={handleChange('password')}
+            value={password}
+            onChange={handlePasswordChange('password')}
             InputProps={{
               endAdornment: (
                 <InputAdornment position='end'>

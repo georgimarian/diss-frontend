@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {
   Table,
   TableHead,
@@ -18,6 +18,7 @@ import { RequestStatus } from '../models/common.enums';
 import { Roles } from 'utils/roles';
 import SearchBar from 'components/SearchBar';
 import ProfileIcon from 'components/profile-components/ProfileIcon';
+import { TeacherContext } from '../App';
 
 function CanRequest(s: Student) {
   return (
@@ -35,12 +36,13 @@ type TeachersTableProps = {
 
 const TeachersTable = (props: TeachersTableProps): JSX.Element => {
   const theme = useTheme();
+  const { teachers, setTeachers } = useContext(TeacherContext);
   const [teacherList, setTeacherList] = useState<Teacher[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const _user = JSON.parse(localStorage.getItem('user') || '');
 
   useEffect(() => {
-    setTeacherList(props.rows);
+    setTeacherList(teachers || []);
   }, []);
 
   return (

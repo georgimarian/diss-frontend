@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import {
   Paper,
   useTheme,
@@ -17,16 +18,51 @@ import AppPage from 'components/AppPage';
 import { getEmptyStudent } from 'utils/studentUtils';
 import { Student, Teacher, ThesisRequest } from 'models/common';
 import { RequestStatus } from 'models/common.enums';
+import { StudentContext, TeacherContext } from '../App';
 
-const Requests = (props: {
-  students: Student[];
-  teacher: Teacher;
-  answerRequest: (s: Student, t: Teacher, r: ThesisRequest, a: boolean) => void;
-}) => {
+const Requests = (props: { students: Student[]; teacher: Teacher }) => {
   const theme = useTheme();
+  const { teachers, setTeachers } = useContext(TeacherContext);
+  const { students, setStudents } = useContext(StudentContext);
+
+  const _user = JSON.parse(localStorage.getItem('user') || '');
+  const teacher = (teachers || []).find((x) => x.username === _user.username);
+
+  const answerRequest = (
+    s: Student,
+    t: Teacher,
+    r: ThesisRequest,
+    a: boolean
+  ) => {
+    let newR = { ...r };
+    newR.status = a ? RequestStatus.APPROVED : RequestStatus.DENIED;
+    let newS = { ...s };
+    let newT = { ...t };
+    newT.enrolledStudents.push(newS);
+    newS.requests = newS.requests.map((req) =>
+      req.studentId === newR.studentId && req.teacherId === newR.teacherId
+        ? newR
+        : req
+    );
+    newT.requests = newT.requests.map((req) =>
+      req.studentId === newR.studentId && req.teacherId === newR.teacherId
+        ? newR
+        : req
+    );
+    let newStudents = students ? [...students] : [];
+    let newTeachers = teachers ? [...teachers] : [];
+    newStudents = newStudents.map((student) =>
+      student.email === newS.email ? newS : student
+    );
+    newTeachers = newTeachers.map((teacher) =>
+      teacher.email === newT.email ? newT : teacher
+    );
+    setTeachers(newTeachers);
+    setStudents(newStudents);
+  };
 
   return (
-    <AppPage title='Requests'>
+    <AppPage title='Cereri'>
       <TableContainer
         component={Paper}
         sx={{ borderRadius: 10, bgcolor: theme.palette.secondary.dark }}
@@ -41,7 +77,7 @@ const Requests = (props: {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.teacher.requests.map((row: ThesisRequest) => (
+            {teacher?.requests.map((row: ThesisRequest) => (
               <TableRow
                 key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -66,7 +102,7 @@ const Requests = (props: {
                         variant='outlined'
                         startIcon={<CheckIcon />}
                         onClick={() =>
-                          props.answerRequest(
+                          answerRequest(
                             props.students.find(
                               (student) => student.id === row.studentId
                             ) ?? getEmptyStudent(),
@@ -80,7 +116,7 @@ const Requests = (props: {
                         variant='outlined'
                         startIcon={<CloseIcon />}
                         onClick={() =>
-                          props.answerRequest(
+                          answerRequest(
                             props.students.find(
                               (student) => student.id === row.studentId
                             ) ?? getEmptyStudent(),

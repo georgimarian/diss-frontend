@@ -1,17 +1,45 @@
-import AppPage from '../components/AppPage';
-import { Student, Teacher } from '../models/common';
-import TeachersTable from '../components/TeachersTable';
+import { useContext } from 'react';
 import { Button, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+
+import AppPage from '../components/AppPage';
+import { Student, Teacher, ThesisRequest } from '../models/common';
+import TeachersTable from '../components/TeachersTable';
 import { RequestStatus } from 'models/common.enums';
 import { Roles } from 'utils/roles';
+import { StudentContext, TeacherContext } from 'App';
 
-const Teachers = (props: {
-  s: Student;
-  teachers: Teacher[];
-  createRequest: (student: Student, teacher: Teacher) => void;
-}) => {
+const Teachers = (props: { s: Student; teachers: Teacher[] }) => {
   const user = JSON.parse(localStorage.getItem('user') || '');
+  const { students, setStudents } = useContext(StudentContext);
+  const { teachers, setTeachers } = useContext(TeacherContext);
+
+  const createRequest = (s: Student, t: Teacher) => {
+    let req: ThesisRequest = {
+      id: 1,
+      teacherId: t.id,
+      studentId: s.id,
+      description: s.thesisDescription,
+      status: RequestStatus.IN_PROGRESS,
+    };
+    let newS = { ...s };
+    let newT = { ...t };
+    newS.requests.push(req);
+    newS.requestsLeft -= 1;
+    newT.requests.push(req);
+    let newStudents = students ? [...students] : [];
+    let newTeachers = teachers ? [...teachers] : [];
+    newStudents = newStudents.map((student) =>
+      student.email === newS.email ? newS : student
+    );
+    newTeachers = newTeachers.map((teacher) =>
+      teacher.email === newT.email ? newT : teacher
+    );
+    setTeachers(newTeachers);
+    setStudents(newStudents);
+  };
+
+  console.log(props.s);
 
   const studentContent = () => {
     if (
@@ -25,9 +53,7 @@ const Teachers = (props: {
           <TeachersTable
             rows={props.teachers}
             student={props.s}
-            createRequest={(s: Student, t: Teacher) =>
-              props.createRequest(s, t)
-            }
+            createRequest={(s: Student, t: Teacher) => createRequest(s, t)}
             view={user.role}
           />
           <Typography variant='h6' sx={{ padding: '2px' }} align='left'>
@@ -69,7 +95,7 @@ const Teachers = (props: {
         <TeachersTable
           rows={props.teachers}
           student={props.s}
-          createRequest={(s: Student, t: Teacher) => props.createRequest(s, t)}
+          createRequest={(s: Student, t: Teacher) => createRequest(s, t)}
           view={user.ROLE}
         />
       )}

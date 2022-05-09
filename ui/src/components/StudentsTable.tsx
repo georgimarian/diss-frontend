@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import {
   Box,
   Button,
@@ -18,12 +18,12 @@ import { Actions, initializedStudent } from 'mock_data/users';
 import StudentForm from './StudentForm';
 import { Student } from 'models/common';
 import SearchBar from './SearchBar';
+import { StudentContext, TeacherContext } from '../App';
 
-type StudentsTableProps = {
-  students: Student[];
-};
+const StudentsTable = () => {
+  const { students, setStudents } = useContext(StudentContext);
+  const { teachers, setTeachers } = useContext(TeacherContext);
 
-const StudentsTable = ({ students }: StudentsTableProps) => {
   const [searchValue, setSearchValue] = useState('');
   const [chosenUser, setChosenUser] = useState<Student>(initializedStudent);
   const [open, setOpen] = useState(false);
@@ -32,16 +32,22 @@ const StudentsTable = ({ students }: StudentsTableProps) => {
 
   const theme = useTheme();
   const _user = JSON.parse(localStorage.getItem('user') || '');
+  console.log((teachers || []).find((x) => x.username === _user.username));
 
   useEffect(() => {
-    setStudentsList(students);
+    _user.role === Roles.Admin
+      ? setStudentsList(students || [])
+      : setStudentsList(
+          (teachers || []).find((x) => x.username === _user.username)
+            ?.enrolledStudents || []
+        );
   }, []);
 
   return (
     <>
       <StudentForm
-        studentsList={studentsList}
-        setStudentsList={setStudentsList}
+        studentsList={studentsList || []}
+        setStudentsList={setStudents}
         user={chosenUser}
         open={open}
         setOpen={setOpen}
@@ -66,7 +72,7 @@ const StudentsTable = ({ students }: StudentsTableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {students.map((user: Student, index) => (
+            {(studentsList || []).map((user: Student, index) => (
               <TableRow key={index}>
                 <TableCell
                   sx={{
