@@ -18,6 +18,16 @@ class StudentController:
                                 password_hash=password_hash, email=student['email'], description=student['description']))
             session.commit()
 
+    def delete_student(self, student_id):
+        with db_session() as session:
+            t = session.query(Student).get(student_id)
+            thesis = session.query(ThesisRequest).filter_by(student_id=student_id).first()
+            if thesis:
+                session.delete(thesis)
+                session.commit()
+            session.delete(t)
+            session.commit()
+
     def check_if_attempts_left(self, student_id):
         with db_session() as session:
             if session.query(Student).get(student_id).requests_left > 0:

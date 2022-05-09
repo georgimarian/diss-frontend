@@ -52,6 +52,18 @@ def add_teacher():
     return "Add done"
 
 
+@app.route('/delete_teacher/<id>', methods=['DELETE'])
+def delete_teacher(id):
+    teacher_controller.delete_teacher(id)
+    return {'id': id}
+
+
+@app.route('/delete_student/<id>', methods=['DELETE'])
+def delete_student(id):
+    student_controller.delete_student(id)
+    return {'id': id}
+
+
 @app.route('/request_thesis', methods=['POST'])
 def request_thesis():
     """

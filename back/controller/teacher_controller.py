@@ -18,6 +18,16 @@ class TeacherController:
                                 password_hash=password_hash, email=teacher['email'], description=teacher['description']))
             session.commit()
 
+    def delete_teacher(self, teacher_id):
+        with db_session() as session:
+            t = session.query(Teacher).get(teacher_id)
+            thesis = session.query(ThesisRequest).filter_by(teacher_id=teacher_id).first()
+            if thesis:
+                session.delete(thesis)
+                session.commit()
+            session.delete(t)
+            session.commit()
+
     def update_student_request(self, body: dict):
         with db_session() as session:
             request_thesis = session.query(ThesisRequest).filter(ThesisRequest.student_id == body['student_id'],
