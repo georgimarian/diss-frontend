@@ -18,7 +18,7 @@ import StudentForm from './StudentForm';
 import {parseUser, Student} from 'utils/models/common';
 import SearchBar from './SearchBar';
 import { StudentContext, TeacherContext } from '../App';
-import {Roles} from "../utils/models/common.enums";
+import {areasToString, Roles} from "../utils/models/common.enums";
 
 const StudentsTable = () => {
   const { students, setStudents } = useContext(StudentContext);
@@ -94,7 +94,7 @@ const StudentsTable = () => {
                     {user.firstName + ' ' + user.lastName}
                   </Typography>
                 </TableCell>
-                <TableCell align='left'>{user.areaOfInterest}</TableCell>
+                <TableCell align='left'>{areasToString(user.areaOfInterest)}</TableCell>
                 <TableCell align='left'>{user.email}</TableCell>
                 {_user.type === Roles.ADMIN && (
                   <TableCell align='center'>

@@ -3,7 +3,7 @@ import {Box, IconButton, InputAdornment, MenuItem, Select, TextField, useTheme} 
 import {useState} from "react";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {Admin, storeUser, Student, Teacher, User} from "../utils/models/common";
-import {enumToString, Roles} from "../utils/models/common.enums";
+import {Roles, rolesToString} from "../utils/models/common.enums";
 import {RequestAPI} from "../utils/connection.config";
 import {useNavigate} from 'react-router-dom';
 
@@ -113,9 +113,9 @@ const Register = () => {
                     label="Tip"
                     onChange={handleChange('type')}
                 >
-                    <MenuItem value={0}>{enumToString(Roles.STUDENT)}</MenuItem>
-                    <MenuItem value={1}>{enumToString(Roles.TEACHER)}</MenuItem>
-                    <MenuItem value={2}>{enumToString(Roles.ADMIN)}</MenuItem>
+                    <MenuItem value={0}>{rolesToString(Roles.STUDENT)}</MenuItem>
+                    <MenuItem value={1}>{rolesToString(Roles.TEACHER)}</MenuItem>
+                    <MenuItem value={2}>{rolesToString(Roles.ADMIN)}</MenuItem>
                 </Select>
 
             </Box>

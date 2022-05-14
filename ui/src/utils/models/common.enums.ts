@@ -16,7 +16,7 @@ export enum Roles {
     ADMIN = 2,
 }
 
-export function enumToString(enumValue: Roles | RequestStatus | AreaOfInterest) {
+export function rolesToString(enumValue: Roles) {
     switch (enumValue) {
         case Roles.ADMIN :
             return "ADMIN"
@@ -24,6 +24,11 @@ export function enumToString(enumValue: Roles | RequestStatus | AreaOfInterest) 
             return "STUDENT"
         case Roles.TEACHER :
             return "PROFESOR"
+    }
+}
+
+export function statusesToString(enumValue: RequestStatus) {
+    switch (enumValue) {
         case RequestStatus.IN_PROGRESS :
             return "ÎN AȘTEPTARE"
         case RequestStatus.APPROVED :
@@ -32,9 +37,14 @@ export function enumToString(enumValue: Roles | RequestStatus | AreaOfInterest) 
             return "RESPINS"
         case RequestStatus.NO_REQUEST :
             return "FARĂ CERERE"
-        case AreaOfInterest.PSYCHOLOGY :
+    }
+}
+
+export function areasToString(enumValue: AreaOfInterest) {
+    switch (enumValue) {
+        case AreaOfInterest.PSYCHOLOGY:
             return "Psihologie"
-        case AreaOfInterest.APPLIED_PSYCHOLOGY :
+        case AreaOfInterest.APPLIED_PSYCHOLOGY:
             return "Psihologie Aplicata"
     }
 }

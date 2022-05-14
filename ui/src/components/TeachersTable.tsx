@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {
     Button,
     Paper,
@@ -14,7 +14,7 @@ import {
 import CheckIcon from '@mui/icons-material/Check';
 
 import {createThesisRequest, parseUser, Student, Teacher, ThesisRequest} from '../utils/models/common';
-import {enumToString, RequestStatus, Roles} from '../utils/models/common.enums';
+import {areasToString, RequestStatus, Roles, rolesToString, statusesToString} from '../utils/models/common.enums';
 import SearchBar from 'components/SearchBar';
 import ProfileIcon from 'components/profile-components/ProfileIcon';
 import {StudentContext, TeacherContext} from '../App';
@@ -32,20 +32,22 @@ const TeachersTable = (props: { view: number }): JSX.Element => {
     const {teachers, setTeachers} = useContext(TeacherContext);
     const {students, setStudents} = useContext(StudentContext);
     const [searchValue, setSearchValue] = useState('');
+    const [teacherList, setTeacherList] = useState<Teacher[]>([]);
     const _user = parseUser()
+
+    useEffect(() => {
+        setTeacherList(teachers || []);
+    }, []);
 
     function createRequest(s: Student, t: Teacher) {
         RequestAPI.Request(createThesisRequest(s, t)).then(req => {
             if (req) {
                 s.requests.push(req);
                 s.requestsLeft -= 1;
-                t.requests.push(req);
-                setStudents(students?.map((student) => student.id === s.id ? {...s} : student));
-                setTeachers(teachers?.map((teacher) => teacher.id === t.id ? {...t} : teacher));
+                window.location.reload()
             }
         });
     }
-
     return (
         <>
             <TableContainer
@@ -71,7 +73,7 @@ const TeachersTable = (props: { view: number }): JSX.Element => {
                     <TableBody>
                         {teachers?.filter(teacher => teacher.totalPlaces - teacher.enrolledStudents.length > 0 &&
                             Object.values(teacher).filter(isNaN)
-                                .concat([enumToString(teacher.type), enumToString(teacher.areaOfInterest)])
+                                .concat([rolesToString(teacher.type), areasToString(teacher.areaOfInterest)])
                                 .find(value => value.includes(searchValue))).map((row: Teacher) => (
                             <TableRow
                                 key={row.id}
@@ -98,7 +100,7 @@ const TeachersTable = (props: { view: number }): JSX.Element => {
                                         {row.firstName} {row.lastName}
                                     </Typography>
                                 </TableCell>
-                                <TableCell align='center'>{enumToString(row.areaOfInterest)}</TableCell>
+                                <TableCell align='center'>{areasToString(row.areaOfInterest)}</TableCell>
                                 <TableCell align='center'>
                                     {row.enrolledStudents.length}
                                 </TableCell>
@@ -107,8 +109,7 @@ const TeachersTable = (props: { view: number }): JSX.Element => {
                                 </TableCell>
                                 {props.view === Roles.STUDENT && (
                                     <TableCell align='center'>
-                                        {enumToString(_user.requests.find((r: ThesisRequest) => r.teacherId === row.id)
-                                            ?.status ?? RequestStatus.NO_REQUEST)}
+                                        {statusesToString(row.requests.find((r: ThesisRequest) => r.studentId === _user.id)?.status ?? RequestStatus.NO_REQUEST)}
                                     </TableCell>
                                 )}
                                 {props.view === Roles.STUDENT && (

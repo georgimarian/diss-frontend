@@ -14,8 +14,8 @@ type GenericProfileProps = {
 
 const GenericProfile = ({ user }: GenericProfileProps) => {
   const theme = useTheme();
+  const _user = parseUser();
   const hasProfessor = false;
-  const _user = parseUser()
 
   const [customProfileFunctionality, setCustomProfileFunctionality] =
     useState<JSX.Element>();
