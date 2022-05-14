@@ -1,5 +1,5 @@
 import React from "react";
-import {Credentials, Student, Teacher, User} from "./models/common";
+import {Credentials, Student, Teacher, ThesisRequest, User} from "./models/common";
 
 let props = {
     host: "https://feec-188-27-130-36.eu.ngrok.io/",
@@ -38,6 +38,77 @@ export class RequestAPI extends React.Component {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(user)
+            });
+            console.log("data")
+            return response.json();
+        } catch (error) {
+            console.log("error")
+            return undefined;
+        }
+    }
+    static async Register(user: User): Promise<User | Student | Teacher | undefined> {
+        try {
+            const response = await fetch(props.host + props.register, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(user)
+            });
+            console.log("data")
+            return response.json();
+        } catch (error) {
+            console.log("error")
+            return undefined;
+        }
+    }
+
+    static async Update(user: User | Student | Teacher): Promise<User | Student | Teacher | undefined> {
+        try {
+            const response = await fetch(props.host + props.update, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(user)
+            });
+            console.log("data")
+            return response.json();
+        } catch (error) {
+            console.log("error")
+            return undefined;
+        }
+    }
+
+    static async Add(user: User | Student | Teacher): Promise<User | Student | Teacher | undefined> {
+        try {
+            const response = await fetch(props.host + props.add, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(user)
+            });
+            console.log("data")
+            return response.json();
+        } catch (error) {
+            console.log("error")
+            return undefined;
+        }
+    }
+    static async Request(request: ThesisRequest): Promise<ThesisRequest | undefined> {
+        try {
+            const response = await fetch(props.host + props.request, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(request)
+            });
+            console.log("data")
+            return response.json();
+        } catch (error) {
+            console.log("error")
+            return undefined;
+        }
+    }
+    static async Delete(user: User | Student | Teacher): Promise<User | Student | Teacher | undefined> {
+        try {
+            const response = await fetch(props.host + props.delete(user.id), {
+                method: 'DELETE',
+                headers: {'Content-Type': 'application/json'},
             });
             console.log("data")
             return response.json();
