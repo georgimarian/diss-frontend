@@ -57,7 +57,7 @@ class Student(DB.Model):
     thesis_requests = DB.relationship('ThesisRequest', back_populates='student')
     profile_thesis_description = DB.Column(DB.String(DESCRIPTION_LENGTH))
     grades = DB.Column(DB.JSON())
-    area_of_interest = DB.Column(DB.String(DESCRIPTION_LENGTH))
+    area_of_interest = DB.Column(DB.Integer)
     teacher = DB.relationship('Teacher', back_populates='enrolled_students', uselist=False, lazy='joined')
 
     user = DB.relationship('User', back_populates='_student')
@@ -68,7 +68,7 @@ class Teacher(DB.Model):
     id = DB.Column(DB.Integer, primary_key=True, autoincrement=False)
     description = DB.Column(DB.String(DESCRIPTION_LENGTH))
     available_places = DB.Column(DB.Integer, default=30)
-    area_of_interest = DB.Column(DB.String(DESCRIPTION_LENGTH))
+    area_of_interest = DB.Column(DB.Integer)
     enrolled_students = DB.relationship('Student', back_populates='teacher')
     thesis_requests = DB.relationship('ThesisRequest', back_populates='teacher')
 

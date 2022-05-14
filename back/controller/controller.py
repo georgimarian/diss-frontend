@@ -19,14 +19,14 @@ class UserController:
 
             user_obj = User(first_name=user['firstName'], last_name=user['lastName'],
                             password_hash=password_hash, username=user['username'], email=user['email'],
-                            type=UserType.TEACHER.value if user['type'] == 'TEACHER' else UserType.STUDENT.value if user['type'] == 'STUDENT' else UserType.ADMIN.value)
+                            type=user['type'])
             session.add(user_obj)
             session.commit()
 
             if user_obj.type == UserType.STUDENT.value:
                 stud_obj = Student(id=user_obj.id, description=user['description'],
                                    profile_thesis_description=user['thesisDescription'],
-                                   grades=user['grades'],
+                                   grades="[]",
                                    area_of_interest=user['areaOfInterest'])
                 session.add(stud_obj)
                 session.commit()
@@ -69,14 +69,15 @@ class UserController:
             elif user_obj.type == UserType.TEACHER.value:
                 user_obj._teacher.available_places = user['totalPlaces']
                 user_obj._teacher.description = user['description']
+                user_obj._teacher.enrolled_students.clear()
                 user_obj._teacher.area_of_interest = user['areaOfInterest']
-                for stud in user['enrolledStudents']:
-                    s: Student = session.query(Student).get(stud['id'])
-                    s.teacher = user_obj._teacher
                 session.commit()
-            for tr in user['thesisRequests']:
-                tr_obj = ThesisRequest.query.get(tr['id'])
-                tr_obj.status = tr['request_status']
+            for tr in user['requests']:
+                tr_obj = session.query(ThesisRequest).get(tr['id'])
+                tr_obj.request_status = tr['status']
+                if tr_obj.request_status == RequestStatus.APPROVED.value:
+                    s: Student = session.query(Student).get(tr_obj.student_id)
+                    s.teacher_id = tr_obj.teacher_id
             session.commit()
 
             return UserController.stringifyUser(user_obj)
@@ -101,11 +102,11 @@ class UserController:
 
     def request_thesis(self, request_thesis: dict):
         with db_session() as session:
-            th = ThesisRequest(student_id=request_thesis['student_id'], teacher_id=request_thesis['teacher_id'],
+            th = ThesisRequest(student_id=request_thesis['studentId'], teacher_id=request_thesis['teacherId'],
                               description=request_thesis['description'])
             session.add(th)
             session.commit()
-            student = session.query(Student).get(request_thesis['student_id'])
+            student = session.query(Student).get(request_thesis['studentId'])
             student.requests_left -= 1
             session.commit()
 
@@ -129,9 +130,9 @@ class UserController:
 
     def test(self):
         with db_session() as session:
-            for es in session.query(Teacher).get(1).enrolled_students:
-                print(es.id)
-                print(es)
+            t = session.query(Teacher).get(2)
+            print(str(t.thesis_requests))
+
 
         return "abc"
 
@@ -139,16 +140,16 @@ class UserController:
         password = hashlib.sha512(user['password'].encode('utf-8')).hexdigest()
         with db_session() as session:
             user_obj = User(email=user["email"], password_hash=password, last_name=user["lastName"],
-                            first_name=user["firstName"], username=user["username"], type=UserType.TEACHER.value if user['type'] == 'TEACHER' else UserType.STUDENT.value if user['type'] == 'STUDENT' else UserType.ADMIN.value)
+                            first_name=user["firstName"], username=user["username"], type=user['type'])
             session.add(user_obj)
             session.commit()
             if user_obj.type == UserType.STUDENT.value:
-                session.add(Student(id=user_obj.id, description="", profile_thesis_description="", area_of_interest=""))
+                session.add(Student(id=user_obj.id, description="", profile_thesis_description=""))
                 session.commit()
                 user_obj._student_id = user_obj.id
                 session.commit()
             elif user_obj.type == UserType.TEACHER.value:
-                session.add(Teacher(id=user_obj.id, description="", area_of_interest=""))
+                session.add(Teacher(id=user_obj.id, description=""))
                 session.commit()
                 user_obj._teacher_id = user_obj.id
                 session.commit()
@@ -166,7 +167,7 @@ class UserController:
                 'username': user.username,
                 'password': '',
                 'email': user.email,
-                'type': UserType(user.type).name,
+                'type': user.type,
                 'description': user._teacher.description,
                 'totalPlaces': user._teacher.available_places,
                 'areaOfInterest': user._teacher.area_of_interest,
@@ -178,7 +179,7 @@ class UserController:
                         'studentId': r.student_id,
                         'teacherId': r.teacher_id,
                         'description': r.description,
-                        'status': RequestStatus(r.request_status).name
+                        'status': r.request_status
                     } for r in user._teacher.thesis_requests
                 ]
             }
@@ -192,7 +193,7 @@ class UserController:
             'username': user.username,
             'password': '',
             'email': user.email,
-            'type': UserType(user.type).name,
+            'type': user.type,
             'description': user._student.description,
             'thesisDescription': user._student.profile_thesis_description,
             'requestsLeft': user._student.requests_left,
@@ -204,7 +205,7 @@ class UserController:
                     'studentId': r.student_id,
                     'teacherId': r.teacher_id,
                     'description': r.description,
-                    'status': RequestStatus(r.request_status).name
+                    'status': r.request_status
                 } for r in user._student.thesis_requests
             ]
         }
@@ -218,7 +219,7 @@ class UserController:
             'username': user.username,
             'password': '',
             'email': user.email,
-            'type': UserType(user.type).name
+            'type': user.type
         }
 
     @staticmethod
