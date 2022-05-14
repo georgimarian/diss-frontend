@@ -20,11 +20,12 @@ import ProfileIcon from 'components/profile-components/ProfileIcon';
 import {StudentContext, TeacherContext} from '../App';
 import {RequestAPI} from "../utils/connection.config";
 
-function CanRequest(s: Student, i : number) {
+function CanRequest(s: Student, t: Teacher) {
     return (
+        t.totalPlaces - t.enrolledStudents.length > 0 &&
         s.requestsLeft > 0 &&
         s.requests.every((r) => r.status === RequestStatus.DENIED) &&
-        !s.requests.map(r => r.teacherId).find(x => i === x)
+        !s.requests.map(r => r.teacherId).find(x => t.id === x)
     );
 }
 
@@ -50,6 +51,7 @@ const TeachersTable = (props: { view: number }): JSX.Element => {
             }
         });
     }
+
     return (
         <>
             <TableContainer
@@ -73,10 +75,9 @@ const TeachersTable = (props: { view: number }): JSX.Element => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {teachers?.filter(teacher => teacher.totalPlaces - teacher.enrolledStudents.length > 0 &&
-                            Object.values(teacher).filter(isNaN)
-                                .concat([rolesToString(teacher.type), areasToString(teacher.areaOfInterest)])
-                                .find(value => value.includes(searchValue))).map((row: Teacher) => (
+                        {teachers?.filter(teacher => Object.values(teacher).filter(isNaN)
+                            .concat([statusesToString(teacher.requests.find((r: ThesisRequest) => r.studentId === _user.id)?.status ?? RequestStatus.NO_REQUEST), areasToString(teacher.areaOfInterest)])
+                            .find(value => value.includes(searchValue))).map((row: Teacher) => (
                             <TableRow
                                 key={row.id}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
@@ -116,7 +117,7 @@ const TeachersTable = (props: { view: number }): JSX.Element => {
                                 )}
                                 {props.view === Roles.STUDENT && (
                                     <TableCell align='center'>
-                                        {CanRequest(_user, row.id) ? (
+                                        {CanRequest(_user, row) ? (
                                             <Button
                                                 variant='outlined'
                                                 startIcon={<CheckIcon/>}

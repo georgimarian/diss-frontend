@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
 import {
-  Box,
   Button,
   Paper,
   Table,
@@ -15,15 +14,13 @@ import {
 import ProfileIcon from './profile-components/ProfileIcon';
 import { Actions, initializedStudent } from 'mock_data/users';
 import StudentForm from './StudentForm';
-import {parseUser, Student} from 'utils/models/common';
+import {parseUser, Student, Teacher} from 'utils/models/common';
 import SearchBar from './SearchBar';
 import { StudentContext, TeacherContext } from '../App';
 import {areasToString, Roles} from "../utils/models/common.enums";
 
 const StudentsTable = () => {
   const { students, setStudents } = useContext(StudentContext);
-  const { teachers, setTeachers } = useContext(TeacherContext);
-
   const [searchValue, setSearchValue] = useState('');
   const [chosenUser, setChosenUser] = useState<Student>(initializedStudent);
   const [open, setOpen] = useState(false);
@@ -31,18 +28,16 @@ const StudentsTable = () => {
   const [studentsList, setStudentsList] = useState<Student[]>([]);
 
   const theme = useTheme();
-  const _user = parseUser()
-  console.log((teachers || []).find((x) => x.username === _user.username));
+  const _user = parseUser();
 
   useEffect(() => {
+    let teacher = _user as Teacher
     _user.type === Roles.ADMIN
       ? setStudentsList(students || [])
       : setStudentsList(
-          (teachers || []).find((x) => x.username === _user.username)
-            ?.enrolledStudents || []
+          teacher?.enrolledStudents || []
         );
-  }, []);
-
+  }, [students]);
   return (
     <>
       <StudentForm
@@ -62,6 +57,7 @@ const StudentsTable = () => {
         }}
       >
         <SearchBar searchValue={searchValue} onSearch={setSearchValue} />
+
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
@@ -72,8 +68,10 @@ const StudentsTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(studentsList || []).map((user: Student, index) => (
-              <TableRow key={index}>
+            {studentsList?.filter(studentVal => Object.values(studentVal).filter(isNaN)
+              .concat(areasToString(studentVal.areaOfInterest))
+              .find(value => value.includes(searchValue))).map((user: Student) => (
+              <TableRow key={user.id}>
                 <TableCell
                   sx={{
                     display: 'flex',
