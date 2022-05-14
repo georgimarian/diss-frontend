@@ -2,7 +2,7 @@ import CustomForm from "../components/CustomForm";
 import {Box, IconButton, InputAdornment, MenuItem, Select, TextField, useTheme} from "@mui/material";
 import {useState} from "react";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {Admin, Student, Teacher, User} from "../utils/models/common";
+import {Admin, storeUser, Student, Teacher, User} from "../utils/models/common";
 import {enumToString, Roles} from "../utils/models/common.enums";
 import {RequestAPI} from "../utils/connection.config";
 import {useNavigate} from 'react-router-dom';
@@ -25,28 +25,12 @@ const Register = () => {
     const handleChange = (prop: string) => (event: any) => {
         setValues({...values, [prop]: event.target.value});
     };
-    const handleChangeMaterial = (prop: string) => (event: any) => {
-        setValues({...values, [prop]: event.target.value});
-    };
 
     const register = () => {
         RequestAPI.Register(values).then(loggedUser => {
             console.log(loggedUser)
             if (loggedUser) {
-                let userVar: Admin | Teacher | Student;
-                if (loggedUser.type === Roles.STUDENT) {
-                    userVar = loggedUser as Student;
-
-                } else if (loggedUser.type === Roles.TEACHER) {
-                    userVar = loggedUser as Teacher;
-
-                } else {
-                    userVar = loggedUser as Admin;
-                }
-                console.log(userVar)
-                localStorage.setItem('user', JSON.stringify(userVar));
-                //setUser(userVar)
-
+                storeUser(loggedUser)
                 navigate('/home');
             }
         })

@@ -11,7 +11,6 @@ export interface User {
     type: Roles;
 }
 
-// ==== TODO decide on models ====
 export interface Student extends User {
     areaOfInterest: AreaOfInterest;
     description: string;
@@ -20,6 +19,33 @@ export interface Student extends User {
     thesisDescription: string;
     grades: Grade[];
 }
+
+export interface Admin extends User {
+}
+
+export interface Teacher extends User {
+    areaOfInterest: AreaOfInterest;
+    enrolledStudents: Student[];
+    totalPlaces: number;
+    requests: ThesisRequest[];
+}
+
+export interface Credentials {
+    email: string,
+    password: string
+}
+
+export type ThesisRequest = {
+    id: number;
+    status: RequestStatus;
+    description: string;
+    teacherId: number;
+    studentId: number;
+};
+
+export type Grade = { criteria: string; value: number };
+
+
 
 export function getEmptyStudent(): Student {
     return {
@@ -37,59 +63,6 @@ export function getEmptyStudent(): Student {
         requests: [],
         grades: [],
     };
-}
-
-export function parseStudents(): Student[] {
-    try {
-        return JSON.parse(localStorage.getItem('students') || '');
-    } catch (err) {
-        return studentList;
-    }
-}
-
-export function storeStudents(students: Student[]) {
-    return localStorage.setItem('students', JSON.stringify(students));
-}
-
-export interface Admin extends User {
-}
-
-export interface Teacher extends User {
-    areaOfInterest: AreaOfInterest;
-    enrolledStudents: Student[];
-    totalPlaces: number;
-    requests: ThesisRequest[];
-}
-
-
-export function parseTeachers(): Teacher[] {
-    try {
-        return JSON.parse(localStorage.getItem('teachers') || '');
-    } catch (err) {
-        return teacherList;
-    }
-}
-
-export function storeTeachers(teachers: Teacher[]) {
-    return localStorage.setItem('teachers', JSON.stringify(teachers));
-}
-
-export interface Credentials {
-    email: string,
-    password: string
-}
-
-
-export function parseUser() {
-    try {
-        let user = localStorage.getItem('user')
-        if (user) {
-            return JSON.parse(user);
-        }
-        return undefined;
-    } catch (err) {
-        return undefined;
-    }
 }
 
 
@@ -122,12 +95,37 @@ export function getEmptyUser(): User {
 }
 
 
-export type ThesisRequest = {
-    id: number;
-    status: RequestStatus;
-    description: string;
-    teacherId: number;
-    studentId: number;
-};
+export function parseUser() {
+    try {
+        let user = localStorage.getItem('user')
+        if (user) {
+            return JSON.parse(user);
+        }
+        return undefined;
+    } catch (err) {
+        return undefined;
+    }
+}
 
-export type Grade = { criteria: string; value: number };
+export function storeUser(user: User | Student | Teacher) {
+    let userVar: Admin | Teacher | Student;
+    if (user.type === Roles.STUDENT) {
+        userVar = user as Student;
+    } else if (user.type === Roles.TEACHER) {
+        userVar = user as Teacher;
+    } else {
+        userVar = user as Admin;
+    }
+    console.log(userVar)
+    localStorage.setItem('user', JSON.stringify(userVar));
+}
+
+export function createThesisRequest(s: Student, t: Teacher) {
+    return {
+        id: 1,
+        teacherId: t.id,
+        studentId: s.id,
+        description: s.thesisDescription,
+        status: RequestStatus.IN_PROGRESS,
+    }
+}

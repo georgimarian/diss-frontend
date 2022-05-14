@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
 import {Box, IconButton, InputAdornment, TextField, useTheme,} from '@mui/material';
@@ -7,22 +7,14 @@ import {Visibility, VisibilityOff} from '@mui/icons-material';
 import CustomForm from '../components/CustomForm';
 import {Roles} from "../utils/models/common.enums";
 import {RequestAPI} from "../utils/connection.config";
-import {Admin, getEmptyStudent, getEmptyTeacher, getEmptyUser, Student, Teacher} from "../utils/models/common";
+import {Admin, storeUser, Student, Teacher} from "../utils/models/common";
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [user, setUser] = useState<Student | Teacher | Admin>();
     const navigate = useNavigate();
     const theme = useTheme();
-    //let role = Roles.ADMIN;
-    // if (username === 'denis') {
-    //   console.log('caca');
-    //   role = Roles.STUDENT;
-    // } else if (username === 'Ion Ionescu') {
-    //   role = Roles.TEACHER;
-    // }
 
     const handleUsernameChange =
         (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,33 +25,11 @@ const Login = () => {
         (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
             setPassword(event.target.value);
         };
-    //
-    // useEffect(() => {
-    //     console.log("use-effect - ", user)
-    //     if (user && user.id !== -1) {
-    //         console.log("use-effect - in if", user)
-    //         localStorage.setItem('user', JSON.stringify(user));
-    //     }
-    // }, [user]);
 
     const login = () => {
         RequestAPI.Login({email: username, password: password}).then(loggedUser => {
-            console.log(loggedUser)
             if (loggedUser) {
-                let userVar: Admin | Teacher | Student;
-                if (loggedUser.type === Roles.STUDENT) {
-                    userVar = loggedUser as Student;
-
-                } else if (loggedUser.type === Roles.TEACHER) {
-                    userVar = loggedUser as Teacher;
-
-                } else {
-                    userVar = loggedUser as Admin;
-                }
-                console.log(userVar)
-                localStorage.setItem('user', JSON.stringify(userVar));
-                //setUser(userVar)
-
+                storeUser(loggedUser)
                 navigate('/home');
             }
         })

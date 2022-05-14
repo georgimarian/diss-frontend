@@ -11,12 +11,7 @@ import Profile from './Profile';
 import Settings from './Settings';
 import Menu from 'components/Menu';
 import PrivateRoute from 'utils/PrivateRoute';
-import {
-    parseUser,
-} from '../utils/models/common';
 import {Roles} from '../utils/models/common.enums';
-import {StudentContext, TeacherContext} from "../App";
-
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -28,10 +23,6 @@ const AppBar = styled(MuiAppBar, {
 
 const Main = () => {
     const theme = useTheme();
-
-    const {students, setStudents} = useContext(StudentContext);
-    const {teachers, setTeachers} = useContext(TeacherContext);
-    const user = parseUser()
     return localStorage.getItem('user') ? (
         <Box
             sx={{

@@ -10,33 +10,6 @@ import { StudentContext, TeacherContext } from 'App';
 
 const Teachers = () => {
   const user = parseUser()
-  const { students, setStudents } = useContext(StudentContext);
-  const { teachers, setTeachers } = useContext(TeacherContext);
-
-  const createRequest = (s: Student, t: Teacher) => {
-    let req: ThesisRequest = {
-      id: 1,
-      teacherId: t.id,
-      studentId: s.id,
-      description: s.thesisDescription,
-      status: RequestStatus.IN_PROGRESS,
-    };
-    let newS = { ...s };
-    let newT = { ...t };
-    newS.requests.push(req);
-    newS.requestsLeft -= 1;
-    newT.requests.push(req);
-    let newStudents = students ? [...students] : [];
-    let newTeachers = teachers ? [...teachers] : [];
-    newStudents = newStudents.map((student) =>
-      student.email === newS.email ? newS : student
-    );
-    newTeachers = newTeachers.map((teacher) =>
-      teacher.email === newT.email ? newT : teacher
-    );
-    setTeachers(newTeachers);
-    setStudents(newStudents);
-  };
 
   console.log(user);
 
@@ -50,7 +23,6 @@ const Teachers = () => {
       return (
         <>
           <TeachersTable
-            createRequest={(s: Student, t: Teacher) => createRequest(s, t)}
             view={user.type}
           />
           <Typography variant='h6' sx={{ padding: '2px' }} align='left'>
@@ -90,7 +62,6 @@ const Teachers = () => {
         studentContent()
       ) : (
         <TeachersTable
-          createRequest={(s: Student, t: Teacher) => createRequest(s, t)}
           view={user.type}
         />
       )}

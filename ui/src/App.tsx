@@ -27,12 +27,12 @@ export const TeacherContext = createContext<TeacherContextType>({});
 
 function App() {
     const theme = useTheme();
-    const [students, setStudents] = useState(studentList);
-    const [teachers, setTeachers] = useState(teacherList);
+    const [students, setStudents] = useState<Student[]>([]);
+    const [teachers, setTeachers] = useState<Teacher[]>([]);
 
     useEffect(() => {
-        // RequestAPI.getTeachers().then(teachersResponse => setTeachers(teachersResponse))
-        // RequestAPI.getStudents().then(studentsResponse => setStudents(studentsResponse))
+        RequestAPI.getTeachers().then(teachersResponse => setTeachers(teachersResponse))
+        RequestAPI.getStudents().then(studentsResponse => setStudents(studentsResponse))
     }, [])
 
     return (
