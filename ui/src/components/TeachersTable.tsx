@@ -13,9 +13,8 @@ import {
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 
-import { Student, Teacher } from '../models/common';
-import { RequestStatus } from '../models/common.enums';
-import { Roles } from 'utils/roles';
+import { Student, Teacher } from '../utils/models/common';
+import {RequestStatus, Roles} from '../utils/models/common.enums';
 import SearchBar from 'components/SearchBar';
 import ProfileIcon from 'components/profile-components/ProfileIcon';
 import { TeacherContext } from '../App';
@@ -31,7 +30,7 @@ type TeachersTableProps = {
   rows: Teacher[];
   student: Student;
   createRequest: (student: Student, teacher: Teacher) => void;
-  view: string;
+  view: number;
 };
 
 const TeachersTable = (props: TeachersTableProps): JSX.Element => {
@@ -59,10 +58,10 @@ const TeachersTable = (props: TeachersTableProps): JSX.Element => {
               <TableCell align='center'>Subiect de Interes</TableCell>
               <TableCell align='center'>Nr Studenți Înscriși</TableCell>
               <TableCell align='center'>Nr Locuri Libere</TableCell>
-              {props.view === Roles.Student && (
+              {props.view === Roles.STUDENT && (
                 <TableCell align='center'>Statusul Cererii</TableCell>
               )}
-              {props.view === Roles.Student && (
+              {props.view === Roles.STUDENT && (
                 <TableCell align='center'>Aplică</TableCell>
               )}
             </TableRow>
@@ -101,13 +100,13 @@ const TeachersTable = (props: TeachersTableProps): JSX.Element => {
                 <TableCell align='center'>
                   {row.totalPlaces - row.enrolledStudents.length}
                 </TableCell>
-                {props.view === Roles.Student && (
+                {props.view === Roles.STUDENT && (
                   <TableCell align='center'>
                     {props.student.requests.find((r) => r.teacherId === row.id)
                       ?.status ?? RequestStatus.NO_REQUEST}
                   </TableCell>
                 )}
-                {props.view === Roles.Student && (
+                {props.view === Roles.STUDENT && (
                   <TableCell align='center'>
                     {CanRequest(props.student) &&
                     !props.student.requests
@@ -130,7 +129,7 @@ const TeachersTable = (props: TeachersTableProps): JSX.Element => {
           </TableBody>
         </Table>
       </TableContainer>
-      {_user.role === Roles.Admin && (
+      {_user.role === Roles.ADMIN && (
         <Button
           sx={{
             width: '50%',

@@ -1,9 +1,10 @@
-import {Roles} from "../utils/roles";
+import { Roles } from "utils/models/common.enums";
+
 
 const userColors: { [key: string]: string } = {
-    [Roles.Teacher]: '#EEF5DB',
-    [Roles.Student]: '#E2EDED',
-    [Roles.Admin]: '#EBF2F4'
+    [Roles.TEACHER]: '#EEF5DB',
+    [Roles.STUDENT]: '#E2EDED',
+    [Roles.ADMIN]: '#EBF2F4'
 }
 
 export enum Colors {

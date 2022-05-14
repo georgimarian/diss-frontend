@@ -5,8 +5,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
 import BallotIcon from '@mui/icons-material/Ballot';
 
-import { Roles } from './roles';
 import { ReactNode } from 'react';
+import {Roles} from "./models/common.enums";
 
 interface MenuItem {
   title: string;
@@ -20,36 +20,36 @@ export const MENU_ITEMS: Array<MenuItem> = [
     title: 'Acasă',
     path: '/home',
     icon: <HomeIcon />,
-    roles: [Roles.Student, Roles.Admin, Roles.Teacher],
+    roles: [Roles.STUDENT, Roles.ADMIN, Roles.TEACHER],
   },
   {
     title: 'Studenți',
     path: '/students',
     icon: <SchoolIcon />,
-    roles: [Roles.Admin, Roles.Teacher],
+    roles: [Roles.ADMIN, Roles.TEACHER],
   },
   {
     title: 'Profesori',
     path: '/teachers',
     icon: <PeopleIcon />,
-    roles: [Roles.Student, Roles.Admin],
+    roles: [Roles.STUDENT, Roles.ADMIN],
   },
   {
     title: 'Cereri',
     path: '/requests',
     icon: <BallotIcon />,
-    roles: [Roles.Admin, Roles.Teacher],
+    roles: [Roles.ADMIN, Roles.TEACHER],
   },
   {
     title: 'Profil',
     path: '/profile',
     icon: <PersonIcon />,
-    roles: [Roles.Student, Roles.Admin, Roles.Teacher],
+    roles: [Roles.STUDENT, Roles.ADMIN, Roles.TEACHER],
   },
   {
     title: 'Setări',
     path: '/settings',
     icon: <SettingsIcon />,
-    roles: [Roles.Admin, Roles.Teacher],
+    roles: [Roles.ADMIN, Roles.TEACHER],
   },
 ];

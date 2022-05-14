@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import { Box, styled, Typography, useTheme } from '@mui/material';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import {useContext, useState} from 'react';
+import {Navigate, Route, Routes} from 'react-router-dom';
+import {Box, styled, Typography, useTheme} from '@mui/material';
+import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';
 
 import Home from './Home';
 import Teachers from './Teachers';
@@ -11,118 +11,98 @@ import Profile from './Profile';
 import Settings from './Settings';
 import Menu from 'components/Menu';
 import PrivateRoute from 'utils/PrivateRoute';
-import { Roles } from 'utils/roles';
-import { Student, Teacher, ThesisRequest } from '../models/common';
-import { AreaOfInterest, RequestStatus } from '../models/common.enums';
-
 import {
-  getEmptyStudent,
-  parseStudents,
-  storeStudents,
-} from 'utils/studentUtils';
+    getEmptyStudent,
+    getEmptyTeacher,
+    parseUser,
+} from '../utils/models/common';
+import {Roles} from '../utils/models/common.enums';
+import {StudentContext, TeacherContext} from "../App";
 
-import {
-  getEmptyTeacher,
-  storeTeachers,
-  parseTeachers,
-} from 'utils/teacherUtils';
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<MuiAppBarProps>(({ theme }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  marginLeft: 240,
-  width: `calc(100% - ${240}px)`,
+    shouldForwardProp: (prop) => prop !== 'open',
+})<MuiAppBarProps>(({theme}) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    marginLeft: 240,
+    width: `calc(100% - ${240}px)`,
 }));
 
-function parseUser() {
-  try {
-    return JSON.parse(localStorage.getItem('user') || '');
-  } catch (err) {
-    return getEmptyStudent();
-  }
-}
-
 const Main = () => {
-  const theme = useTheme();
-  const [teachers, setTeachers] = useState(parseTeachers());
-  const [students, setStudents] = useState(parseStudents());
-  const userTeacher: Teacher | undefined = teachers.find(
-    (x) => x.username === parseUser().username
-  );
-  const userStudent: Student | undefined = students.find(
-    (x) => x.username === parseUser().username
-  );
+    const theme = useTheme();
 
-  return localStorage.getItem('user') ? (
-    <Box
-      sx={{
-        width: '100%',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-      }}
-    >
-      <AppBar position='absolute'>
-        <Typography
-          component='h1'
-          variant='h6'
-          color='inherit'
-          noWrap
-          sx={{ flexGrow: 1 }}
+    const {students, setStudents} = useContext(StudentContext);
+    const {teachers, setTeachers} = useContext(TeacherContext);
+    const user = parseUser()
+    return localStorage.getItem('user') ? (
+        <Box
+            sx={{
+                width: '100%',
+                height: '100vh',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+            }}
         >
-          Licen&#539;e
-        </Typography>
-      </AppBar>
-      <Menu />
-      <Routes>
-        <Route path='/home' element={<Home />} />
-        <Route
-          path='/teachers'
-          element={
-            <PrivateRoute roles={[Roles.Student, Roles.Admin]}>
-              <Teachers
-                teachers={teachers}
-                s={userStudent ?? getEmptyStudent()}
-              />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path='/students'
-          element={
-            <PrivateRoute roles={[Roles.Teacher, Roles.Admin]}>
-              <Students teacher={userTeacher ?? getEmptyTeacher()} />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path='/requests'
-          element={
-            <PrivateRoute roles={[Roles.Teacher, Roles.Admin]}>
-              <Requests
-                students={students}
-                teacher={userTeacher ?? getEmptyTeacher()}
-              />
-            </PrivateRoute>
-          }
-        />
-        <Route path='/profile' element={<Profile />} />
-        <Route
-          path='/settings'
-          element={
-            <PrivateRoute roles={[Roles.Teacher, Roles.Admin]}>
-              <Settings />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
-    </Box>
-  ) : (
-    <Navigate to='/login' replace />
-  );
+            <AppBar position='absolute'>
+                <Typography
+                    component='h1'
+                    variant='h6'
+                    color='inherit'
+                    noWrap
+                    sx={{flexGrow: 1}}
+                >
+                    Licen&#539;e
+                </Typography>
+            </AppBar>
+            <Menu/>
+            <Routes>
+                <Route path='/home' element={<Home/>}/>
+                <Route
+                    path='/teachers'
+                    element={
+                        <PrivateRoute roles={[Roles.STUDENT, Roles.ADMIN]}>
+                            <Teachers
+                                teachers={teachers ?? []}
+                                s={user ?? getEmptyStudent()}
+                            />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path='/students'
+                    element={
+                        <PrivateRoute roles={[Roles.TEACHER, Roles.ADMIN]}>
+                            <Students teacher={user ?? getEmptyTeacher()}/>
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path='/requests'
+                    element={
+                        <PrivateRoute roles={[Roles.TEACHER, Roles.ADMIN]}>
+                            <Requests
+                                students={students ?? []}
+                                teacher={user ?? getEmptyTeacher()}
+                            />
+                        </PrivateRoute>
+                    }
+                />
+                <Route path='/profile' element={<Profile/>}/>
+                <Route
+                    path='/settings'
+                    element={
+                        <PrivateRoute roles={[Roles.TEACHER, Roles.ADMIN]}>
+                            <Settings/>
+                        </PrivateRoute>
+                    }
+                />
+            </Routes>
+        </Box>
+    ) : (
+        <Navigate to='/login' replace/>
+    );
 };
 
 export default Main;

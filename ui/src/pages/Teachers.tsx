@@ -3,10 +3,9 @@ import { Button, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import AppPage from '../components/AppPage';
-import { Student, Teacher, ThesisRequest } from '../models/common';
+import { Student, Teacher, ThesisRequest } from '../utils/models/common';
 import TeachersTable from '../components/TeachersTable';
-import { RequestStatus } from 'models/common.enums';
-import { Roles } from 'utils/roles';
+import {RequestStatus, Roles} from 'utils/models/common.enums';
 import { StudentContext, TeacherContext } from 'App';
 
 const Teachers = (props: { s: Student; teachers: Teacher[] }) => {
@@ -54,7 +53,7 @@ const Teachers = (props: { s: Student; teachers: Teacher[] }) => {
             rows={props.teachers}
             student={props.s}
             createRequest={(s: Student, t: Teacher) => createRequest(s, t)}
-            view={user.role}
+            view={user.type}
           />
           <Typography variant='h6' sx={{ padding: '2px' }} align='left'>
             Mai ai{' '}
@@ -89,14 +88,14 @@ const Teachers = (props: { s: Student; teachers: Teacher[] }) => {
   };
   return (
     <AppPage title='Profesori'>
-      {user.role === Roles.Student ? (
+      {user.type === Roles.STUDENT ? (
         studentContent()
       ) : (
         <TeachersTable
           rows={props.teachers}
           student={props.s}
           createRequest={(s: Student, t: Teacher) => createRequest(s, t)}
-          view={user.ROLE}
+          view={user.type}
         />
       )}
     </AppPage>

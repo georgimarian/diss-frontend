@@ -15,9 +15,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import AppPage from 'components/AppPage';
 
-import { getEmptyStudent } from 'utils/studentUtils';
-import { Student, Teacher, ThesisRequest } from 'models/common';
-import { RequestStatus } from 'models/common.enums';
+import {getEmptyStudent, Student, Teacher, ThesisRequest} from 'utils/models/common';
+import { RequestStatus } from 'utils/models/common.enums';
 import { StudentContext, TeacherContext } from '../App';
 
 const Requests = (props: { students: Student[]; teacher: Teacher }) => {

@@ -13,12 +13,12 @@ import {
   useTheme,
 } from '@mui/material';
 import ProfileIcon from './profile-components/ProfileIcon';
-import { Roles } from 'utils/roles';
 import { Actions, initializedStudent } from 'mock_data/users';
 import StudentForm from './StudentForm';
-import { Student } from 'models/common';
+import {parseUser, Student} from 'utils/models/common';
 import SearchBar from './SearchBar';
 import { StudentContext, TeacherContext } from '../App';
+import {Roles} from "../utils/models/common.enums";
 
 const StudentsTable = () => {
   const { students, setStudents } = useContext(StudentContext);
@@ -31,11 +31,11 @@ const StudentsTable = () => {
   const [studentsList, setStudentsList] = useState<Student[]>([]);
 
   const theme = useTheme();
-  const _user = JSON.parse(localStorage.getItem('user') || '');
+  const _user = parseUser()
   console.log((teachers || []).find((x) => x.username === _user.username));
 
   useEffect(() => {
-    _user.role === Roles.Admin
+    _user.type === Roles.ADMIN
       ? setStudentsList(students || [])
       : setStudentsList(
           (teachers || []).find((x) => x.username === _user.username)
@@ -68,7 +68,7 @@ const StudentsTable = () => {
               <TableCell align='left'>Numele studentului</TableCell>
               <TableCell align='left'>Aria de Interes</TableCell>
               <TableCell align='left'>Email</TableCell>
-              {_user.role === Roles.Admin && <TableCell align='center' />}
+              {_user.type === Roles.ADMIN && <TableCell align='center' />}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -96,7 +96,7 @@ const StudentsTable = () => {
                 </TableCell>
                 <TableCell align='left'>{user.areaOfInterest}</TableCell>
                 <TableCell align='left'>{user.email}</TableCell>
-                {_user.role === Roles.Admin && (
+                {_user.type === Roles.ADMIN && (
                   <TableCell align='center'>
                     <Button
                       onClick={() => {
@@ -114,7 +114,7 @@ const StudentsTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      {_user.role === Roles.Admin && (
+      {_user.type === Roles.ADMIN && (
         <Button
           sx={{
             width: '50%',

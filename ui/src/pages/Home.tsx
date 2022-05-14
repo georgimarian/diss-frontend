@@ -1,15 +1,16 @@
 import AppPage from '../components/AppPage';
-import { Roles } from '../utils/roles';
 import { AdminHomePage, StudentHomePage, TeacherHomePage } from './homepages';
+import {Roles} from "../utils/models/common.enums";
+import {parseUser} from "../utils/models/common";
 
 const Home = () => {
-  const role = JSON.parse(localStorage.getItem('user') || '').role;
+  const role = parseUser()
 
   return (
     <AppPage title='Acasă'>
-      {role === Roles.Admin && <AdminHomePage />}
-      {role === Roles.Teacher && <TeacherHomePage />}
-      {role === Roles.Student && <StudentHomePage />}
+      {role.type === Roles.ADMIN && <AdminHomePage />}
+      {role.type === Roles.TEACHER && <TeacherHomePage />}
+      {role.type === Roles.STUDENT && <StudentHomePage />}
     </AppPage>
   );
 };

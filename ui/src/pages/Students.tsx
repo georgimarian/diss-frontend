@@ -1,6 +1,6 @@
 import AppPage from '../components/AppPage';
 import StudentsTable from '../components/StudentsTable';
-import { Teacher } from '../models/common';
+import { Teacher } from '../utils/models/common';
 
 // Find logic for this using context
 // <StudentsTable students={props.teacher.enrolledStudents} />
