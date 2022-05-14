@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 
-import { Student, Teacher } from '../utils/models/common';
+import {parseUser, Student, Teacher, ThesisRequest} from '../utils/models/common';
 import {RequestStatus, Roles} from '../utils/models/common.enums';
 import SearchBar from 'components/SearchBar';
 import ProfileIcon from 'components/profile-components/ProfileIcon';
@@ -27,8 +27,6 @@ function CanRequest(s: Student) {
 }
 
 type TeachersTableProps = {
-  rows: Teacher[];
-  student: Student;
   createRequest: (student: Student, teacher: Teacher) => void;
   view: number;
 };
@@ -38,7 +36,7 @@ const TeachersTable = (props: TeachersTableProps): JSX.Element => {
   const { teachers, setTeachers } = useContext(TeacherContext);
   const [teacherList, setTeacherList] = useState<Teacher[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  const _user = JSON.parse(localStorage.getItem('user') || '');
+  const _user = parseUser()
 
   useEffect(() => {
     setTeacherList(teachers || []);
@@ -67,7 +65,7 @@ const TeachersTable = (props: TeachersTableProps): JSX.Element => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.rows.map((row: Teacher) => (
+            {teachers?.map((row: Teacher) => (
               <TableRow
                 key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -102,20 +100,19 @@ const TeachersTable = (props: TeachersTableProps): JSX.Element => {
                 </TableCell>
                 {props.view === Roles.STUDENT && (
                   <TableCell align='center'>
-                    {props.student.requests.find((r) => r.teacherId === row.id)
+                    {_user.requests.find((r: ThesisRequest) => r.teacherId === row.id)
                       ?.status ?? RequestStatus.NO_REQUEST}
                   </TableCell>
                 )}
                 {props.view === Roles.STUDENT && (
                   <TableCell align='center'>
-                    {CanRequest(props.student) &&
-                    !props.student.requests
-                      .map((r) => r.teacherId)
-                      .find((x) => x === row.id) ? (
+                    {CanRequest(_user) &&
+                    !_user.requests.map((r: ThesisRequest)  => r.teacherId)
+                      .find((x: number)  => x === row.id) ? (
                       <Button
                         variant='outlined'
                         startIcon={<CheckIcon />}
-                        onClick={() => props.createRequest(props.student, row)}
+                        onClick={() => props.createRequest(_user, row)}
                       >
                         Aplică{' '}
                       </Button>

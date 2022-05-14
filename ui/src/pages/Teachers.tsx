@@ -3,13 +3,13 @@ import { Button, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import AppPage from '../components/AppPage';
-import { Student, Teacher, ThesisRequest } from '../utils/models/common';
+import {parseUser, Student, Teacher, ThesisRequest} from '../utils/models/common';
 import TeachersTable from '../components/TeachersTable';
 import {RequestStatus, Roles} from 'utils/models/common.enums';
 import { StudentContext, TeacherContext } from 'App';
 
-const Teachers = (props: { s: Student; teachers: Teacher[] }) => {
-  const user = JSON.parse(localStorage.getItem('user') || '');
+const Teachers = () => {
+  const user = parseUser()
   const { students, setStudents } = useContext(StudentContext);
   const { teachers, setTeachers } = useContext(TeacherContext);
 
@@ -38,20 +38,18 @@ const Teachers = (props: { s: Student; teachers: Teacher[] }) => {
     setStudents(newStudents);
   };
 
-  console.log(props.s);
+  console.log(user);
 
   const studentContent = () => {
     if (
-      props.s.requestsLeft > 0 ||
-      props.s.requests
-        .map((r) => r.status)
-        .find((x) => x !== RequestStatus.DENIED)
+      user.requestsLeft > 0 ||
+      user.requests
+        .map((r: ThesisRequest) => r.status)
+        .find((x : RequestStatus) => x !== RequestStatus.DENIED)
     )
       return (
         <>
           <TeachersTable
-            rows={props.teachers}
-            student={props.s}
             createRequest={(s: Student, t: Teacher) => createRequest(s, t)}
             view={user.type}
           />
@@ -59,11 +57,11 @@ const Teachers = (props: { s: Student; teachers: Teacher[] }) => {
             Mai ai{' '}
             <Typography
               sx={{
-                color: props.s.requestsLeft < 1 ? 'red' : 'green',
+                color: user.requestsLeft < 1 ? 'red' : 'green',
                 display: 'inline',
               }}
             >
-              {props.s.requestsLeft}
+              {user.requestsLeft}
             </Typography>{' '}
             cereri rămase
           </Typography>
@@ -92,8 +90,6 @@ const Teachers = (props: { s: Student; teachers: Teacher[] }) => {
         studentContent()
       ) : (
         <TeachersTable
-          rows={props.teachers}
-          student={props.s}
           createRequest={(s: Student, t: Teacher) => createRequest(s, t)}
           view={user.type}
         />

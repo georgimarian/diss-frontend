@@ -12,8 +12,6 @@ import Settings from './Settings';
 import Menu from 'components/Menu';
 import PrivateRoute from 'utils/PrivateRoute';
 import {
-    getEmptyStudent,
-    getEmptyTeacher,
     parseUser,
 } from '../utils/models/common';
 import {Roles} from '../utils/models/common.enums';
@@ -64,8 +62,6 @@ const Main = () => {
                     element={
                         <PrivateRoute roles={[Roles.STUDENT, Roles.ADMIN]}>
                             <Teachers
-                                teachers={teachers ?? []}
-                                s={user ?? getEmptyStudent()}
                             />
                         </PrivateRoute>
                     }
@@ -74,7 +70,7 @@ const Main = () => {
                     path='/students'
                     element={
                         <PrivateRoute roles={[Roles.TEACHER, Roles.ADMIN]}>
-                            <Students teacher={user ?? getEmptyTeacher()}/>
+                            <Students/>
                         </PrivateRoute>
                     }
                 />
@@ -83,8 +79,6 @@ const Main = () => {
                     element={
                         <PrivateRoute roles={[Roles.TEACHER, Roles.ADMIN]}>
                             <Requests
-                                students={students ?? []}
-                                teacher={user ?? getEmptyTeacher()}
                             />
                         </PrivateRoute>
                     }

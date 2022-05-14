@@ -19,7 +19,7 @@ import {getEmptyStudent, Student, Teacher, ThesisRequest} from 'utils/models/com
 import { RequestStatus } from 'utils/models/common.enums';
 import { StudentContext, TeacherContext } from '../App';
 
-const Requests = (props: { students: Student[]; teacher: Teacher }) => {
+const Requests = () => {
   const theme = useTheme();
   const { teachers, setTeachers } = useContext(TeacherContext);
   const { students, setStudents } = useContext(StudentContext);
@@ -82,19 +82,19 @@ const Requests = (props: { students: Student[]; teacher: Teacher }) => {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell align='center'>
-                  {props.students.find(
+                  {students?.find(
                     (student) => student.id === row.studentId
                   )?.username ?? ''}
                 </TableCell>
                 <TableCell align='center'>
-                  {props.students.find(
+                  {students?.find(
                     (student) => student.id === row.studentId
                   )?.thesisDescription ?? ''}
                 </TableCell>
                 <TableCell align='center'>{row.status}</TableCell>
                 <TableCell align='center'>
-                  {props.teacher.totalPlaces !==
-                    props.teacher.enrolledStudents.length &&
+                  {teacher.totalPlaces !==
+                    teacher.enrolledStudents.length &&
                   row.status === RequestStatus.IN_PROGRESS ? (
                     <>
                       <Button
@@ -102,10 +102,10 @@ const Requests = (props: { students: Student[]; teacher: Teacher }) => {
                         startIcon={<CheckIcon />}
                         onClick={() =>
                           answerRequest(
-                            props.students.find(
+                            students?.find(
                               (student) => student.id === row.studentId
                             ) ?? getEmptyStudent(),
-                            props.teacher,
+                            teacher,
                             row,
                             true
                           )
@@ -116,10 +116,10 @@ const Requests = (props: { students: Student[]; teacher: Teacher }) => {
                         startIcon={<CloseIcon />}
                         onClick={() =>
                           answerRequest(
-                            props.students.find(
+                            students?.find(
                               (student) => student.id === row.studentId
                             ) ?? getEmptyStudent(),
-                            props.teacher,
+                            teacher,
                             row,
                             false
                           )
