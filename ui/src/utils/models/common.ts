@@ -106,7 +106,21 @@ export function parseUser() {
         return undefined;
     }
 }
-
+export function parseCriterias():Criterion[] | undefined {
+    try {
+        let user = localStorage.getItem('criterias')
+        if (user) {
+            return JSON.parse(user);
+        }
+        return undefined;
+    } catch (err) {
+        return undefined;
+    }
+}
+export type Criterion =  {
+    name: string;
+    value: number;
+};
 export function storeUser(user: User | Student | Teacher) {
     let userVar: Admin | Teacher | Student;
     if (user.type === Roles.STUDENT) {
@@ -119,6 +133,10 @@ export function storeUser(user: User | Student | Teacher) {
     console.log(userVar)
     localStorage.setItem('user', JSON.stringify(userVar));
 }
+export function storeCriterias(criterias: Criterion[]) {
+    localStorage.setItem('criterias', JSON.stringify(criterias));
+}
+
 
 export function createThesisRequest(s: Student, t_id: number) {
     return {

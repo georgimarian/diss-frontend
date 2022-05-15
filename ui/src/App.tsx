@@ -33,6 +33,7 @@ function App() {
     useEffect(() => {
         RequestAPI.getTeachers().then(teachersResponse => setTeachers(teachersResponse))
         RequestAPI.getStudents().then(studentsResponse => setStudents(studentsResponse))
+        RequestAPI.getCriterias().then(criterias => localStorage.setItem("criterias",JSON.stringify(criterias)))
     }, [])
 
     return (

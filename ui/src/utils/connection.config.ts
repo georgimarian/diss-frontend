@@ -1,5 +1,5 @@
 import React from "react";
-import {Credentials, Student, Teacher, ThesisRequest, User} from "./models/common";
+import {Credentials, Criterion, Student, Teacher, ThesisRequest, User} from "./models/common";
 
 let props = {
     host: "https://feec-188-27-130-36.eu.ngrok.io/",
@@ -11,6 +11,8 @@ let props = {
     register: "register",
     update: "update",
     add: "add",
+    getCriterias: "get_criterias",
+    setCriterias: "set_criterias",
 }
 
 export class RequestAPI extends React.Component {
@@ -28,6 +30,29 @@ export class RequestAPI extends React.Component {
             const response = await fetch(props.host + props.getTeachers);
             return await response.json();
         } catch (error) {
+            return [];
+        }
+    }
+    static async getCriterias(): Promise<Criterion[]> {
+        try {
+            const response = await fetch(props.host + props.getCriterias);
+            return await response.json();
+        } catch (error) {
+            return [];
+        }
+    }
+
+    static async setCriterias(criterias: Criterion[]): Promise<Criterion[]> {
+        try {
+            const response = await fetch(props.host + props.setCriterias, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(criterias)
+            });
+            console.log("data")
+            return response.json();
+        } catch (error) {
+            console.log("error")
             return [];
         }
     }
