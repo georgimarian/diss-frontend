@@ -7,7 +7,7 @@ import {
     TableRow,
     TableContainer,
     TableBody,
-    TableCell, MenuItem, Select, SelectChangeEvent,
+    TableCell, MenuItem, Select,
 } from '@mui/material';
 
 import Button from '@mui/material/Button';
@@ -17,15 +17,14 @@ import AppPage from 'components/AppPage';
 
 import {
     castTeacher,
-    findStudent, findTeacher,
-    getEmptyStudent,
+    findStudent,
     parseUser,
     storeUser,
     Student,
     Teacher,
     ThesisRequest
 } from 'utils/models/common';
-import {RequestStatus, Roles, rolesToString, statusesToString} from 'utils/models/common.enums';
+import {RequestStatus, Roles, statusesToString} from 'utils/models/common.enums';
 import {StudentContext, TeacherContext} from '../App';
 import {RequestAPI} from "../utils/connection.config";
 
@@ -35,7 +34,6 @@ const Requests = () => {
     const {teachers, setTeachers} = useContext(TeacherContext);
     const [teacher, setTeacher] = useState<Teacher>();
     const [teacherId, setTeacherId] = useState<number>();
-    const [teacherList, setTeacherList] = useState<Teacher[]>([]);
     const [requestList, setRequestList] = useState<ThesisRequest[]>([]);
     const _user = parseUser()
 
@@ -54,14 +52,13 @@ const Requests = () => {
                 }
             }
         }
-
-    }, []);
+    }, [_user, students]);
     useEffect(() => {
         let teacherValue = teachers?.find(t => t.id === teacherId)
         if (teacherValue) {
             setTeacher(teacherValue)
         }
-    }, [teacherId]);
+    }, [teacherId, teachers]);
 
 
     function answerRequest(
@@ -71,6 +68,11 @@ const Requests = () => {
     ) {
         if (s) {
             r.status = a ? RequestStatus.APPROVED : RequestStatus.DENIED;
+            if (_user.type === Roles.ADMIN) {
+                if (teacher) {
+                    r.teacherId = teacher.id;
+                }
+            }
             s.requests = s.requests.map(req => r.id === req.id ? r : req)
             RequestAPI.Update(s).then(stud => {
                 if (teacher) {
@@ -100,7 +102,7 @@ const Requests = () => {
                             <TableCell align='center'>Nume Student</TableCell>
                             <TableCell align='center'>Descrierea tezei</TableCell>
                             <TableCell align='center'>Statusul Cererii</TableCell>
-                            {_user.type === Roles.STUDENT && (
+                            {_user.type === Roles.ADMIN && (
                                 <TableCell align='center'>Profesor</TableCell>
                             )}
 
@@ -120,20 +122,20 @@ const Requests = () => {
                                     {findStudent(students, row.studentId)?.thesisDescription ?? ''}
                                 </TableCell>
                                 <TableCell align='center'>{statusesToString(row.status)}</TableCell>
-                                {_user.type === Roles.STUDENT && (
+                                {_user.type === Roles.ADMIN && (
                                     <TableCell align='center'>
                                         <Select
+                                            sx={{width: "15em"}}
                                             id="outlined-required"
-                                            value={"0"}
+                                            value={teacherId}
                                             label="Tip"
                                             onChange={handleTeacherChange("teacherid")}
                                         >{
                                             teachers?.filter(teach => !teach.requests.map(req => req.studentId).find(sid => sid === row.studentId))
-                                                .map(tch => (<MenuItem value={tch.id}>{tch.username}</MenuItem>))
+                                                .map(tch => (
+                                                    <MenuItem value={tch.id}>{tch.username}</MenuItem>
+                                                ))
                                         }
-
-                                            <MenuItem value={1}>{rolesToString(Roles.TEACHER)}</MenuItem>
-                                            <MenuItem value={2}>{rolesToString(Roles.ADMIN)}</MenuItem>
                                         </Select>
                                     </TableCell>
                                 )}
@@ -141,7 +143,7 @@ const Requests = () => {
                                     {_user.type === Roles.ADMIN ||
                                         (teacher?.totalPlaces !==
                                         teacher?.enrolledStudents.length &&
-                                        row.status === RequestStatus.IN_PROGRESS ? (
+                                        row.status === RequestStatus.IN_PROGRESS )? (
                                             <>
                                                 <Button
 
@@ -165,7 +167,7 @@ const Requests = () => {
                                             </>
                                         ) : (
                                             ''
-                                        ))}
+                                        )}
                                 </TableCell>
                             </TableRow>
                         ))}
