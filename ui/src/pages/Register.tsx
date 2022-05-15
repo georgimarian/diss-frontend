@@ -1,5 +1,5 @@
 import CustomForm from "../components/CustomForm";
-import {Box, IconButton, InputAdornment, MenuItem, Select, TextField, useTheme} from "@mui/material";
+import {Box, IconButton, InputAdornment, InputLabel, MenuItem, Select, TextField, useTheme} from "@mui/material";
 import {useState} from "react";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {Admin, storeUser, Student, Teacher, User} from "../utils/models/common";
@@ -106,7 +106,7 @@ const Register = () => {
                     onChange={handleChange('lastName')}
                 />
                 <Select
-
+                    labelId={"demo-simple-select-helper-label"}
                     sx={{width: '100%', mt: 2}}
                     id="outlined-required"
                     value={values.type}

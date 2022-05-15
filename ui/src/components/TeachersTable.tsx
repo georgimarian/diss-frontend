@@ -14,7 +14,7 @@ import {
 import CheckIcon from '@mui/icons-material/Check';
 
 import {createThesisRequest, parseUser, storeUser, Student, Teacher, ThesisRequest} from '../utils/models/common';
-import {areasToString, RequestStatus, Roles, rolesToString, statusesToString} from '../utils/models/common.enums';
+import {areasToString, RequestStatus, Roles, statusesToString} from '../utils/models/common.enums';
 import SearchBar from 'components/SearchBar';
 import ProfileIcon from 'components/profile-components/ProfileIcon';
 import {StudentContext, TeacherContext} from '../App';
@@ -42,7 +42,7 @@ const TeachersTable = (props: { view: number }): JSX.Element => {
     }, []);
 
     function createRequest(s: Student, t: Teacher) {
-        RequestAPI.Request(createThesisRequest(s, t)).then(req => {
+        RequestAPI.Request(createThesisRequest(s, t.id)).then(req => {
             if (req) {
                 _user.requests.push(req);
                 _user.requestsLeft -= 1;

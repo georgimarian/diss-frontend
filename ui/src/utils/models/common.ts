@@ -120,12 +120,27 @@ export function storeUser(user: User | Student | Teacher) {
     localStorage.setItem('user', JSON.stringify(userVar));
 }
 
-export function createThesisRequest(s: Student, t: Teacher) {
+export function createThesisRequest(s: Student, t_id: number) {
     return {
         id: 1,
-        teacherId: t.id,
+        teacherId: t_id,
         studentId: s.id,
         description: s.thesisDescription,
         status: RequestStatus.IN_PROGRESS,
     }
+}
+
+export function castTeacher(user : User): Teacher | undefined{
+    return user as Teacher;
+}
+
+export function castStudent(user : User): Student | undefined{
+    return user as Student;
+}
+
+export function findStudent(studs: Student[] | undefined, id_: number){
+    return studs?.find(student => student.id === id_)
+}
+export function findTeacher(techs: Teacher[] | undefined, id_: number){
+    return techs?.find(tech => tech.id === id_)
 }

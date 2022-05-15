@@ -1,17 +1,24 @@
-import { useContext } from 'react';
 import { Button, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import AppPage from '../components/AppPage';
-import {parseUser, Student, Teacher, ThesisRequest} from '../utils/models/common';
+import {createThesisRequest, parseUser, storeUser, ThesisRequest} from '../utils/models/common';
 import TeachersTable from '../components/TeachersTable';
 import {RequestStatus, Roles} from 'utils/models/common.enums';
-import { StudentContext, TeacherContext } from 'App';
+import {RequestAPI} from "../utils/connection.config";
 
 const Teachers = () => {
-  const user = parseUser()
-
-  console.log(user);
+  const user = parseUser();
+  function createAdminRequest(){
+      RequestAPI.Request(createThesisRequest(user, -1)).then(req => {
+          if (req) {
+              user.requests.push(req);
+              user.requestsLeft -= 1;
+              storeUser(user)
+              window.location.reload()
+          }
+      });
+    }
 
   const studentContent = () => {
     if (
@@ -49,6 +56,7 @@ const Teachers = () => {
         <Button
           variant='outlined'
           sx={{ color: 'red' }}
+          onClick={createAdminRequest}
           startIcon={<AddIcon sx={{ color: 'green' }} />}
         >
           Cere ajutorul adminilor{' '}

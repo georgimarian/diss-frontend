@@ -13,7 +13,7 @@ import {
 import {useEffect, useState} from "react";
 import {Student} from "../utils/models/common";
 import {Actions, initializedStudent} from "../mock_data/users";
-import {AreaOfInterest} from "../utils/models/common.enums";
+import {AreaOfInterest, areasToString} from "../utils/models/common.enums";
 
 type StudentFormProps = {
     studentsList: Student[]
@@ -106,10 +106,10 @@ const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action
                             }}
                         >
                             <MenuItem value={AreaOfInterest.PSYCHOLOGY}>
-                                {AreaOfInterest.PSYCHOLOGY}
+                                {areasToString(AreaOfInterest.PSYCHOLOGY)}
                             </MenuItem>
                             <MenuItem value={AreaOfInterest.APPLIED_PSYCHOLOGY}>
-                                {AreaOfInterest.APPLIED_PSYCHOLOGY}
+                                {areasToString(AreaOfInterest.APPLIED_PSYCHOLOGY)}
                             </MenuItem>
                         </Select>
                     </FormControl>
