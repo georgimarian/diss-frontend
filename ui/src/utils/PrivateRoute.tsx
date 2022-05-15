@@ -1,28 +1,24 @@
-import { Roles } from './roles';
-import { Navigate } from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
+import {Roles} from "./models/common.enums";
+import {parseUser} from "./models/common";
 
 const PrivateRoute = ({
-  children,
-  roles,
-}: {
-  children: JSX.Element;
-  roles: Array<Roles>;
+                          children,
+                          roles,
+                      }: {
+    children: JSX.Element;
+    roles: Array<Roles>;
 }) => {
-  const user = localStorage.getItem('user');
-  const loggedUser = user && JSON.parse(user || '');
+    const user = parseUser()
+    const userHasRequiredRole = user && roles.includes(user.type);
 
-  const userHasRequiredRole =
-    user && roles.includes(loggedUser.role) ? true : false;
+    if (!user) {
+        return <Navigate to='/login'/>;
+    } else if (!userHasRequiredRole) {
+        return <Navigate to='/home'/>;
+    }
 
-  if (loggedUser === '') {
-    return <Navigate to='/login' />;
-  }
-
-  if (loggedUser && !userHasRequiredRole) {
-    return <Navigate to='/home' />; // build your won access denied page (sth like 404)
-  }
-
-  return children;
+    return children;
 };
 
 export default PrivateRoute;

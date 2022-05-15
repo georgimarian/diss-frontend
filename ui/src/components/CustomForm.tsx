@@ -25,7 +25,7 @@ const CustomForm = ({
     const theme = useTheme()
     return (<Box
             sx={{
-                height: '40%',
+                minHeight: '40%',
                 width: '24%',
                 borderRadius: 5,
                 bgcolor: accentColor,

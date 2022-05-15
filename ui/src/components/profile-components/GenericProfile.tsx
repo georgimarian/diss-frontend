@@ -1,11 +1,12 @@
 import { Box, Link, Typography, useTheme } from '@mui/material';
 import ProfileIcon from './ProfileIcon';
-import { Roles } from '../../utils/roles';
 import { useEffect, useState } from 'react';
 import { aboutMe } from '../../mock_data/users';
 import { Colors } from '../../mock_data/theme';
 import PublishedPapersList from './PublishedPapersList';
 import ProfileCompletion from './ProfileCompletion';
+import {Roles} from "../../utils/models/common.enums";
+import {parseUser} from "../../utils/models/common";
 
 type GenericProfileProps = {
   user: any; //TODO
@@ -13,16 +14,16 @@ type GenericProfileProps = {
 
 const GenericProfile = ({ user }: GenericProfileProps) => {
   const theme = useTheme();
+  const _user = parseUser();
   const hasProfessor = false;
-  const _user = JSON.parse(localStorage.getItem('user') || '');
 
   const [customProfileFunctionality, setCustomProfileFunctionality] =
     useState<JSX.Element>();
   const [seeMore, setSeeMore] = useState(false);
 
   useEffect(() => {
-    switch (_user.role) {
-      case Roles.Student:
+    switch (_user.type) {
+      case Roles.STUDENT:
         const teachersList = (
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant={'h6'} sx={{ textTransform: 'uppercase' }}>
@@ -48,7 +49,7 @@ const GenericProfile = ({ user }: GenericProfileProps) => {
         );
         setCustomProfileFunctionality(teachersList);
         break;
-      case Roles.Teacher:
+      case Roles.TEACHER:
         const studentsList = (
           <Typography variant={'body2'}>
             <Link
@@ -65,7 +66,7 @@ const GenericProfile = ({ user }: GenericProfileProps) => {
         );
         setCustomProfileFunctionality(studentsList);
         break;
-      case Roles.Admin:
+      case Roles.ADMIN:
         setCustomProfileFunctionality(<div />);
         break;
       default:
@@ -119,7 +120,7 @@ const GenericProfile = ({ user }: GenericProfileProps) => {
                 pt: 0.5,
               }}
             >
-              <Typography variant={'body1'}>{_user.role}</Typography>
+              <Typography variant={'body1'}>{_user.type}</Typography>
               <Typography variant={'body1'} sx={{ px: 2 }}>
                 |
               </Typography>
@@ -159,9 +160,9 @@ const GenericProfile = ({ user }: GenericProfileProps) => {
         </Box>
       </Box>
 
-      {_user.role === Roles.Teacher ? (
+      {_user.type === Roles.TEACHER ? (
         <PublishedPapersList />
-      ) : _user.role === Roles.Student ? (
+      ) : _user.type === Roles.STUDENT ? (
         <ProfileCompletion />
       ) : (
         <div />

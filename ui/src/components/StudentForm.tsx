@@ -11,9 +11,9 @@ import {
     TextField
 } from "@mui/material";
 import {useEffect, useState} from "react";
-import {Student} from "../models/common";
+import {Student} from "../utils/models/common";
 import {Actions, initializedStudent} from "../mock_data/users";
-import {AreaOfInterest} from "../models/common.enums";
+import {AreaOfInterest, areasToString} from "../utils/models/common.enums";
 
 type StudentFormProps = {
     studentsList: Student[]
@@ -26,7 +26,6 @@ type StudentFormProps = {
 
 const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action}: StudentFormProps) => {
     const [values, setValues] = useState<Student>({...user});
-
     useEffect(() => {
         setValues({...user})
     }, [user])
@@ -107,10 +106,10 @@ const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action
                             }}
                         >
                             <MenuItem value={AreaOfInterest.PSYCHOLOGY}>
-                                {AreaOfInterest.PSYCHOLOGY}
+                                {areasToString(AreaOfInterest.PSYCHOLOGY)}
                             </MenuItem>
                             <MenuItem value={AreaOfInterest.APPLIED_PSYCHOLOGY}>
-                                {AreaOfInterest.APPLIED_PSYCHOLOGY}
+                                {areasToString(AreaOfInterest.APPLIED_PSYCHOLOGY)}
                             </MenuItem>
                         </Select>
                     </FormControl>

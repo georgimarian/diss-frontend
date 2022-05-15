@@ -11,6 +11,7 @@ import {
 import MuiDrawer from '@mui/material/Drawer';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { MENU_ITEMS } from '../utils/constants';
+import {parseUser} from "../utils/models/common";
 
 const drawerWidth = 240;
 
@@ -54,9 +55,8 @@ const Menu = () => {
       >
         <div>
           {MENU_ITEMS.map(({ title, path, icon, roles }, index) => {
-            const user = localStorage.getItem('user');
-            const localUser = user && JSON.parse(user || '');
-            if (roles.includes(localUser.role))
+            const user = parseUser()
+            if (roles.includes(user.type))
               return (
                 <ListItem button key={title} onClick={() => navigate(path)}>
                   <ListItemIcon>{icon}</ListItemIcon>

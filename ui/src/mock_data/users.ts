@@ -1,6 +1,5 @@
-import { AreaOfInterest, RequestStatus } from '../models/common.enums';
-import { Student, Teacher } from '../models/common';
-import { Roles } from 'utils/roles';
+import { AreaOfInterest, RequestStatus, Roles } from '../utils/models/common.enums';
+import { Student, Teacher } from '../utils/models/common';
 
 export const aboutMe =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' +
@@ -17,14 +16,14 @@ export let teacherList: Teacher[] = [
     username: 'Pop Popescu',
     firstName: 'Pop ',
     lastName: ' Popescu',
-    type: Roles.Teacher,
+    type: Roles.TEACHER,
     areaOfInterest: AreaOfInterest.PSYCHOLOGY,
     email: 'popescu@yahoo.com',
     enrolledStudents: [
       {
         id: 2,
         password: 'lorena',
-        type: Roles.Student,
+        type: Roles.STUDENT,
         username: 'denis2',
         firstName: 'denis2',
         areaOfInterest: AreaOfInterest.PSYCHOLOGY,
@@ -69,7 +68,7 @@ export let teacherList: Teacher[] = [
     username: 'Ion Ionescu',
     firstName: 'Ion',
     lastName: 'Ionescu',
-    type: Roles.Teacher,
+    type: Roles.TEACHER,
     areaOfInterest: AreaOfInterest.PSYCHOLOGY,
     email: 'ionescu@yahoo.com',
     enrolledStudents: [],
@@ -82,7 +81,7 @@ export let teacherList: Teacher[] = [
     username: 'George Georgescu',
     firstName: 'George',
     lastName: 'Georgescu',
-    type: Roles.Teacher,
+    type: Roles.TEACHER,
     areaOfInterest: AreaOfInterest.APPLIED_PSYCHOLOGY,
     email: 'popescu@yahoo.com',
     enrolledStudents: [],
@@ -95,7 +94,7 @@ export let teacherList: Teacher[] = [
     username: 'Alin Alinescu',
     firstName: 'Alin',
     lastName: 'Alinescu',
-    type: Roles.Teacher,
+    type: Roles.TEACHER,
     areaOfInterest: AreaOfInterest.APPLIED_PSYCHOLOGY,
     email: 'alinescu@yahoo.com',
     enrolledStudents: [],
@@ -108,7 +107,7 @@ export let teacherList: Teacher[] = [
     username: 'Florin Florinescu',
     firstName: 'Florin',
     lastName: 'Florinescu',
-    type: Roles.Teacher,
+    type: Roles.TEACHER,
     areaOfInterest: AreaOfInterest.PSYCHOLOGY,
     email: 'florinescu@yahoo.com',
     enrolledStudents: [],
@@ -129,7 +128,7 @@ export let studentList: Student[] = [
   {
     id: 1,
     password: 'lorena',
-    type: Roles.Student,
+    type: Roles.STUDENT,
     username: 'denis',
     lastName: 'denis',
     firstName: 'denis',
@@ -159,7 +158,7 @@ export let studentList: Student[] = [
   {
     id: 2,
     password: 'lorena',
-    type: Roles.Student,
+    type: Roles.STUDENT,
     username: 'denis2',
     firstName: 'denis2',
     lastName: 'denis2',
@@ -199,7 +198,7 @@ export let studentList: Student[] = [
     description: '',
     requests: [],
     requestsLeft: 3,
-    type: Roles.Student,
+    type: Roles.STUDENT,
     thesisDescription: '',
   },
   {
@@ -214,7 +213,7 @@ export let studentList: Student[] = [
     description: '',
     requests: [],
     requestsLeft: 3,
-    type: Roles.Student,
+    type: Roles.STUDENT,
     thesisDescription: '',
   },
   {
@@ -229,7 +228,7 @@ export let studentList: Student[] = [
     description: '',
     requests: [],
     requestsLeft: 3,
-    type: Roles.Student,
+    type: Roles.STUDENT,
     thesisDescription: '',
   },
 ];
@@ -268,7 +267,7 @@ export const initializedStudent: Student = {
   password: '',
   firstName: '',
   lastName: '',
-  type: Roles.Student,
+  type: Roles.STUDENT,
   areaOfInterest: AreaOfInterest.PSYCHOLOGY,
   description: ' ',
   requestsLeft: 0,

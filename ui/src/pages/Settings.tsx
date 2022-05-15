@@ -7,48 +7,44 @@ import EditIcon from '@mui/icons-material/Edit';
 import { AddCircleOutline } from '@mui/icons-material';
 
 import AppPage from 'components/AppPage';
+import {Criterion, parseCriterias, storeCriterias} from "../utils/models/common";
+import {RequestAPI} from "../utils/connection.config";
 
-type Criterion = {
-  name: string;
-  value: number;
-};
 
-const MOCK_CRITERIA: Array<Criterion> = [
-  {
-    name: 'Introducere',
-    value: 10,
-  },
-  {
-    name: 'Cercetare Bibliografică',
-    value: 20,
-  },
-  {
-    name: 'Aspecte Teoretice',
-    value: 30,
-  },
-  {
-    name: 'Studii de cercetare',
-    value: 20,
-  },
-  {
-    name: 'Concluzie',
-    value: 10,
-  },
-];
 
 const Settings = () => {
   const theme = useTheme();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [criteria, setCriteria] = useState<Array<Criterion> | undefined>(
-    undefined
+  const [criteria, setCriteria] = useState<Criterion[] | undefined>(
+    parseCriterias
   );
 
   useEffect(() => {
-    setCriteria(MOCK_CRITERIA);
-  }, []);
+      if(criteria){
+          storeCriterias(criteria)
+          RequestAPI.setCriterias(criteria)
+      }
+  }, [criteria]);
 
-  const criteriaArea = () => {
+    function setNewCriteriaName(value: string, index: number) {
+        if (criteria) {
+            let crr = criteria[index]
+
+        let oldName = crr.name;
+        crr.name = value;
+        setCriteria(criteria?.map(cr => cr.name === oldName ? crr : cr))
+        }
+    }
+    function setNewCriteriaValue(value: number, index: number) {
+        if (criteria) {
+            let crr = criteria[index]
+            crr.value = value;
+            setCriteria(criteria?.map(cr => cr.name === crr.name ? crr : cr))
+        }
+    }
+
+    const criteriaArea = () => {
     return (
       <Box
         sx={{
@@ -70,16 +66,26 @@ const Settings = () => {
               alignItems: 'baseline',
               minHeight: '50px',
             }}
-          >
-            {index + 1}. <b>{criterion.name}</b> : Pondere notă:{' '}
+          >{index + 1}. {!isEditing ? (
+              <span>{criterion.name}</span>
+          ) : (
+              <TextField
+                  variant='standard'
+                  size='small'
+                  defaultValue={criterion.name}
+                  onChange={(e) => setNewCriteriaName(e.target.value,index)}
+              />
+          )}
+              : Pondere notă:{' '}
             {!isEditing ? (
               <span>{criterion.value} %</span>
             ) : (
               <TextField
-                id={criterion.name}
                 variant='standard'
                 size='small'
+                type={"number"}
                 defaultValue={criterion.value}
+                onChange={(e) => setNewCriteriaValue(+e.target.value,index)}
               />
             )}
           </span>
