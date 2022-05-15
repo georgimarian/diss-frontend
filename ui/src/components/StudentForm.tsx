@@ -44,7 +44,6 @@ const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action
             setValues(initializedStudent)
         } else if (Actions.EDIT === action) {
             const index = studentsList.indexOf(user)
-            console.log(index)
 
             _studentsList[index] = values
             setStudentsList(_studentsList)

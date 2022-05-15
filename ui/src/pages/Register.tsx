@@ -1,8 +1,8 @@
 import CustomForm from "../components/CustomForm";
-import {Box, IconButton, InputAdornment, InputLabel, MenuItem, Select, TextField, useTheme} from "@mui/material";
+import {Box, IconButton, InputAdornment, MenuItem, Select, TextField, useTheme} from "@mui/material";
 import {useState} from "react";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {Admin, storeUser, Student, Teacher, User} from "../utils/models/common";
+import {storeUser,  User} from "../utils/models/common";
 import {Roles, rolesToString} from "../utils/models/common.enums";
 import {RequestAPI} from "../utils/connection.config";
 import {useNavigate} from 'react-router-dom';
@@ -18,7 +18,8 @@ const Register = () => {
         lastName: '',
         type: Roles.STUDENT,
         email: '',
-        id: -1
+        id: -1,
+        description: '',
     });
     let navigate = useNavigate()
 

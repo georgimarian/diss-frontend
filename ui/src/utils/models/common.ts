@@ -1,5 +1,4 @@
 import {AreaOfInterest, RequestStatus, Roles} from './common.enums';
-import {studentList, teacherList} from "../../mock_data/users";
 
 export interface User {
     id: number;
@@ -9,11 +8,11 @@ export interface User {
     firstName: string;
     lastName: string;
     type: Roles;
+    description: string;
 }
 
 export interface Student extends User {
     areaOfInterest: AreaOfInterest;
-    description: string;
     requestsLeft: number;
     requests: ThesisRequest[];
     thesisDescription: string;
@@ -79,6 +78,7 @@ export function getEmptyTeacher(): Teacher {
         type: Roles.TEACHER,
         requests: [],
         enrolledStudents: [],
+        description: '',
     };
 }
 
@@ -91,31 +91,24 @@ export function getEmptyUser(): User {
         email: '',
         password: '',
         type: Roles.ADMIN,
+        description: '',
     };
 }
 
 
 export function parseUser() {
-    try {
-        let user = localStorage.getItem('user')
-        if (user) {
-            return JSON.parse(user);
-        }
-        return undefined;
-    } catch (err) {
-        return undefined;
+    const user = localStorage.getItem('user')
+    if (user) {
+        return JSON.parse(user);
     }
+    return undefined;
 }
 export function parseCriterias():Criterion[] | undefined {
-    try {
-        let user = localStorage.getItem('criterias')
-        if (user) {
-            return JSON.parse(user);
-        }
-        return undefined;
-    } catch (err) {
-        return undefined;
+    const criterias = localStorage.getItem('criterias')
+    if (criterias) {
+        return JSON.parse(criterias);
     }
+    return undefined;
 }
 export type Criterion =  {
     name: string;
@@ -136,7 +129,6 @@ export function storeUser(user: User | Student | Teacher) {
 export function storeCriterias(criterias: Criterion[]) {
     localStorage.setItem('criterias', JSON.stringify(criterias));
 }
-
 
 export function createThesisRequest(s: Student, t_id: number) {
     return {

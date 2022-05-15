@@ -49,7 +49,6 @@ export class RequestAPI extends React.Component {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(criterias)
             });
-            console.log("data")
             return response.json();
         } catch (error) {
             console.log("error")
@@ -64,7 +63,6 @@ export class RequestAPI extends React.Component {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(user)
             });
-            console.log("data")
             return response.json();
         } catch (error) {
             console.log("error")
@@ -78,7 +76,6 @@ export class RequestAPI extends React.Component {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(user)
             });
-            console.log("data")
             return response.json();
         } catch (error) {
             console.log("error")
@@ -93,7 +90,6 @@ export class RequestAPI extends React.Component {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(user)
             });
-            console.log("data")
             return response.json();
         } catch (error) {
             console.log("error")
@@ -108,7 +104,6 @@ export class RequestAPI extends React.Component {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(user)
             });
-            console.log("data")
             return response.json();
         } catch (error) {
             console.log("error")
@@ -122,7 +117,6 @@ export class RequestAPI extends React.Component {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(request)
             });
-            console.log("data")
             return response.json();
         } catch (error) {
             console.log("error")
@@ -135,7 +129,6 @@ export class RequestAPI extends React.Component {
                 method: 'DELETE',
                 headers: {'Content-Type': 'application/json'},
             });
-            console.log("data")
             return response.json();
         } catch (error) {
             console.log("error")

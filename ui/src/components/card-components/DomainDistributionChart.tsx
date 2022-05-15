@@ -10,7 +10,6 @@ import {
 import { TEACHER_DISTRIBUTION_DATA } from '../../mock_data/dashboard';
 
 const DomainDistributionChart = () => {
-  console.log('help');
   return (
     <RadarChart
       outerRadius={90}
