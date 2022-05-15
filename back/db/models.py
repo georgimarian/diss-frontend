@@ -32,6 +32,14 @@ class ThesisRequest(DB.Model):
     teacher = DB.relationship('Teacher', back_populates='thesis_requests', uselist=False, lazy='joined')
 
 
+class Criteria(DB.Model):
+    __tablename__ = 'criteria'
+
+    id = DB.Column(DB.Integer, primary_key=True, autoincrement=True)
+    name = DB.Column(DB.String(DESCRIPTION_LENGTH), unique=True)
+    value = DB.Column(DB.Integer)
+
+
 class User(DB.Model):
     __tablename__ = 'user'
     id = DB.Column(DB.Integer, primary_key=True, autoincrement=True)

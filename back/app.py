@@ -87,6 +87,16 @@ def get_students():
     return with_headers(controller.get_students())
 
 
+@app.route('/get_criterias', methods=['GET'])
+def get_criterias():
+    return with_headers(controller.get_criterias())
+
+
+@app.route('/set_criterias', methods=['POST'])
+def set_criterias():
+    return with_headers(controller.set_criterias(json.loads(request.data)))
+
+
 @app.route('/get_teachers', methods=['GET'])
 def get_teachers():
     return with_headers(controller.get_teachers())

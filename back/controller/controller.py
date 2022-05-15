@@ -75,6 +75,7 @@ class UserController:
             for tr in user['requests']:
                 tr_obj = session.query(ThesisRequest).get(tr['id'])
                 tr_obj.request_status = tr['status']
+                tr_obj.teacher_id = tr['teacherId']
                 if tr_obj.request_status == RequestStatus.APPROVED.value:
                     s: Student = session.query(Student).get(tr_obj.student_id)
                     s.teacher_id = tr_obj.teacher_id
@@ -116,6 +117,19 @@ class UserController:
         with db_session() as session:
             return [self.Student2JSON(s) for s in session.query(User).filter_by(type=UserType.STUDENT.value).all()]
 
+    def get_criterias(self):
+        with db_session() as session:
+            return [self.Criteria2JSON(c) for c in session.query(Criteria).all()]
+
+    def set_criterias(self, criterias):
+        with db_session() as session:
+            session.query(Criteria).delete()
+            for c in criterias:
+                session.add(Criteria(name=c['name'], value=c['value']))
+            session.commit()
+        return criterias
+
+
     def get_teachers(self):
         with db_session() as session:
             return [self.Teacher2JSON(s) for s in session.query(User).filter_by(type=UserType.TEACHER.value).all()]
@@ -144,12 +158,12 @@ class UserController:
             session.add(user_obj)
             session.commit()
             if user_obj.type == UserType.STUDENT.value:
-                session.add(Student(id=user_obj.id, description="", profile_thesis_description=""))
+                session.add(Student(id=user_obj.id, description="", profile_thesis_description="", grades="[]", area_of_interest=0))
                 session.commit()
                 user_obj._student_id = user_obj.id
                 session.commit()
             elif user_obj.type == UserType.TEACHER.value:
-                session.add(Teacher(id=user_obj.id, description=""))
+                session.add(Teacher(id=user_obj.id, description="", area_of_interest = 0))
                 session.commit()
                 user_obj._teacher_id = user_obj.id
                 session.commit()
@@ -220,6 +234,13 @@ class UserController:
             'password': '',
             'email': user.email,
             'type': user.type
+        }
+
+    @staticmethod
+    def Criteria2JSON(c: Criteria):
+        return {
+            'name': c.name,
+            'value': c.value
         }
 
     @staticmethod
