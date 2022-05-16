@@ -140,7 +140,7 @@ export function createThesisRequest(s: Student, t_id: number) {
     }
 }
 
-export function castTeacher(user : User): Teacher | undefined{
+export function castTeacher(user : User): Teacher {
     return user as Teacher;
 }
 
@@ -154,3 +154,12 @@ export function findStudent(studs: Student[] | undefined, id_: number){
 export function findTeacher(techs: Teacher[] | undefined, id_: number){
     return techs?.find(tech => tech.id === id_)
 }
+
+// thesis description
+// ia profesorul pt student si afiseaza-l
+// grading + criteria
+// published papers
+// profile completion -> description + thesisDescription
+// testing overall
+// description la save sa nu se faca request numai daca nu ii empty si daca nu ii same as before
+// verificat si request-urile + add && save student

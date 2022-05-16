@@ -1,13 +1,15 @@
 import {useContext, useEffect, useState} from 'react';
 import {
+    MenuItem,
     Paper,
-    useTheme,
+    Select,
     Table,
+    TableBody,
+    TableCell,
+    TableContainer,
     TableHead,
     TableRow,
-    TableContainer,
-    TableBody,
-    TableCell, MenuItem, Select,
+    useTheme,
 } from '@mui/material';
 
 import Button from '@mui/material/Button';
@@ -15,15 +17,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import AppPage from 'components/AppPage';
 
-import {
-    castTeacher,
-    findStudent,
-    parseUser,
-    storeUser,
-    Student,
-    Teacher,
-    ThesisRequest
-} from 'utils/models/common';
+import {castTeacher, findStudent, parseUser, storeUser, Student, Teacher, ThesisRequest} from 'utils/models/common';
 import {RequestStatus, Roles, statusesToString} from 'utils/models/common.enums';
 import {StudentContext, TeacherContext} from '../App';
 import {RequestAPI} from "../utils/connection.config";
@@ -37,30 +31,37 @@ const Requests = () => {
     const [requestList, setRequestList] = useState<ThesisRequest[]>([]);
     const _user = parseUser()
 
-    useEffect(() => {
-        if (_user.type === Roles.TEACHER) {
-            setTeacherId(_user.id)
-            let tReqs = castTeacher(_user)?.requests
-            if (tReqs) {
-                setRequestList(tReqs)
-            }
-        } else {
-            if (students) {
-                let tReqs = Array.prototype.concat.apply<ThesisRequest[], ThesisRequest[][], ThesisRequest[]>([], students.map(st => st.requests)).filter(r => r.teacherId === -1)
-                if (tReqs) {
-                    setRequestList(tReqs)
-                }
-            }
-        }
-    }, [_user, students]);
-    useEffect(() => {
-        let teacherValue = teachers?.find(t => t.id === teacherId)
-        if (teacherValue) {
-            setTeacher(teacherValue)
-        }
-    }, [teacherId, teachers]);
+    // useEffect(() => {
+    //     if (_user.type === Roles.TEACHER) {
+    //         setTeacherId(_user.id)
+    //         let tReqs = castTeacher(_user)?.requests
+    //         if (tReqs) {
+    //             setRequestList(tReqs)
+    //         }
+    //     } else {
+    //         if (students) {
+    //             let tReqs = Array.prototype.concat.apply<ThesisRequest[], ThesisRequest[][], ThesisRequest[]>([], students.map(st => st.requests)).filter(r => r.teacherId === -1)
+    //             if (tReqs) {
+    //                 setRequestList(tReqs)
+    //             }
+    //         }
+    //     }
+    // }, [_user, students]);
+    // useEffect(() => {
+    //     let teacherValue = teachers?.find(t => t.id === teacherId)
+    //     if (teacherValue) {
+    //         setTeacher(teacherValue)
+    //     }
+    // }, [teacherId, teachers]);
 
-
+    useEffect(() => {
+        if(_user.type === Roles.TEACHER){
+            const tReqs = (_user as Teacher).requests
+            setRequestList(tReqs)
+            setTeacher(_user as Teacher)
+        }
+    }, [])
+    
     function answerRequest(
         s: Student | undefined,
         r: ThesisRequest,
@@ -116,7 +117,7 @@ const Requests = () => {
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                             >
                                 <TableCell align='center'>
-                                    {findStudent(students, row.studentId)?.username ?? ''}
+                                    {findStudent(students, row.studentId)?.firstName + ' ' + findStudent(students, row.studentId)?.lastName ?? ''}
                                 </TableCell>
                                 <TableCell align='center'>
                                     {findStudent(students, row.studentId)?.thesisDescription ?? ''}
@@ -141,33 +142,33 @@ const Requests = () => {
                                 )}
                                 <TableCell align='center'>
                                     {_user.type === Roles.ADMIN ||
-                                        (teacher?.totalPlaces !==
+                                    (teacher?.totalPlaces !==
                                         teacher?.enrolledStudents.length &&
-                                        row.status === RequestStatus.IN_PROGRESS )? (
-                                            <>
-                                                <Button
+                                        row.status === RequestStatus.IN_PROGRESS) ? (
+                                        <>
+                                            <Button
 
-                                                    sx={{
-                                                        border: 0
-                                                    }}
-                                                    variant='outlined'
-                                                    startIcon={<CheckIcon/>}
-                                                    onClick={() =>
-                                                        answerRequest(findStudent(students, row.studentId), row, true)}
-                                                />
-                                                {' '}
-                                                <Button
-                                                    sx={{border: 0}}
-                                                    variant='outlined'
-                                                    startIcon={<CloseIcon/>}
-                                                    onClick={() =>
-                                                        answerRequest(findStudent(students, row.studentId), row, false)
-                                                    }
-                                                />
-                                            </>
-                                        ) : (
-                                            ''
-                                        )}
+                                                sx={{
+                                                    border: 0
+                                                }}
+                                                variant='outlined'
+                                                startIcon={<CheckIcon/>}
+                                                onClick={() =>
+                                                    answerRequest(findStudent(students, row.studentId), row, true)}
+                                            />
+                                            {' '}
+                                            <Button
+                                                sx={{border: 0}}
+                                                variant='outlined'
+                                                startIcon={<CloseIcon/>}
+                                                onClick={() =>
+                                                    answerRequest(findStudent(students, row.studentId), row, false)
+                                                }
+                                            />
+                                        </>
+                                    ) : (
+                                        ''
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}

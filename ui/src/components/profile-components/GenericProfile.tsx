@@ -83,7 +83,7 @@ const GenericProfile = ({user}: GenericProfileProps) => {
     }, []);
 
     const onSave = async () => {
-        if(updateAboutMe){
+        if (updateAboutMe) {
             if (currentUser) {
                 RequestAPI.Update(currentUser)
                     .then(user => {
@@ -149,73 +149,80 @@ const GenericProfile = ({user}: GenericProfileProps) => {
                                     <Typography variant={'body1'} sx={{px: 2}}>
                                         |
                                     </Typography>
-                                    <Typography
-                                        variant={'body1'}>{[Roles.STUDENT, Roles.TEACHER].includes(currentUser.type) && areasToString((currentUser as Teacher | Student).areaOfInterest).toLowerCase()}</Typography>
-                                    <Typography variant={'body1'} sx={{px: 2}}>
-                                        |
-                                    </Typography>
+                                    {[Roles.STUDENT, Roles.TEACHER].includes(currentUser.type) &&
+                                        <>
+                                            <Typography
+                                                variant={'body1'}>{areasToString((currentUser as Teacher | Student).areaOfInterest).toLowerCase()}</Typography>
+                                            <Typography variant={'body1'} sx={{px: 2}}>
+                                                |
+                                            </Typography>
+                                        </>
+                                    }
                                     <Typography variant={'body1'}>{user.email}</Typography>
                                 </Box>
                             </div>
 
                             <Box sx={{pt: 2}}>{customProfileFunctionality}</Box>
 
-                            <Box>
-                                {updateAboutMe ?
-                                    <TextField
-                                        label='Despre mine'
-                                        variant='outlined'
-                                        value={currentUser.description}
-                                        onChange={(e) => setCurrentUser({
-                                            ...currentUser,
-                                            description: e.target.value
-                                        })}
-                                        sx={{width: '100%', mt: 3}}
-                                    /> : (
-                                        <>
-                                            {
-                                                currentUser.description.length > 0 &&
-                                                <Typography variant={'body1'} sx={{fontWeight: '700', pt: 3}}>
-                                                    Despre mine
-                                                </Typography>
-                                            }
-                                            {currentUser.description.length < 300 ?
-                                                <Typography variant={'body1'}>{currentUser.description}</Typography> :
-                                                <>
-                                                    <Typography variant={'body1'}>
-                                                        {currentUser.description.substring(0, 300) +
-                                                            (seeMore ? currentUser.description.substring(300) : '')}
+                            {currentUser.type !== Roles.ADMIN &&
+                                <Box>
+                                    {updateAboutMe ?
+                                        <TextField
+                                            label='Despre mine'
+                                            variant='outlined'
+                                            value={currentUser.description}
+                                            onChange={(e) => setCurrentUser({
+                                                ...currentUser,
+                                                description: e.target.value
+                                            })}
+                                            sx={{width: '100%', mt: 3}}
+                                        /> : (
+                                            <>
+                                                {
+                                                    currentUser.description.length > 0 &&
+                                                    <Typography variant={'body1'} sx={{fontWeight: '700', pt: 3}}>
+                                                        Despre mine
                                                     </Typography>
-                                                    <Box
-                                                        onClick={() => setSeeMore(!seeMore)}
-                                                        sx={{pt: 1, width: 'fit-content', cursor: 'pointer'}}
-                                                    >
-                                                        <Typography fontWeight={'700'}>
-                                                            {!seeMore ? '...vezi mai mult' : 'vezi mai putin'}
+                                                }
+                                                {currentUser.description.length < 300 ?
+                                                    <Typography
+                                                        variant={'body1'}>{currentUser.description}</Typography> :
+                                                    <>
+                                                        <Typography variant={'body1'}>
+                                                            {currentUser.description.substring(0, 300) +
+                                                                (seeMore ? currentUser.description.substring(300) : '')}
                                                         </Typography>
-                                                    </Box>
-                                                </>
-                                            }
-                                        </>
-                                    )
-                                }
-
-                                <Box sx={{display: 'flex', justifyContent: 'end', mt: 2}}>
-                                    {
-                                        updateAboutMe &&
-                                        <Button
-                                            onClick={() => {
-                                                setCurrentUser({...currentUser, description: user.description})
-                                                setUpdateAboutMe(false)
-                                            }
-                                            } sx={{pr: 3}}>Renunta</Button>
+                                                        <Box
+                                                            onClick={() => setSeeMore(!seeMore)}
+                                                            sx={{pt: 1, width: 'fit-content', cursor: 'pointer'}}
+                                                        >
+                                                            <Typography fontWeight={'700'}>
+                                                                {!seeMore ? '...vezi mai mult' : 'vezi mai putin'}
+                                                            </Typography>
+                                                        </Box>
+                                                    </>
+                                                }
+                                            </>
+                                        )
                                     }
 
-                                    <Button
-                                        onClick={onSave}>{updateAboutMe ? 'Salveaza' : 'Editeaza descrierea'}</Button>
-                                </Box>
+                                    <Box sx={{display: 'flex', justifyContent: 'end', mt: 2}}>
+                                        {
+                                            updateAboutMe &&
+                                            <Button
+                                                onClick={() => {
+                                                    setCurrentUser({...currentUser, description: user.description})
+                                                    setUpdateAboutMe(false)
+                                                }
+                                                } sx={{pr: 3}}>Renunta</Button>
+                                        }
 
-                            </Box>
+                                        <Button
+                                            onClick={onSave}>{updateAboutMe ? 'Salveaza' : 'Editeaza descrierea'}</Button>
+                                    </Box>
+
+                                </Box>
+                            }
                         </Box>
                     </Box>
 
