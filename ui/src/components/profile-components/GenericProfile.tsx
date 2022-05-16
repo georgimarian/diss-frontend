@@ -4,8 +4,8 @@ import {useEffect, useState} from 'react';
 import {Colors} from '../../mock_data/theme';
 import PublishedPapersList from './PublishedPapersList';
 import ProfileCompletion from './ProfileCompletion';
-import {areasToString, Roles} from "../../utils/models/common.enums";
-import {Admin, Student, Teacher} from "../../utils/models/common";
+import {areasToString, RequestStatus, Roles} from "../../utils/models/common.enums";
+import {Admin, Student, Teacher, ThesisRequest} from "../../utils/models/common";
 import {RequestAPI} from "../../utils/connection.config";
 
 type GenericProfileProps = {
@@ -14,7 +14,6 @@ type GenericProfileProps = {
 
 const GenericProfile = ({user}: GenericProfileProps) => {
     const theme = useTheme();
-    const hasProfessor = false; //TODO
 
     const [customProfileFunctionality, setCustomProfileFunctionality] =
         useState<JSX.Element>();
@@ -22,7 +21,11 @@ const GenericProfile = ({user}: GenericProfileProps) => {
     const [updateAboutMe, setUpdateAboutMe] = useState(false)
     const [currentUser, setCurrentUser] = useState<Teacher | Admin | Student>()
 
-    const setCustomContent = () => {
+    useEffect(() => {
+        setCurrentUser(user)
+    }, [])
+
+    const setCustomContent = (studentsProffessor?: Teacher) => {
         if (user) {
             switch (user.type) {
                 case Roles.STUDENT:
@@ -31,8 +34,9 @@ const GenericProfile = ({user}: GenericProfileProps) => {
                             <Typography variant={'h6'} sx={{textTransform: 'uppercase'}}>
                                 Profesorul tau
                             </Typography>
-                            {hasProfessor ? (
-                                <Typography variant={'body1'}>Dr. English Doe (todo)</Typography>
+                            {studentsProffessor ? (
+                                <Typography
+                                    variant={'body1'}>{studentsProffessor.firstName + " " + studentsProffessor.lastName}</Typography>
                             ) : (
                                 <Typography variant={'body2'}>
                                     <Link
@@ -78,9 +82,20 @@ const GenericProfile = ({user}: GenericProfileProps) => {
     }
 
     useEffect(() => {
-        setCurrentUser(user)
-        setCustomContent()
-    }, []);
+        if (user.type === Roles.STUDENT) {
+            const foundRequest: ThesisRequest | undefined = (user as Student).requests.find(req => req.status === RequestStatus.APPROVED)
+            if (foundRequest) {
+                RequestAPI.getTeachers()
+                    .then(teachers => {
+                        const foundTeacher = teachers.find((teacher: Teacher) => teacher.id === foundRequest.teacherId)
+                        setCustomContent(foundTeacher)
+                    })
+                    .catch(e => console.log(e))
+            }else setCustomContent()
+        }else{
+            setCustomContent()
+        }
+    }, [currentUser])
 
     const onSave = async () => {
         if (updateAboutMe) {
