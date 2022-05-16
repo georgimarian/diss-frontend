@@ -156,8 +156,8 @@ export function findTeacher(techs: Teacher[] | undefined, id_: number){
 }
 
 // thesis description
-// ia profesorul pt student si afiseaza-l
-// grading + criteria
+// ia profesorul pt student si afiseaza-l --done
+// grading + criteria -- denis
 // published papers
 // profile completion -> description + thesisDescription
 // testing overall

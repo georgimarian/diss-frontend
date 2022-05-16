@@ -1,4 +1,4 @@
-import {Box, Button, CircularProgress, Link, TextField, Typography, useTheme} from '@mui/material';
+import {Box, CircularProgress, Link, Typography, useTheme} from '@mui/material';
 import ProfileIcon from './ProfileIcon';
 import {useContext, useEffect, useState} from 'react';
 import {Colors} from '../../mock_data/theme';
@@ -8,6 +8,8 @@ import {areasToString, RequestStatus, Roles} from "../../utils/models/common.enu
 import {Admin, Student, Teacher, ThesisRequest} from "../../utils/models/common";
 import {RequestAPI} from "../../utils/connection.config";
 import {TeacherContext} from "../../App";
+import TeacherTextfields from "./TeacherTextfields";
+import StudentTextfield from "./StudentTextfield";
 
 type GenericProfileProps = {
     user: Teacher | Admin | Student;
@@ -19,10 +21,10 @@ const GenericProfile = ({user}: GenericProfileProps) => {
     const [customProfileFunctionality, setCustomProfileFunctionality] =
         useState<JSX.Element>();
     const [seeMore, setSeeMore] = useState(false);
-    const [updateAboutMe, setUpdateAboutMe] = useState(false)
+    const [update, setUpdate] = useState(false)
     const [currentUser, setCurrentUser] = useState<Teacher | Admin | Student>()
 
-    const { teachers } = useContext(TeacherContext);
+    const {teachers} = useContext(TeacherContext);
 
     useEffect(() => {
         setCurrentUser(user)
@@ -89,14 +91,14 @@ const GenericProfile = ({user}: GenericProfileProps) => {
             const foundTeacher: ThesisRequest | undefined = (user as Student).requests.find(req => req.status === RequestStatus.APPROVED)
             if (foundTeacher) {
                 setCustomContent(teachers?.find((teacher: Teacher) => teacher.id === foundTeacher.teacherId))
-            }else setCustomContent()
-        }else{
+            } else setCustomContent()
+        } else {
             setCustomContent()
         }
     }, [currentUser, teachers])
 
     const onSave = async () => {
-        if (updateAboutMe) {
+        if (update) {
             if (currentUser) {
                 RequestAPI.Update(currentUser)
                     .then(user => {
@@ -106,7 +108,7 @@ const GenericProfile = ({user}: GenericProfileProps) => {
                     .catch(e => console.error(e))
             }
         }
-        setUpdateAboutMe(!updateAboutMe)
+        setUpdate(!update)
     }
 
     return <>
@@ -177,64 +179,29 @@ const GenericProfile = ({user}: GenericProfileProps) => {
 
                             <Box sx={{pt: 2}}>{customProfileFunctionality}</Box>
 
-                            {currentUser.type !== Roles.ADMIN &&
-                                <Box>
-                                    {updateAboutMe ?
-                                        <TextField
-                                            label='Despre mine'
-                                            variant='outlined'
-                                            value={currentUser.description}
-                                            onChange={(e) => setCurrentUser({
-                                                ...currentUser,
-                                                description: e.target.value
-                                            })}
-                                            sx={{width: '100%', mt: 3}}
-                                        /> : (
-                                            <>
-                                                {
-                                                    currentUser.description.length > 0 && currentUser.description !== " " &&
-                                                    <Typography variant={'body1'} sx={{fontWeight: '700', pt: 3}}>
-                                                        Despre mine
-                                                    </Typography>
-                                                }
-                                                {currentUser.description.length < 300 ?
-                                                    <Typography
-                                                        variant={'body1'}>{currentUser.description}</Typography> :
-                                                    <>
-                                                        <Typography variant={'body1'}>
-                                                            {currentUser.description.substring(0, 300) +
-                                                                (seeMore ? currentUser.description.substring(300) : '')}
-                                                        </Typography>
-                                                        <Box
-                                                            onClick={() => setSeeMore(!seeMore)}
-                                                            sx={{pt: 1, width: 'fit-content', cursor: 'pointer'}}
-                                                        >
-                                                            <Typography fontWeight={'700'}>
-                                                                {!seeMore ? '...vezi mai mult' : 'vezi mai putin'}
-                                                            </Typography>
-                                                        </Box>
-                                                    </>
-                                                }
-                                            </>
-                                        )
-                                    }
+                            <Box sx={{pb: 2}}/>
 
-                                    <Box sx={{display: 'flex', justifyContent: 'end', mt: 2}}>
-                                        {
-                                            updateAboutMe &&
-                                            <Button
-                                                onClick={() => {
-                                                    setCurrentUser({...currentUser, description: user.description})
-                                                    setUpdateAboutMe(false)
-                                                }
-                                                } sx={{pr: 3}}>Renunta</Button>
-                                        }
-
-                                        <Button
-                                            onClick={onSave}>{updateAboutMe ? 'Salveaza' : 'Editeaza descrierea'}</Button>
-                                    </Box>
-
-                                </Box>
+                            {currentUser.type === Roles.TEACHER ?
+                                <TeacherTextfields
+                                    currentUser={currentUser as Teacher}
+                                    user={user as Teacher}
+                                    update={update}
+                                    setCurrentUser={setCurrentUser}
+                                    seeMore={seeMore}
+                                    setSeeMore={setSeeMore}
+                                    setUpdate={setUpdate}
+                                    onSave={onSave}
+                                /> : currentUser.type === Roles.STUDENT ?
+                                    <StudentTextfield
+                                        currentUser={currentUser as Student}
+                                        user={user as Student}
+                                        update={update}
+                                        setCurrentUser={setCurrentUser}
+                                        seeMore={seeMore}
+                                        setSeeMore={setSeeMore}
+                                        setUpdate={setUpdate}
+                                        onSave={onSave}
+                                    /> : null
                             }
                         </Box>
                     </Box>
