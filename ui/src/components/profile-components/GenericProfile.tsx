@@ -1,12 +1,13 @@
 import {Box, Button, CircularProgress, Link, TextField, Typography, useTheme} from '@mui/material';
 import ProfileIcon from './ProfileIcon';
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {Colors} from '../../mock_data/theme';
 import PublishedPapersList from './PublishedPapersList';
 import ProfileCompletion from './ProfileCompletion';
 import {areasToString, RequestStatus, Roles} from "../../utils/models/common.enums";
 import {Admin, Student, Teacher, ThesisRequest} from "../../utils/models/common";
 import {RequestAPI} from "../../utils/connection.config";
+import {TeacherContext} from "../../App";
 
 type GenericProfileProps = {
     user: Teacher | Admin | Student;
@@ -20,6 +21,8 @@ const GenericProfile = ({user}: GenericProfileProps) => {
     const [seeMore, setSeeMore] = useState(false);
     const [updateAboutMe, setUpdateAboutMe] = useState(false)
     const [currentUser, setCurrentUser] = useState<Teacher | Admin | Student>()
+
+    const { teachers } = useContext(TeacherContext);
 
     useEffect(() => {
         setCurrentUser(user)
@@ -83,19 +86,14 @@ const GenericProfile = ({user}: GenericProfileProps) => {
 
     useEffect(() => {
         if (user.type === Roles.STUDENT) {
-            const foundRequest: ThesisRequest | undefined = (user as Student).requests.find(req => req.status === RequestStatus.APPROVED)
-            if (foundRequest) {
-                RequestAPI.getTeachers()
-                    .then(teachers => {
-                        const foundTeacher = teachers.find((teacher: Teacher) => teacher.id === foundRequest.teacherId)
-                        setCustomContent(foundTeacher)
-                    })
-                    .catch(e => console.log(e))
+            const foundTeacher: ThesisRequest | undefined = (user as Student).requests.find(req => req.status === RequestStatus.APPROVED)
+            if (foundTeacher) {
+                setCustomContent(teachers?.find((teacher: Teacher) => teacher.id === foundTeacher.teacherId))
             }else setCustomContent()
         }else{
             setCustomContent()
         }
-    }, [currentUser])
+    }, [currentUser, teachers])
 
     const onSave = async () => {
         if (updateAboutMe) {
@@ -194,7 +192,7 @@ const GenericProfile = ({user}: GenericProfileProps) => {
                                         /> : (
                                             <>
                                                 {
-                                                    currentUser.description.length > 0 &&
+                                                    currentUser.description.length > 0 && currentUser.description !== " " &&
                                                     <Typography variant={'body1'} sx={{fontWeight: '700', pt: 3}}>
                                                         Despre mine
                                                     </Typography>
