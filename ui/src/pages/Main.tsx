@@ -1,4 +1,3 @@
-import {useContext, useState} from 'react';
 import {Navigate, Route, Routes} from 'react-router-dom';
 import {Box, styled, Typography, useTheme} from '@mui/material';
 import MuiAppBar, {AppBarProps as MuiAppBarProps} from '@mui/material/AppBar';

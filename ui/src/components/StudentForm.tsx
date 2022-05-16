@@ -11,9 +11,9 @@ import {
     TextField
 } from "@mui/material";
 import {useEffect, useState} from "react";
-import {Student} from "../utils/models/common";
-import {Actions, initializedStudent} from "../mock_data/users";
-import {AreaOfInterest, areasToString} from "../utils/models/common.enums";
+import {Criterion, Grade, parseCriterias, Student} from "../utils/models/common";
+import {initializedStudent} from "../mock_data/users";
+import {Actions, AreaOfInterest, areasToString} from "../utils/models/common.enums";
 import {RequestAPI} from "../utils/connection.config";
 
 type StudentFormProps = {
@@ -25,8 +25,24 @@ type StudentFormProps = {
     action: number
 }
 
+
 const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action}: StudentFormProps) => {
     const [values, setValues] = useState<Student>({...user});
+    const [criteria, setCriteria] = useState<Criterion[]>(parseCriterias() ?? []);
+    const [grades, setGrades] = useState<Grade[]>(criteria?.map(crt => ({criteria: crt.name, value: 0})));
+
+
+    useEffect(() => {
+        let criterias = parseCriterias()
+        if (criterias) {
+            setCriteria(criterias)
+        }
+        setGrades(criteria?.map(crt => ({criteria: crt.name, value: 0})))
+    }, [])
+
+    useEffect(() => {
+        setValues({...values, grades: grades.filter(grade => grade.value !== 0)})
+    }, [grades])
 
     useEffect(() => {
         setValues({...user})
@@ -36,15 +52,24 @@ const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action
         (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
             setValues({...values, [prop]: event.target.value});
         };
+    const updateGrade = (value: string, criteriaName: string) => {
+        setValues({
+            ...values, grades: values.grades?.map(gr => gr.criteria === criteriaName ? {
+                criteria: gr.criteria,
+                value: +value
+            } : gr)
+        })
+    }
 
     const verifyFields = () => action === Actions.EDIT ?
         (values.lastName !== "" && values.firstName !== ""
             && (values.lastName !== user.lastName || values.firstName !== user.firstName)) :
-        (values.lastName !== "" &&
-            values.firstName !== "" &&
-            values.username !== "" &&
-            values.email !== "" &&
-            values.password !== "")
+        action === Actions.ADD ?
+            (values.lastName !== "" &&
+                values.firstName !== "" &&
+                values.username !== "" &&
+                values.email !== "" &&
+                values.password !== "") : true
 
     const onSave = async () => {
         if (verifyFields()) {
@@ -80,22 +105,25 @@ const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action
         open={open}
         onClose={setOpen}
     >
-        <DialogTitle>{Actions.EDIT === action ? 'Editeaza studentul' : 'Adauga un student'}</DialogTitle>
+        <DialogTitle>{Actions.EDIT === action ? 'Editeaza studentul' : Actions.ADD === action ? 'Adauga un student' : 'Notează un student'}</DialogTitle>
         <DialogContent>
-            <TextField
-                sx={{width: '100%', my: 2}}
-                required
-                label='Nume'
-                value={values.lastName}
-                onChange={handleChange('lastName')}
-            />
-            <TextField
-                sx={{width: '100%'}}
-                required
-                label='Prenume'
-                value={values.firstName}
-                onChange={handleChange('firstName')}
-            />
+            {Actions.GRADE !== action && <>
+                <TextField
+                    sx={{width: '100%', my: 2}}
+                    required
+                    label='Nume'
+                    value={values.lastName}
+                    onChange={handleChange('lastName')}
+                />
+                <TextField
+                    sx={{width: '100%'}}
+                    required
+                    label='Prenume'
+                    value={values.firstName}
+                    onChange={handleChange('firstName')}
+                />
+            </>
+            }
             {
                 Actions.ADD === action &&
                 <>
@@ -136,6 +164,22 @@ const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action
                             </MenuItem>
                         </Select>
                     </FormControl>
+                </>}
+
+            {Actions.GRADE === action &&
+                <>
+                    {criteria?.map((crt, index) => (
+                        <TextField
+                            type={"number"}
+                            sx={{width: '100%', mb: 2}}
+                            required
+                            label={crt.name}
+                            value={() =>grades[index].value}
+                            onChange={(e) => setGrades(grades.map(oldGrade => oldGrade.criteria === crt.name ? {
+                                criteria: crt.name,
+                                value: +e.target.value
+                            } : oldGrade))}
+                        />))}
                 </>
             }
         </DialogContent>

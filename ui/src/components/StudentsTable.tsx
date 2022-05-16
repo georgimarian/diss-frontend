@@ -12,12 +12,12 @@ import {
   useTheme,
 } from '@mui/material';
 import ProfileIcon from './profile-components/ProfileIcon';
-import { Actions, initializedStudent } from 'mock_data/users';
+import { initializedStudent } from 'mock_data/users';
 import StudentForm from './StudentForm';
 import {parseUser, Student, Teacher} from 'utils/models/common';
 import SearchBar from './SearchBar';
 import { StudentContext, TeacherContext } from '../App';
-import {areasToString, Roles} from "../utils/models/common.enums";
+import {Actions, areasToString, Roles} from "../utils/models/common.enums";
 
 const StudentsTable = () => {
   const { students, setStudents } = useContext(StudentContext);
@@ -65,7 +65,7 @@ const StudentsTable = () => {
               <TableCell align='left'>Numele studentului</TableCell>
               <TableCell align='left'>Aria de Interes</TableCell>
               <TableCell align='left'>Email</TableCell>
-              {_user.type === Roles.ADMIN && <TableCell align='center' />}
+              <TableCell align='center' />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -95,8 +95,9 @@ const StudentsTable = () => {
                 </TableCell>
                 <TableCell align='left'>{areasToString(user.areaOfInterest)}</TableCell>
                 <TableCell align='left'>{user.email}</TableCell>
-                {_user.type === Roles.ADMIN && (
+
                   <TableCell align='center'>
+                    {_user.type === Roles.ADMIN && (
                     <Button
                       onClick={() => {
                         setChosenUser(user);
@@ -106,8 +107,20 @@ const StudentsTable = () => {
                     >
                       Editeaza
                     </Button>
+                    )}
+                    {_user.type === Roles.TEACHER && (
+                        <Button
+                            onClick={() => {
+                              setChosenUser(user);
+                              setAction(Actions.GRADE);
+                              setOpen(true);
+                            }}
+                        >
+                          Notează
+                        </Button>
+                    )}
                   </TableCell>
-                )}
+
               </TableRow>
             ))}
           </TableBody>
