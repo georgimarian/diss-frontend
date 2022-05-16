@@ -52,13 +52,11 @@ const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action
         (prop: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
             setValues({...values, [prop]: event.target.value});
         };
-    const updateGrade = (value: string, criteriaName: string) => {
-        setValues({
-            ...values, grades: values.grades?.map(gr => gr.criteria === criteriaName ? {
-                criteria: gr.criteria,
-                value: +value
-            } : gr)
-        })
+
+    function keepInRange(value: number) {
+        if (value >= 10) return 10;
+        if (value <= 0) return 0;
+        return value;
     }
 
     const verifyFields = () => action === Actions.EDIT ?
@@ -85,7 +83,7 @@ const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action
                         console.log('new user ', response, ' has been created')
                     })
                     .catch(e => console.error(e))
-            } else if (Actions.EDIT === action) {
+            } else {
                 const index = studentsList.indexOf(user)
                 _studentsList[index] = values
                 setStudentsList(_studentsList)
@@ -168,16 +166,16 @@ const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action
 
             {Actions.GRADE === action &&
                 <>
-                    {criteria?.map((crt, index) => (
+                    {grades?.map((crt, index) => (
                         <TextField
                             type={"number"}
                             sx={{width: '100%', mb: 2}}
                             required
-                            label={crt.name}
-                            value={() =>grades[index].value}
-                            onChange={(e) => setGrades(grades.map(oldGrade => oldGrade.criteria === crt.name ? {
-                                criteria: crt.name,
-                                value: +e.target.value
+                            label={crt.criteria}
+                            value={grades[index].value}
+                            onChange={(e) => setGrades(grades.map(oldGrade => oldGrade.criteria === crt.criteria ? {
+                                criteria: crt.criteria,
+                                value: keepInRange(+e.target.value)
                             } : oldGrade))}
                         />))}
                 </>
