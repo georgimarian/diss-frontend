@@ -38,6 +38,7 @@ const StudentsTable = () => {
           teacher?.enrolledStudents || []
         );
   }, [students]);
+
   return (
     <>
       <StudentForm

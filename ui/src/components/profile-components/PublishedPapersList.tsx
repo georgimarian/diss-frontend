@@ -1,7 +1,7 @@
 import {Box, Typography, useTheme} from "@mui/material";
 import {publishedPapers} from "../../mock_data/users";
 
-const PublishedPapersList = () => {
+const PublishedPapersList = () => { //TODO get published papers from back
     const theme = useTheme()
     return <Box
         sx={{

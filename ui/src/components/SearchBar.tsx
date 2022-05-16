@@ -24,28 +24,8 @@ const SearchBar = ({
         variant='outlined'
         value={searchValue}
         onChange={(e) => onSearch(e.target.value)}
-        sx={{
-          width: '70%',
-          borderRadius: 25,
-        }}
+        sx={{width: '100%'}}
       />
-      <Button
-        onClick={() => {
-          searchValue.length && console.log(searchValue);
-        }}
-        sx={{
-          width: '10%',
-          borderRadius: 10,
-          color: theme.palette.secondary.main,
-          bgcolor: theme.palette.primary.main,
-          '&:hover': {
-            color: theme.palette.secondary.main,
-            background: theme.palette.primary.dark,
-          },
-        }}
-      >
-        Search
-      </Button>
     </Box>
   );
 };

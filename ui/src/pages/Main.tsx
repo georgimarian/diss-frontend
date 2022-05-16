@@ -52,8 +52,7 @@ const Main = () => {
                     path='/teachers'
                     element={
                         <PrivateRoute roles={[Roles.STUDENT, Roles.ADMIN]}>
-                            <Teachers
-                            />
+                            <Teachers/>
                         </PrivateRoute>
                     }
                 />
@@ -69,8 +68,7 @@ const Main = () => {
                     path='/requests'
                     element={
                         <PrivateRoute roles={[Roles.TEACHER, Roles.ADMIN]}>
-                            <Requests
-                            />
+                            <Requests/>
                         </PrivateRoute>
                     }
                 />

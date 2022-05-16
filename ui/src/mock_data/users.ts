@@ -18,6 +18,7 @@ export let teacherList: Teacher[] = [
     lastName: ' Popescu',
     type: Roles.TEACHER,
     areaOfInterest: AreaOfInterest.PSYCHOLOGY,
+    description: '',
     email: 'popescu@yahoo.com',
     enrolledStudents: [
       {
@@ -75,6 +76,7 @@ export let teacherList: Teacher[] = [
     totalPlaces: 15,
     password: 'pass',
     requests: [],
+    description: '',
   },
   {
     id: 3,
@@ -88,6 +90,7 @@ export let teacherList: Teacher[] = [
     totalPlaces: 15,
     password: 'pass',
     requests: [],
+    description: '',
   },
   {
     id: 4,
@@ -101,6 +104,7 @@ export let teacherList: Teacher[] = [
     totalPlaces: 15,
     password: 'pass',
     requests: [],
+    description: '',
   },
   {
     id: 5,
@@ -113,6 +117,7 @@ export let teacherList: Teacher[] = [
     enrolledStudents: [],
     totalPlaces: 15,
     password: 'pass',
+    description: '',
     requests: [
       {
         id: 2,

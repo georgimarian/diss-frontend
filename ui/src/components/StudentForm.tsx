@@ -14,6 +14,7 @@ import {useEffect, useState} from "react";
 import {Student} from "../utils/models/common";
 import {Actions, initializedStudent} from "../mock_data/users";
 import {AreaOfInterest, areasToString} from "../utils/models/common.enums";
+import {RequestAPI} from "../utils/connection.config";
 
 type StudentFormProps = {
     studentsList: Student[]
@@ -26,6 +27,7 @@ type StudentFormProps = {
 
 const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action}: StudentFormProps) => {
     const [values, setValues] = useState<Student>({...user});
+
     useEffect(() => {
         setValues({...user})
     }, [user])
@@ -35,22 +37,43 @@ const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action
             setValues({...values, [prop]: event.target.value});
         };
 
-    const onSave = () => {
-        const _studentsList = studentsList
+    const verifyFields = () => action === Actions.EDIT ?
+        (values.lastName !== "" && values.firstName !== ""
+            && (values.lastName !== user.lastName || values.firstName !== user.firstName)) :
+        (values.lastName !== "" &&
+            values.firstName !== "" &&
+            values.username !== "" &&
+            values.email !== "" &&
+            values.password !== "")
 
-        if (Actions.ADD === action) {
-            _studentsList.push(values)
-            setStudentsList(_studentsList)
-            setValues(initializedStudent)
-        } else if (Actions.EDIT === action) {
-            const index = studentsList.indexOf(user)
-            console.log(index)
+    const onSave = async () => {
+        if (verifyFields()) {
+            const _studentsList = studentsList
 
-            _studentsList[index] = values
-            setStudentsList(_studentsList)
+            if (Actions.ADD === action) {
+                _studentsList.push(values)
+                setStudentsList(_studentsList)
+                setValues(initializedStudent)
+
+                RequestAPI.Add(values)
+                    .then(response => {
+                        console.log('new user ', response, ' has been created')
+                    })
+                    .catch(e => console.error(e))
+            } else if (Actions.EDIT === action) {
+                const index = studentsList.indexOf(user)
+                _studentsList[index] = values
+                setStudentsList(_studentsList)
+
+                RequestAPI.Update(values)
+                    .then(response => {
+                        console.log('user', user, ' now is ', response)
+                    })
+                    .catch(e => console.error(e))
+            }
+
+            setOpen(false);
         }
-
-        setOpen(false);
     }
 
     return <Dialog
@@ -118,12 +141,11 @@ const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action
         </DialogContent>
         <DialogActions>
             <Button onClick={() => {
-                setValues(initializedStudent);
+                setValues(user);
                 setOpen(false)
             }}>Renunta</Button>
             <Button
                 onClick={onSave}
-                disabled={Object.values(values).filter(item => item === '').length > 0}
             >
                 Salveaza
             </Button>

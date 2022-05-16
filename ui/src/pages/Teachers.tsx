@@ -32,7 +32,7 @@ const Teachers = () => {
           <TeachersTable
             view={user.type}
           />
-          <Typography variant='h6' sx={{ padding: '2px' }} align='left'>
+          <Typography variant='h6' sx={{ p: 1, pt: 2 }} align='left'>
             Mai ai{' '}
             <Typography
               sx={{
@@ -49,7 +49,7 @@ const Teachers = () => {
 
     return (
       <>
-        <Typography variant='h5' sx={{ padding: '2px' }} align='left'>
+        <Typography variant='h5' sx={{ p: 1, pt: 2 }} align='left'>
           Mai ai <p style={{ color: 'red', display: 'inline' }}>0</p> cereri
           rămase. Te rugăm să ceri adminilor să îți aleagă un profesor.
         </Typography>

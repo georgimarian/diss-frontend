@@ -25,7 +25,7 @@ const CustomForm = ({
     const theme = useTheme()
     return (<Box
             sx={{
-                minHeight: '40%',
+                height: 'fit-content',
                 width: '24%',
                 borderRadius: 5,
                 bgcolor: accentColor,
@@ -36,7 +36,6 @@ const CustomForm = ({
             </Box>
             <Box
                 sx={{
-                    height: '88%',
                     borderRadius: 5,
                     bgcolor: 'white',
                     display: 'flex',
@@ -65,7 +64,8 @@ const CustomForm = ({
                     flexDirection: 'column',
                     alignItems: 'end',
                     color: accentColor,
-                    pr: 2
+                    pr: 2,
+                    pb: 2
                 }}>
                     <Typography variant='body2' align="left">{info}</Typography>
                     <Link to={path}
