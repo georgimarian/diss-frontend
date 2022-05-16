@@ -11,7 +11,7 @@ import {
     TextField
 } from "@mui/material";
 import {useEffect, useState} from "react";
-import {Criterion, Grade, parseCriterias, Student} from "../utils/models/common";
+import {Grade, parseCriterias, Student} from "../utils/models/common";
 import {initializedStudent} from "../mock_data/users";
 import {Actions, AreaOfInterest, areasToString} from "../utils/models/common.enums";
 import {RequestAPI} from "../utils/connection.config";
@@ -28,16 +28,18 @@ type StudentFormProps = {
 
 const StudentForm = ({studentsList, setStudentsList, user, open, setOpen, action}: StudentFormProps) => {
     const [values, setValues] = useState<Student>({...user});
-    const [criteria, setCriteria] = useState<Criterion[]>(parseCriterias() ?? []);
-    const [grades, setGrades] = useState<Grade[]>(criteria?.map(crt => ({criteria: crt.name, value: 0})));
+    const [grades, setGrades] = useState<Grade[]>([]);
 
 
     useEffect(() => {
+        console.log(values)
         let criterias = parseCriterias()
         if (criterias) {
-            setCriteria(criterias)
+            setGrades(criterias?.map(crt => ({
+                criteria: crt.name,
+                value: values.grades.find(gr => gr.criteria === crt.name)?.value ?? 0
+            })))
         }
-        setGrades(criteria?.map(crt => ({criteria: crt.name, value: 0})))
     }, [])
 
     useEffect(() => {
