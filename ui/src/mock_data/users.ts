@@ -280,8 +280,3 @@ export const initializedStudent: Student = {
   thesisDescription: ' ',
   grades: [],
 };
-
-export enum Actions {
-  ADD,
-  EDIT,
-}

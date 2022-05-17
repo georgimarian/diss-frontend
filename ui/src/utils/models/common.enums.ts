@@ -16,6 +16,14 @@ export enum Roles {
     ADMIN = 2,
 }
 
+
+export enum Actions {
+    ADD,
+    EDIT,
+    GRADE
+}
+
+
 export function rolesToString(enumValue: Roles) {
     switch (enumValue) {
         case Roles.ADMIN :
