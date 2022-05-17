@@ -155,9 +155,9 @@ export function findTeacher(techs: Teacher[] | undefined, id_: number){
     return techs?.find(tech => tech.id === id_)
 }
 
-// thesis description
-// ia profesorul pt student si afiseaza-l
-// grading + criteria
+// thesis description --done
+// ia profesorul pt student si afiseaza-l --done
+// grading + criteria -- denis
 // published papers
 // profile completion -> description + thesisDescription
 // testing overall
